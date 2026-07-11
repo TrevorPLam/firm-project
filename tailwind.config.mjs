@@ -1,3 +1,5 @@
+import typography from "@tailwindcss/typography";
+
 /** @type {import('tailwindcss').Config} */
 const config = {
   content: [
@@ -20,7 +22,7 @@ const config = {
     },
   },
   plugins: [
-    require("@tailwindcss/typography"),
+    typography,
   ],
 };
 
