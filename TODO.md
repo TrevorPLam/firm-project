@@ -788,7 +788,7 @@ Error: Route "/blog/[slug]" used `new Date()` before accessing either uncached d
 
 ---
 
-## [ ] M-T05 | STATUS: PENDING | PRIORITY: MEDIUM
+## [x] M-T05 | STATUS: DONE | PRIORITY: MEDIUM
 
 ### Add Open Graph images for social sharing
 
@@ -814,9 +814,17 @@ Error: Route "/blog/[slug]" used `new Date()` before accessing either uncached d
 
 **Depends on:** H-T01 | **Blocks:** None
 
+**Implementation notes:**
+- Created `app/opengraph-image.tsx` with `ImageResponse` from `next/og`
+- Used inline styles (no Tailwind) as required by Satori/next/og
+- Dark gradient background with company branding: "Elevate Digital" header, "Web Design, SEO & Analytics" title, "Transform your digital presence" tagline
+- Size 1200x630px, content type image/png
+- Build succeeds with OG image route registered as dynamic function (ƒ /opengraph-image)
+- Typecheck passes, lint passes (pre-existing unused var warnings in contact.ts remain from H-T04-ISSUE-002)
+
 ### Subtasks
 
-- [ ] M-T05.1 [AGENT] Create default OG image
+- [x] M-T05.1 [AGENT] Create default OG image
   - **File:** `app/opengraph-image.tsx`
   - **Action:** Export default async function returning `ImageResponse` with dark background, "Elevate Digital" text, tagline. Size 1200x630. Export `size` and `contentType` static props.
   - **Validate:** `npm run build` (verify OG image generated)
