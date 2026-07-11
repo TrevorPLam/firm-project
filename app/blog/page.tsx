@@ -6,6 +6,9 @@ import { ScrollReveal } from "../components/scroll-reveal";
 import Link from "next/link";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/blog",
+  },
   title: "Blog | Elevate Digital - Digital Marketing Insights",
   description: "Expert insights on web design, SEO, analytics, and digital marketing strategies. Stay updated with the latest trends and best practices.",
   keywords: ["digital marketing blog", "SEO tips", "web design insights", "analytics guides", "marketing strategies"],

@@ -179,6 +179,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   return {
+    alternates: {
+      canonical: `/portfolio/${slug}`,
+    },
     title: `${study.title} | Elevate Digital Case Study`,
     description: study.description,
     keywords: [...study.tags, "case study", study.client],

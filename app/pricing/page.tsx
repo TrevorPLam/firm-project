@@ -6,6 +6,9 @@ import Link from "next/link";
 import { ScrollReveal } from "../components/scroll-reveal";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/pricing",
+  },
   title: "Pricing | Elevate Digital - Service Packages",
   description: "Transparent pricing for our web design, SEO, and analytics services. Choose the package that fits your business needs and budget.",
   keywords: ["pricing", "service packages", "web design pricing", "SEO pricing", "analytics pricing"],

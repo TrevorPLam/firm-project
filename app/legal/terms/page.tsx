@@ -5,6 +5,9 @@ import type { Metadata } from "next";
 import { ScrollReveal } from "../../components/scroll-reveal";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/legal/terms",
+  },
   title: "Terms of Service | Elevate Digital",
   description: "Read Elevate Digital's terms of service and conditions for using our website and services.",
   openGraph: {

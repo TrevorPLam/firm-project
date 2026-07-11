@@ -6,6 +6,9 @@ import Link from "next/link";
 import { ScrollReveal } from "../components/scroll-reveal";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/services",
+  },
   title: "Services | Elevate Digital - Web Design, SEO & Analytics",
   description: "Comprehensive digital services including web design, SEO optimization, and analytics. Transform your digital presence with data-driven strategies.",
   keywords: ["web design services", "SEO services", "analytics services", "digital marketing", "website development"],

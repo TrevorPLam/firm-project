@@ -21,6 +21,9 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://elevatedigital.com"),
+  alternates: {
+    canonical: "/",
+  },
   title: "Elevate Digital | Web Design, SEO & Analytics Agency",
   description: "Transform your digital presence with expert web design, SEO, and analytics services. We create experiences that convert visitors into customers.",
   keywords: ["web design", "SEO", "analytics", "digital marketing", "website development", "conversion optimization"],

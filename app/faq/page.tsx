@@ -6,6 +6,9 @@ import Link from "next/link";
 import { ScrollReveal } from "../components/scroll-reveal";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/faq",
+  },
   title: "FAQ | Elevate Digital - Frequently Asked Questions",
   description: "Find answers to common questions about our web design, SEO, and analytics services. Get the information you need to make informed decisions.",
   keywords: ["FAQ", "frequently asked questions", "web design questions", "SEO questions", "analytics questions"],

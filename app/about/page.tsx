@@ -6,6 +6,9 @@ import Link from "next/link";
 import { ScrollReveal } from "../components/scroll-reveal";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/about",
+  },
   title: "About Us | Elevate Digital - Our Story & Team",
   description: "Learn about Elevate Digital's mission, values, and team. We're passionate about helping businesses succeed in the digital landscape.",
   keywords: ["about us", "our team", "company story", "digital agency", "our mission"],

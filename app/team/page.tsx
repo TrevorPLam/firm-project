@@ -7,6 +7,9 @@ import Image from "next/image";
 import { ScrollReveal } from "../components/scroll-reveal";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/team",
+  },
   title: "Our Team | Elevate Digital - Meet the Experts",
   description: "Meet the talented team at Elevate Digital. Our experts specialize in web design, SEO, analytics, and digital marketing strategies.",
   keywords: ["our team", "meet the team", "digital agency team", "web design experts", "SEO specialists"],

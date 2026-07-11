@@ -1,6 +1,13 @@
 import Link from "next/link";
 import { ScrollReveal } from "./components/scroll-reveal";
 import { ContactForm } from "./components/contact-form";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/",
+  },
+};
 
 export default function Home() {
   return (

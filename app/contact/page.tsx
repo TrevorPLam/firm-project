@@ -3,6 +3,9 @@ import { ScrollReveal } from "../components/scroll-reveal";
 import { ContactForm } from "../components/contact-form";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/contact",
+  },
   title: "Contact | Elevate Digital - Get in Touch",
   description: "Get in touch with Elevate Digital. We'd love to discuss your project and how we can help transform your digital presence.",
   keywords: ["contact", "get in touch", "start project", "consultation", "digital marketing services"],

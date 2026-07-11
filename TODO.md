@@ -734,7 +734,7 @@ Error: Route "/blog/[slug]" used `new Date()` before accessing either uncached d
 
 ---
 
-## [ ] M-T04 | STATUS: PENDING | PRIORITY: MEDIUM
+## [x] M-T04 | STATUS: DONE | PRIORITY: MEDIUM
 
 ### Add canonical URLs to all pages
 
@@ -761,19 +761,27 @@ Error: Route "/blog/[slug]" used `new Date()` before accessing either uncached d
 
 **Depends on:** H-T01 | **Blocks:** None
 
+**Implementation notes:**
+- Added default canonical "/" to root layout metadata
+- Added canonical URLs to all 11 static pages: about, services, pricing, faq, team, contact, portfolio, blog, privacy, terms, homepage
+- Added canonical URLs to dynamic routes in generateMetadata for blog/[slug] and portfolio/[slug]
+- All canonical URLs use relative paths (resolved against metadataBase from H-T01)
+- Typecheck passes, lint passes (pre-existing unused var warnings in contact.ts remain from H-T04-ISSUE-002)
+- All 41 tests passing
+
 ### Subtasks
 
-- [ ] M-T04.1 [AGENT] Add default canonical to root layout
+- [x] M-T04.1 [AGENT] Add default canonical to root layout
   - **File:** `app/layout.tsx`
   - **Action:** Add `alternates: { canonical: "/" }` to `metadata` export.
   - **Validate:** `npx tsc --noEmit && npx eslint app/layout.tsx`
 
-- [ ] M-T04.2 [AGENT] Add canonical to static pages
+- [x] M-T04.2 [AGENT] Add canonical to static pages
   - **Files:** All page files listed above
   - **Action:** Add `alternates: { canonical: "/about" }` (etc.) to each page's metadata.
   - **Validate:** `npx tsc --noEmit`
 
-- [ ] M-T04.3 [AGENT] Add canonical to dynamic routes
+- [x] M-T04.3 [AGENT] Add canonical to dynamic routes
   - **Files:** `app/blog/[slug]/page.tsx`, `app/portfolio/[slug]/page.tsx`
   - **Action:** In `generateMetadata`, add `alternates: { canonical: `/blog/${slug}` }`.
   - **Validate:** `npx tsc --noEmit`

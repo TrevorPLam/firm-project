@@ -6,6 +6,9 @@ import Link from "next/link";
 import { ScrollReveal } from "../components/scroll-reveal";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/portfolio",
+  },
   title: "Portfolio | Elevate Digital - Our Case Studies",
   description: "Explore our portfolio of successful projects. See how we've helped businesses transform their digital presence with web design, SEO, and analytics.",
   keywords: ["portfolio", "case studies", "our work", "web design projects", "SEO success stories"],

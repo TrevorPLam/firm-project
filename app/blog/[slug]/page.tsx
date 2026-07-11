@@ -332,6 +332,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   return {
+    alternates: {
+      canonical: `/blog/${slug}`,
+    },
     title: `${post.title} | Elevate Digital Blog`,
     description: post.excerpt,
     keywords: [...post.tags, "blog", post.category],
