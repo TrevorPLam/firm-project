@@ -2054,7 +2054,7 @@ Test animation performance:
 
 ## P2-004: Set Up AI Share of Voice Tracking
 
-**Status:** [ ] Not Started  
+**Status:** [~] In Progress
 **Priority:** P2
 
 ### Related File Paths
@@ -2099,6 +2099,18 @@ No new imports/exports required (uses external tool).
 
 ### Blocks
 - None
+
+### Implementation Notes
+- SEO documentation (docs/seo.md) already contains comprehensive AI Share of Voice tracking guidance
+- Documentation includes tool comparison (Profound, Peec AI, Otterly, Semrush, Ahrefs, etc.)
+- Documentation includes metrics to track (primary, secondary, conversion)
+- Documentation includes baseline establishment process and monitoring cadence
+- Documentation includes optimization recommendations and reporting template
+- Documentation includes integration with existing SEO and common mistakes to avoid
+- Research conducted on 2026 AI SOV best practices: three metric types (mention-based, citation-based, position-weighted), re-ask variance (3-5 repeats needed), open denominator (closed-pool error), sentiment classification, and weekly monitoring cadence
+- Type checking and linting passed successfully
+- Note: All AGENT subtasks are complete (P2-004-03 was already done). Remaining subtasks are HUMAN: P2-004-01 (Select AI Tracking Tool), P2-004-02 (Establish Baseline), P2-004-04 (Set Up Monitoring Schedule), P2-004-05 (Conduct First Monthly Review)
+- Task cannot be fully completed until HUMAN selects tracking tool and establishes baseline
 
 ---
 
