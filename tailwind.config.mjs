@@ -20,7 +20,7 @@ const config = {
     },
   },
   plugins: [
-    import("@tailwindcss/typography"),
+    require("@tailwindcss/typography"),
   ],
 };
 

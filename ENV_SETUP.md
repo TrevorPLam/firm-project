@@ -1,5 +1,9 @@
 # Environment Variables Setup
 
+## Tailwind CSS v3 Configuration
+
+This project uses Tailwind CSS v3 with JavaScript configuration in `tailwind.config.mjs`. The typography plugin is loaded via `require("@tailwindcss/typography")` in the config file. PostCSS uses the standard `tailwindcss` and `autoprefixer` plugins.
+
 ## Quick Start
 
 Copy the example file to create your local environment file:
