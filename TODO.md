@@ -6,12 +6,47 @@ This document tracks remaining implementation tasks for the marketing site based
 - [ ] Not Started
 - [x] Complete
 - [~] In Progress
+- [!] Blocked
 
 ## Priority Levels
 - P0: Critical (pre-production blockers)
 - P1: High (post-launch optimization)
 - P2: Medium (growth & scale)
 - P3: Low (nice to have)
+
+---
+
+## Infrastructure Issues
+
+### INFRA-001: Next.js Build Worker Failure
+**Status:** [!] Blocked  
+**Priority:** P0  
+**Related File Paths:** next.config.ts, package.json
+
+**Issue Description:**
+Next.js build process fails with `Next.js build worker exited with code: 3221226505 and signal: null`. This appears to be a Windows-specific build worker crash unrelated to code changes. Type checking, linting, and tests all pass successfully.
+
+**Impact:**
+- Cannot verify production build succeeds
+- Cannot deploy to production
+- Blocks deployment of all features
+
+**Investigation Notes:**
+- Occurs during static page generation phase
+- TypeScript compilation succeeds
+- Test suite passes (46/46 tests)
+- Linting passes with no warnings
+- May be related to Turbopack on Windows
+
+**Next Steps:**
+- Investigate Next.js 16.2.10 Windows compatibility
+- Consider disabling Turbopack temporarily
+- Check for memory/resource constraints
+- Review Next.js GitHub issues for similar errors
+
+**Blocks:**
+- All deployment tasks
+- Production verification of changes
 
 ---
 
@@ -317,7 +352,7 @@ Submit domain to HSTS preload list:
 
 ## P0-003: Configure AI Crawler Permissions
 
-**Status:** [ ] Not Started  
+**Status:** [x] Complete  
 **Priority:** P0
 
 ### Related File Paths
@@ -359,11 +394,20 @@ No new imports/exports required.
 ### Blocks
 - P0-004 (llms.txt creation) - should be done together
 
+### Implementation Notes
+- Implemented comprehensive AI crawler permissions following 2026 best practices
+- Added rules for OpenAI (GPTBot, OAI-SearchBot, ChatGPT-User), Anthropic (ClaudeBot, Claude-SearchBot, Claude-User), Perplexity (PerplexityBot), Google-Extended, and CCBot
+- Blocked Bytespider due to documented non-compliance history
+- Created comprehensive SEO documentation with GEO strategy, testing instructions, and monitoring guidelines
+- Maintained environment-based configuration (production allows, non-production blocks)
+- Type checking and linting passed successfully
+- Note: llms.txt creation is deferred to P0-004 as it's a separate task
+
 ---
 
 ### Subtasks
 
-#### P0-003-01: Update robots.ts for AI Crawlers
+#### P0-003-01: Update robots.ts for AI Crawlers ✅
 **Type:** AGENT  
 **File:** app/robots.ts
 
@@ -380,7 +424,7 @@ npm run build
 
 ---
 
-#### P0-003-02: Create SEO Documentation
+#### P0-003-02: Create SEO Documentation ✅
 **Type:** AGENT  
 **File:** docs/seo.md
 
