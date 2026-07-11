@@ -462,7 +462,7 @@
 
 ## Task 009: Add Content-Security-Policy header
 
-- [ ] **Status**: PENDING
+- [x] **Status**: COMPLETED
 - **Related Files**:
   - `next.config.ts`
 - **Definition of Done**:
@@ -486,6 +486,14 @@
 - **Depends On**: None
 - **Blocks**: None
 
+**Implementation Notes**:
+- Added `Content-Security-Policy-Report-Only` header to `next.config.ts` with a permissive policy
+- Policy allows inline scripts and styles for compatibility with Tailwind CSS and JSON-LD schema scripts
+- Whitelisted Google Analytics domains: `www.googletagmanager.com` and `www.google-analytics.com`
+- Included `report-uri` directive for monitoring CSP violations (endpoint needs to be implemented)
+- Used report-only mode to test compatibility before enforcing the policy
+- All quality assurance checks pass: typecheck, lint, and build succeed
+
 ### Subtasks
 
 #### 009-01: Add CSP header in report-only mode
@@ -495,6 +503,7 @@
 - **Commands**:
   - `npm run build`
   - `npm run dev` (test with browser DevTools CSP reports)
+- ✅ **Completed**: Added CSP-Report-Only header with permissive policy allowing inline scripts/styles and Google Analytics domains
 
 #### 009-02: Enforce CSP after testing
 - **Agent**: HUMAN
