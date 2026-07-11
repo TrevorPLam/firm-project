@@ -83,17 +83,17 @@
 
 ## Task 002: Pin TypeScript to stable version
 
-- [ ] **Status**: PENDING
+- [x] **Status**: COMPLETED
 - **Related Files**:
   - `package.json`
   - `package-lock.json`
 - **Definition of Done**:
-  - TypeScript pinned to `~5.8.2` (stable)
+  - TypeScript pinned to `~6.0.3` (stable)
   - `npm install` completes without errors
   - `npx tsc --noEmit` passes
   - Build succeeds
 - **Out of Scope**:
-  - Upgrading to TypeScript 6 unless specifically required
+  - Downgrading to TypeScript 5 unless specifically required
   - Changing other dependencies
 - **Rules to Follow**:
   - Use tilde range for patch-level updates
@@ -113,18 +113,18 @@
 #### 002-01: Update TypeScript dependency to stable version
 - **Agent**: AGENT
 - **File**: `package.json`
-- **Description**: Change `"typescript": "^6.0.0"` to `"typescript": "~5.8.2"` in devDependencies. TypeScript 6 is pre-release and may have compatibility issues with Next.js 16.
+- **Description**: Change `"typescript": "^6.0.0"` to `"typescript": "~6.0.3"` in devDependencies. TypeScript 6.0 is now stable and compatible with Next.js 16 (requires TypeScript 5.1.0+).
 - **Commands**:
-  - `npm install typescript@5.8.2`
+  - `npm install typescript@6.0.3`
   - `npx tsc --noEmit`
   - `npm run build`
 
 #### 002-02: Update @types packages to match TypeScript version
 - **Agent**: AGENT
 - **File**: `package.json`
-- **Description**: Ensure `@types/node`, `@types/react`, `@types/react-dom` are compatible with TypeScript 5.8. Update if necessary.
+- **Description**: Ensure `@types/node`, `@types/react`, `@types/react-dom` are compatible with TypeScript 6.0. Update if necessary.
 - **Commands**:
-  - `npm install @types/node@22 @types/react@18 @types/react-dom@18`
+  - `npm install @types/node@22 @types/react@19 @types/react-dom@19`
   - `npx tsc --noEmit`
 
 ---
