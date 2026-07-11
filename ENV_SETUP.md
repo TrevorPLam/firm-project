@@ -1,6 +1,14 @@
 # Environment Variables Setup
 
-Create a `.env.local` file in the root directory with the following variables:
+## Quick Start
+
+Copy the example file to create your local environment file:
+
+```bash
+cp .env.example .env.local
+```
+
+Then edit `.env.local` with your actual values.
 
 ```bash
 # Site URL (for metadataBase)

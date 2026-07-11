@@ -1504,43 +1504,57 @@ Error: Route "/portfolio/[slug]" used `new Date()` before accessing either uncac
 
 ---
 
-## [ ] L-T02 | STATUS: PENDING | PRIORITY: LOW
+## [x] L-T02 | STATUS: DONE | PRIORITY: LOW
 
-### Fix placeholder social media links
+### Remove social media links and team page
 
-**Files:** `app/components/footer.tsx`, `app/contact/page.tsx`, `app/team/page.tsx`
+**Files:** `app/components/footer.tsx`, `app/contact/page.tsx`, `app/team/page.tsx` (deleted), `app/sitemap.ts`, `app/lib/blog-data.ts`
 
 **Definition of done:**
-- All `href="#"` social links replaced with real URLs or removed
-- If real URLs provided: links open in new tab with `target="_blank" rel="noopener noreferrer"`
-- If no social presence: links removed from UI
-- `npx eslint` passes on all modified files
+- All social media links removed from footer and contact page
+- Team page deleted from the website
+- Team page removed from sitemap
+- Team image references removed from blog data
+- `npx eslint` and `npx tsc --noEmit` pass on all modified files
 
 **Out of scope:** Adding new social platforms, creating social media accounts, social media icons redesign
 
 **Rules to follow:**
 - SDD: No placeholder links in production (broken UX, SEO noise)
-- BDD: Given user clicks social link, When it has a real URL, Then opens in new tab safely
-- Use `rel="noopener noreferrer"` for `target="_blank"` security
+- SDD: Remove non-existent features entirely rather than showing placeholder content
+- BDD: Given user visits website, When they look for social links or team page, Then they don't see placeholder content
 
-**Advanced coding pattern:** Centralized social links config in a shared constant, imported by footer, contact, and team pages.
+**Advanced coding pattern:** Complete removal of unused features to avoid confusion and maintain clean codebase.
 
-**Anti-patterns:** `href="#"` in production, `target="_blank"` without `rel="noopener"`, inconsistent URLs across pages
+**Anti-patterns:** `href="#"` in production, placeholder team members, dead links in navigation
 
-**Imports/exports:** Optionally export `socialLinks` from `app/lib/site-config.ts`
+**Imports/exports:** None
 
 **Depends on:** None | **Blocks:** None
 
+**Implementation notes:**
+- Removed all social media links from footer (Twitter, LinkedIn, GitHub)
+- Removed "Follow Us" section from contact page with all social media links
+- Deleted entire `app/team/` directory
+- Removed `/team` from sitemap static routes
+- Updated all blog author image references from `/team/*.jpg` to empty strings (will show initials fallback)
+- Typecheck passes, lint passes for all modified files
+
 ### Subtasks
 
-- [ ] L-T02.1 [HUMAN] Provide real social media URLs
-  - **Action:** Provide real URLs for Twitter, LinkedIn, GitHub, or confirm which should be removed.
+- [x] L-T02.1 [HUMAN] Confirm removal of social media and team page
+  - **Action:** User confirmed no social media presence and no team, requested removal.
   - **Validate:** N/A
 
-- [ ] L-T02.2 [AGENT] Update social links across all pages
-  - **Files:** `app/components/footer.tsx`, `app/contact/page.tsx`, `app/team/page.tsx`
-  - **Action:** Replace `href="#"` with real URLs from L-T02.1. Add `target="_blank" rel="noopener noreferrer"`. If a platform should be removed, delete the link element.
-  - **Validate:** `npx eslint app/components/footer.tsx app/contact/page.tsx app/team/page.tsx`
+- [x] L-T02.2 [AGENT] Remove social links from footer and contact page
+  - **Files:** `app/components/footer.tsx`, `app/contact/page.tsx`
+  - **Action:** Removed all social media link elements from footer and contact page.
+  - **Validate:** `npx eslint app/components/footer.tsx app/contact/page.tsx`
+
+- [x] L-T02.3 [AGENT] Delete team page and remove references
+  - **Files:** `app/team/page.tsx` (deleted), `app/sitemap.ts`, `app/lib/blog-data.ts`
+  - **Action:** Deleted `app/team/` directory. Removed `/team` from sitemap. Updated blog author image references.
+  - **Validate:** `npx tsc --noEmit && npx eslint app/sitemap.ts app/lib/blog-data.ts`
 
 ---
 
@@ -1586,11 +1600,11 @@ Error: Route "/portfolio/[slug]" used `new Date()` before accessing either uncac
 
 ---
 
-## [ ] L-T04 | STATUS: PENDING | PRIORITY: LOW
+## [x] L-T04 | STATUS: DONE | PRIORITY: LOW
 
 ### Add .env.example file
 
-**Files:** `.env.example` (new)
+**Files:** `.env.example` (new), `.gitignore`, `ENV_SETUP.md`
 
 **Definition of done:**
 - `.env.example` created with all `NEXT_PUBLIC_*` variables and placeholder values
@@ -1612,9 +1626,17 @@ Error: Route "/portfolio/[slug]" used `new Date()` before accessing either uncac
 
 **Depends on:** H-T01 | **Blocks:** None
 
+**Implementation notes:**
+- Created `.env.example` with all required NEXT_PUBLIC_ variables and placeholder values
+- Updated `.gitignore` to allow .env.example to be committed while keeping .env.local and other env files with secrets ignored
+- Added quick start instructions to ENV_SETUP.md referencing .env.example
+- File includes comments explaining each variable and where to find real values
+- All quality assurance checks pass: typecheck, lint, tests (45 tests passing)
+- git check-ignore confirms .env.example is not ignored
+
 ### Subtasks
 
-- [ ] L-T04.1 [AGENT] Create .env.example
+- [x] L-T04.1 [AGENT] Create .env.example
   - **File:** `.env.example`
   - **Action:** Create file with: `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX`, `NEXT_PUBLIC_GA_CONVERSION_ID=` (optional), `NEXT_PUBLIC_GA_CONVERSION_LABEL=` (optional), `NEXT_PUBLIC_SITE_URL=https://elevatedigital.com`. Add comments for each.
   - **Validate:** `git check-ignore .env.example` (should not be ignored)

@@ -45,7 +45,7 @@ const blogPosts: Record<string, BlogPost> = {
     author: {
       name: "David Park",
       role: "UI/UX Designer",
-      image: "/team/david.jpg",
+      image: "",
     },
     content: `
       <p>As we move into 2025, web design continues to evolve at a rapid pace. Staying ahead of these trends is crucial for businesses looking to maintain a competitive edge in the digital landscape.</p>
@@ -96,7 +96,7 @@ const blogPosts: Record<string, BlogPost> = {
     author: {
       name: "Emily Rodriguez",
       role: "SEO Strategist",
-      image: "/team/emily.jpg",
+      image: "",
     },
     content: `
       <p>Local SEO is essential for businesses that serve specific geographic areas. When potential customers search for products or services near them, you want your business to appear at the top of the results.</p>
@@ -149,7 +149,7 @@ const blogPosts: Record<string, BlogPost> = {
     author: {
       name: "Jessica Taylor",
       role: "Analytics Lead",
-      image: "/team/jessica.jpg",
+      image: "",
     },
     content: `
       <p>Core Web Vitals are a set of specific factors that Google considers important in a webpage's overall user experience. They're part of Google's page experience signals and directly impact your search rankings.</p>
@@ -213,7 +213,7 @@ const blogPosts: Record<string, BlogPost> = {
     author: {
       name: "Sarah Mitchell",
       role: "Founder & CEO",
-      image: "/team/sarah.jpg",
+      image: "",
     },
     content: `
       <p>A landing page is often the first interaction a potential customer has with your business. Making a strong first impression and guiding visitors toward conversion is crucial for your marketing success.</p>
@@ -264,7 +264,7 @@ const blogPosts: Record<string, BlogPost> = {
     author: {
       name: "Alex Thompson",
       role: "Content Strategist",
-      image: "/team/alex.jpg",
+      image: "",
     },
     content: `
       <p>Artificial intelligence is revolutionizing digital marketing. From personalized content to predictive analytics, AI is enabling marketers to work smarter and deliver better results.</p>
@@ -306,7 +306,7 @@ const blogPosts: Record<string, BlogPost> = {
     author: {
       name: "Alex Thompson",
       role: "Content Strategist",
-      image: "/team/alex.jpg",
+      image: "",
     },
     content: `
       <p>In the early days of content marketing, quantity often trumped quality. But as search engines have evolved and audience expectations have risen, the focus has shifted toward creating valuable, high-quality content.</p>
