@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ScrollReveal } from "../../components/scroll-reveal";
 import { notFound } from "next/navigation";
 
@@ -216,8 +217,19 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
                 {study.description}
               </p>
               <div className="flex items-center gap-6 text-foreground/60">
-                <div>
-                  <span className="font-semibold">Client:</span> {study.client}
+                <div className="flex items-center gap-3">
+                  {study.clientLogo ? (
+                    <Image
+                      src={study.clientLogo}
+                      alt={`${study.client} logo`}
+                      width={32}
+                      height={32}
+                      className="w-8 h-8 rounded object-contain"
+                    />
+                  ) : null}
+                  <div>
+                    <span className="font-semibold">Client:</span> {study.client}
+                  </div>
                 </div>
                 <div>
                   <span className="font-semibold">Timeline:</span> {study.timeline}

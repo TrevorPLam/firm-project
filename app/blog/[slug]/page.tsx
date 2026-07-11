@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ScrollReveal } from "../../components/scroll-reveal";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { sanitizeHtml } from "@/lib/sanitize";
 
 const blogPosts = {
@@ -381,11 +382,21 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               </p>
               <div className="flex items-center gap-6 text-foreground/60">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                    <span className="text-primary font-semibold">
-                      {post.author.name.split(' ').map(n => n[0]).filter(Boolean).join('')}
-                    </span>
-                  </div>
+                  {post.author.image ? (
+                    <Image
+                      src={post.author.image}
+                      alt={post.author.name}
+                      width={40}
+                      height={40}
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                      <span className="text-primary font-semibold">
+                        {post.author.name.split(' ').map(n => n[0]).filter(Boolean).join('')}
+                      </span>
+                    </div>
+                  )}
                   <div>
                     <div className="font-semibold text-foreground">{post.author.name}</div>
                     <div className="text-sm">{post.author.role}</div>
@@ -437,11 +448,21 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <ScrollReveal>
             <div className="bg-background p-8 rounded-2xl border border-foreground/10">
               <div className="flex items-start gap-6">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-2xl font-bold text-primary">
-                    {post.author.name.split(' ').map(n => n[0]).filter(Boolean).join('')}
-                  </span>
-                </div>
+                {post.author.image ? (
+                  <Image
+                    src={post.author.image}
+                    alt={post.author.name}
+                    width={64}
+                    height={64}
+                    className="w-16 h-16 rounded-full object-cover flex-shrink-0"
+                  />
+                ) : (
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-2xl font-bold text-primary">
+                      {post.author.name.split(' ').map(n => n[0]).filter(Boolean).join('')}
+                    </span>
+                  </div>
+                )}
                 <div>
                   <h3 className="text-xl font-bold mb-1">{post.author.name}</h3>
                   <p className="text-primary font-medium mb-3">{post.author.role}</p>

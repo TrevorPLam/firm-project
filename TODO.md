@@ -569,7 +569,7 @@ Lines 74-102 have unused variables (name, email, company, service, budget, messa
 
 ---
 
-## [ ] M-T01 | STATUS: PENDING | PRIORITY: MEDIUM
+## [x] M-T01 | STATUS: DONE | PRIORITY: MEDIUM
 
 ### Adopt next/image for team and portfolio images
 
@@ -597,15 +597,22 @@ Lines 74-102 have unused variables (name, email, company, service, budget, messa
 
 ### Subtasks
 
-- [ ] M-T01.1 [AGENT] Replace div avatars in team page
+- [x] M-T01.1 [AGENT] Replace div avatars in team page
   - **File:** `app/team/page.tsx`
   - **Action:** Find avatar `<div className="w-24 h-24 rounded-full ...">`. Replace with `<Image src={member.image} alt={member.name} width={96} height={96} className="rounded-full" />`. Keep initials fallback if image path missing.
   - **Validate:** `npx eslint app/team/page.tsx && npx tsc --noEmit`
 
-- [ ] M-T01.2 [AGENT] Replace div avatars in blog and portfolio
+- [x] M-T01.2 [AGENT] Replace div avatars in blog and portfolio
   - **Files:** `app/blog/[slug]/page.tsx`, `app/portfolio/[slug]/page.tsx`
   - **Action:** Same pattern. Replace avatar divs with `<Image>`.
   - **Validate:** `npx eslint app/blog/[slug]/page.tsx app/portfolio/[slug]/page.tsx && npx tsc --noEmit`
+
+**Implementation notes:**
+- Replaced div-based avatars with next/image in team page (128x128), blog author avatars (40x40 header, 64x64 bio), and portfolio client logos (32x32)
+- All images have proper width, height, and alt text following Next.js best practices
+- Fallback to initials div if image path is missing
+- Typecheck and lint pass for all modified files
+- Build fails due to pre-existing C-T03-ISSUE-001 (DOMPurify prerender error) - unrelated to this task
 
 ---
 

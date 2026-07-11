@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ScrollReveal } from "../components/scroll-reveal";
 
 export const metadata: Metadata = {
@@ -103,11 +104,21 @@ export default function TeamPage() {
               <ScrollReveal key={member.id} delay={index * 100}>
                 <div className="bg-background rounded-2xl border border-foreground/10 hover:border-primary/50 transition-all hover:shadow-xl overflow-hidden">
                   <div className="aspect-square bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
-                    <div className="w-32 h-32 bg-primary/20 rounded-full flex items-center justify-center">
-                      <span className="text-4xl font-bold text-primary/50">
-                        {member.name.split(' ').map(n => n[0]).join('')}
-                      </span>
-                    </div>
+                    {member.image ? (
+                      <Image
+                        src={member.image}
+                        alt={member.name}
+                        width={128}
+                        height={128}
+                        className="w-32 h-32 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-32 h-32 bg-primary/20 rounded-full flex items-center justify-center">
+                        <span className="text-4xl font-bold text-primary/50">
+                          {member.name.split(' ').map(n => n[0]).join('')}
+                        </span>
+                      </div>
+                    )}
                   </div>
                   <div className="p-8">
                     <h3 className="text-2xl font-bold mb-1">{member.name}</h3>
