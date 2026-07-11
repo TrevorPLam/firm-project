@@ -2,6 +2,12 @@
 // DDD: Search is a bounded context; combines content from multiple domains
 // Deep module: exports typed functions, internal data is private
 
+// SYNC/ASYNC BOUNDARY NOTE:
+// Current sources (blog-data, portfolio-data) are synchronous local modules.
+// When CMS sources are introduced (cms-client), they will be async and require await.
+// This module is designed to handle both sync and async sources uniformly.
+// Future adapters should implement async-first interfaces to support network backends.
+
 import { getAllPosts } from './blog-data';
 import { getAllCaseStudies } from './portfolio-data';
 
@@ -21,12 +27,16 @@ export interface SearchHit {
 
 /**
  * Get all searchable content combined from blog, portfolio, and pages
+ * 
+ * Async-ready design: All source calls are awaited to support both sync local sources
+ * and async CMS sources (e.g., Sanity via cms-client). When CMS sources are added,
+ * they will be awaited alongside current sync sources without breaking the contract.
  */
-export function getAllSearchableContent(): SearchHit[] {
+export async function getAllSearchableContent(): Promise<SearchHit[]> {
   const searchHits: SearchHit[] = [];
 
-  // Add blog posts
-  const blogPosts = getAllPosts();
+  // Add blog posts (await for async-ready design)
+  const blogPosts = await Promise.resolve(getAllPosts());
   for (const post of blogPosts) {
     searchHits.push({
       objectID: `blog-${post.id}`,
@@ -42,8 +52,8 @@ export function getAllSearchableContent(): SearchHit[] {
     });
   }
 
-  // Add portfolio case studies
-  const caseStudies = getAllCaseStudies();
+  // Add portfolio case studies (await for async-ready design)
+  const caseStudies = await Promise.resolve(getAllCaseStudies());
   for (const study of caseStudies) {
     searchHits.push({
       objectID: `portfolio-${study.id}`,
@@ -119,7 +129,9 @@ export function transformForAlgolia(searchHits: SearchHit[]): Record<string, str
 
 /**
  * Get search data by type filter
+ * Async-ready: awaits getAllSearchableContent to support async sources
  */
-export function getSearchByType(type: 'blog' | 'portfolio' | 'page'): SearchHit[] {
-  return getAllSearchableContent().filter((hit) => hit.type === type);
+export async function getSearchByType(type: 'blog' | 'portfolio' | 'page'): Promise<SearchHit[]> {
+  const allHits = await getAllSearchableContent();
+  return allHits.filter((hit) => hit.type === type);
 }
