@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/portfolio",
   },
-  title: "Portfolio | Elevate Digital - Our Case Studies",
+  title: "Portfolio",
   description:
     "Explore our portfolio of successful projects. See how we've helped businesses transform their digital presence with web design, SEO, and analytics.",
   keywords: [
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     "SEO success stories",
   ],
   openGraph: {
-    title: "Portfolio | Elevate Digital",
+    title: "Portfolio",
     description:
       "Explore our portfolio of successful projects and case studies.",
     type: "website",

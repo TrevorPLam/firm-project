@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/contact",
   },
-  title: "Contact | Elevate Digital - Get in Touch",
+  title: "Contact",
   description:
     "Get in touch with Elevate Digital. We'd love to discuss your project and how we can help transform your digital presence.",
   keywords: [
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     "digital marketing services",
   ],
   openGraph: {
-    title: "Contact | Elevate Digital",
+    title: "Contact",
     description: "Get in touch with Elevate Digital to discuss your project.",
     type: "website",
   },

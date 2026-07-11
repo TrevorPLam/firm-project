@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 import { siteUrl, siteName, defaultLocale, supportedLocales, absoluteUrl } from '@/lib/site-config';
 
 describe('site-config', () => {

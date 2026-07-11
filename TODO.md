@@ -1862,7 +1862,7 @@ Read `c:\Users\Trevor\Documents\firm\app\lib\schema.ts` and `c:\Users\Trevor\Doc
 
 ## Task T016: Add Metadata Title Template
 
-**Status:** `[ ]` PENDING
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 

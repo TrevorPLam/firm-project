@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/services",
   },
-  title: "Services | Elevate Digital - Web Design, SEO & Analytics",
+  title: "Services",
   description:
     "Comprehensive digital services including web design, SEO optimization, and analytics. Transform your digital presence with data-driven strategies.",
   keywords: [
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     "website development",
   ],
   openGraph: {
-    title: "Services | Elevate Digital",
+    title: "Services",
     description:
       "Comprehensive digital services including web design, SEO optimization, and analytics.",
     type: "website",

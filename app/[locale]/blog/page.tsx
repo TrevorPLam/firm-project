@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/blog",
   },
-  title: "Blog | Elevate Digital - Digital Marketing Insights",
+  title: "Blog",
   description:
     "Expert insights on web design, SEO, analytics, and digital marketing strategies. Stay updated with the latest trends and best practices.",
   keywords: [
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     "marketing strategies",
   ],
   openGraph: {
-    title: "Blog | Elevate Digital",
+    title: "Blog",
     description:
       "Expert insights on web design, SEO, analytics, and digital marketing strategies.",
     type: "website",

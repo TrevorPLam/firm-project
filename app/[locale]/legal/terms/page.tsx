@@ -5,11 +5,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/legal/terms",
   },
-  title: "Terms of Service | Elevate Digital",
+  title: "Terms of Service",
   description:
     "Read Elevate Digital's terms of service and conditions for using our website and services.",
   openGraph: {
-    title: "Terms of Service | Elevate Digital",
+    title: "Terms of Service",
     description: "Read Elevate Digital's terms of service.",
     type: "website",
   },

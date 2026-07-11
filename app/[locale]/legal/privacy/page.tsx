@@ -5,11 +5,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/legal/privacy",
   },
-  title: "Privacy Policy | Elevate Digital",
+  title: "Privacy Policy",
   description:
     "Learn about Elevate Digital's privacy policy and how we protect your personal information.",
   openGraph: {
-    title: "Privacy Policy | Elevate Digital",
+    title: "Privacy Policy",
     description: "Learn about Elevate Digital's privacy policy.",
     type: "website",
   },

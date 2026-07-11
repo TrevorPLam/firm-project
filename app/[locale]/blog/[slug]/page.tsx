@@ -37,11 +37,11 @@ export async function generateMetadata({
     alternates: {
       canonical: `/blog/${slug}`,
     },
-    title: `${post.title} | Elevate Digital Blog`,
+    title: post.title,
     description: post.excerpt,
     keywords: [...post.tags, "blog", post.category],
     openGraph: {
-      title: `${post.title} | Elevate Digital`,
+      title: post.title,
       description: post.excerpt,
       type: "article",
       publishedTime: post.date,

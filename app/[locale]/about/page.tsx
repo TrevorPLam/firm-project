@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/about",
   },
-  title: "About Us | Elevate Digital - Our Story & Team",
+  title: "About Us",
   description:
     "Learn about Elevate Digital's mission, values, and team. We're passionate about helping businesses succeed in the digital landscape.",
   keywords: [
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     "our mission",
   ],
   openGraph: {
-    title: "About Us | Elevate Digital",
+    title: "About Us",
     description: "Learn about Elevate Digital's mission, values, and team.",
     type: "website",
   },

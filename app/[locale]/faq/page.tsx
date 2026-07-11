@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/faq",
   },
-  title: "FAQ | Elevate Digital - Frequently Asked Questions",
+  title: "FAQ",
   description:
     "Find answers to common questions about our web design, SEO, and analytics services. Get the information you need to make informed decisions.",
   keywords: [
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     "analytics questions",
   ],
   openGraph: {
-    title: "FAQ | Elevate Digital",
+    title: "FAQ",
     description: "Find answers to common questions about our services.",
     type: "website",
   },

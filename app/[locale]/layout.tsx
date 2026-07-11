@@ -50,7 +50,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         es: '/es',
       },
     },
-    title: "Elevate Digital | Web Design, SEO & Analytics Agency",
+    title: {
+      default: "Elevate Digital | Web Design, SEO & Analytics Agency",
+      template: "%s | Elevate Digital",
+    },
     description:
       "Transform your digital presence with expert web design, SEO, and analytics services. We create experiences that convert visitors into customers.",
     keywords: [
