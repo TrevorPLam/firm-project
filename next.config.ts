@@ -12,7 +12,8 @@ const nextConfig: NextConfig = {
   // Next.js 16: opt-in component/function-level caching with "use cache".
   cacheComponents: true,
   // Stable in Next.js 16; auto-memoizes components and reduces manual memo.
-  reactCompiler: true,
+  // Temporarily disabled due to Windows build worker issues
+  reactCompiler: false,
   async headers() {
     return [
       {

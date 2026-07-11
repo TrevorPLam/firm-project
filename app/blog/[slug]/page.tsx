@@ -7,11 +7,12 @@ import { SanitizedContent } from "../../components/sanitized-content";
 import { NewsletterForm } from "../../components/newsletter-form";
 import { getPostBySlug, getAllSlugs, getAllPosts } from "@/lib/blog-data";
 
-export async function generateStaticParams() {
-  return getAllSlugs().map((slug) => ({
-    slug,
-  }));
-}
+// Temporarily disabled due to Windows build worker issue
+// export async function generateStaticParams() {
+//   return getAllSlugs().map((slug) => ({
+//     slug,
+//   }));
+// }
 
 export async function generateMetadata({
   params,
