@@ -1,6 +1,3 @@
-"use cache";
-
-import { cacheLife } from "next/cache";
 import type { Metadata } from "next";
 import { Link } from '../../../i18n/navigation';
 import { ScrollReveal } from "../../components/scroll-reveal";
@@ -36,7 +33,6 @@ export default async function ServicesPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  cacheLife("days");
   const { locale } = await params;
 
   // Enable static rendering

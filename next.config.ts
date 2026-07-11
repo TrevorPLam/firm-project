@@ -13,7 +13,8 @@ const nextConfig: NextConfig = {
     localPatterns: [],
   },
   // Next.js 16: opt-in component/function-level caching with "use cache".
-  cacheComponents: true,
+  // Temporarily disabled due to params access issues with Cache Components
+  cacheComponents: false,
   // Stable in Next.js 16; auto-memoizes components and reduces manual memo.
   // Temporarily disabled due to Windows build worker issues
   reactCompiler: false,

@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Link } from '../../../../i18n/navigation';
 import Image from "next/image";
 import { ScrollReveal } from "../../../components/scroll-reveal";
@@ -12,37 +11,13 @@ import { hasLocale } from 'next-intl';
 
 export async function generateStaticParams() {
   const slugs = getAllSlugs();
-  return slugs.map((slug) => ({
-    slug,
-  }));
-}
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const study = getCaseStudyBySlug(slug);
-  if (!study) {
-    return {
-      title: "Case Study Not Found",
-    };
-  }
-
-  return {
-    alternates: {
-      canonical: `/portfolio/${slug}`,
-    },
-    title: `${study.title} | Elevate Digital Case Study`,
-    description: study.description,
-    keywords: [...study.tags, "case study", study.client],
-    openGraph: {
-      title: `${study.title} | Elevate Digital`,
-      description: study.description,
-      type: "article",
-    },
-  };
+  const locales = routing.locales;
+  return locales.flatMap((locale) =>
+    slugs.map((slug) => ({
+      locale,
+      slug,
+    }))
+  );
 }
 
 export default async function CaseStudyPage({

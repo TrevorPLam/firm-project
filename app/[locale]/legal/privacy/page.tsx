@@ -1,6 +1,3 @@
-"use cache";
-
-import { cacheLife } from "next/cache";
 import type { Metadata } from "next";
 import { ScrollReveal } from "../../../components/scroll-reveal";
 
@@ -19,7 +16,6 @@ export const metadata: Metadata = {
 };
 
 export default async function PrivacyPolicyPage() {
-  cacheLife("days");
   return (
     <div className="flex flex-col">
       <section className="px-6 pt-32 pb-20">
