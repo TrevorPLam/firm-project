@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { SanitizedContent } from "../../components/sanitized-content";
 import { NewsletterForm } from "../../components/newsletter-form";
-import { getPostBySlug, getAllSlugs, getAllPosts } from "@/lib/blog-data";
+import { getPostBySlug, getAllPosts } from "@/lib/blog-data";
 
 // Temporarily disabled due to Windows build worker issue
 // export async function generateStaticParams() {
