@@ -1288,7 +1288,7 @@ Add vitest types to tsconfig.json types array or install @types/vitest
 
 ---
 
-## [ ] M-T15 | STATUS: PENDING | PRIORITY: MEDIUM
+## [x] M-T15 | STATUS: DONE | PRIORITY: MEDIUM
 
 ### Add robots.ts for environment-aware crawl control
 
@@ -1317,9 +1317,19 @@ Add vitest types to tsconfig.json types array or install @types/vitest
 
 **Depends on:** H-T01 | **Blocks:** None
 
+**Implementation notes:**
+- Created `app/robots.ts` with environment-aware robots generation
+- Production: allows all crawling except `/_next/`, references sitemap at `${siteUrl}/sitemap.xml`
+- Non-production: disallows all crawling to prevent indexing of staging/preview content
+- Uses `process.env.NODE_ENV` to detect production environment
+- Uses `NEXT_PUBLIC_SITE_URL` from env or defaults to `https://elevatedigital.com`
+- Deleted static `public/robots.txt` file
+- Typecheck passes, lint passes (pre-existing unused var warnings in contact.ts, newsletter.ts, sitemap.ts remain)
+- Build succeeds with robots.ts registered as dynamic function
+
 ### Subtasks
 
-- [ ] M-T15.1 [AGENT] Create robots.ts and delete static robots.txt
+- [x] M-T15.1 [AGENT] Create robots.ts and delete static robots.txt
   - **File:** `app/robots.ts` (new), `public/robots.txt` (delete)
   - **Action:** Create `app/robots.ts` exporting `robots()` that returns: production `{ rules: { userAgent: "*", allow: "/", disallow: ["/_next/"] }, sitemap: "https://elevatedigital.com/sitemap.xml" }`, non-production `{ rules: { userAgent: "*", disallow: "/" } }`. Delete `public/robots.txt`.
   - **Validate:** `npm run build` then `curl http://localhost:3000/robots.txt`
