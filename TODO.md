@@ -975,7 +975,7 @@ Error: Route "/blog/[slug]" used `new Date()` before accessing either uncached d
 
 ---
 
-## [ ] M-T09 | STATUS: PENDING | PRIORITY: MEDIUM
+## [x] M-T09 | STATUS: DONE | PRIORITY: MEDIUM
 
 ### Fix sitemap lastModified to use real dates
 
@@ -1000,9 +1000,16 @@ Error: Route "/blog/[slug]" used `new Date()` before accessing either uncached d
 
 **Depends on:** M-T06, M-T07 | **Blocks:** None
 
+**Implementation notes:**
+- Updated sitemap to import from `@/lib/blog-data` and `@/lib/portfolio-data`
+- Static routes use fixed date `2025-01-15`
+- Blog routes use actual content dates from blog data (e.g., "January 15, 2025")
+- Portfolio routes use fixed date `2025-01-10` (no date field in portfolio data structure)
+- Typecheck passes, lint passes
+
 ### Subtasks
 
-- [ ] M-T09.1 [AGENT] Update sitemap dates
+- [x] M-T09.1 [AGENT] Update sitemap dates
   - **File:** `app/sitemap.ts`
   - **Action:** Static routes: fixed `new Date("2025-01-15")`. Blog routes: import dates from `@/lib/blog-data`. Portfolio: fixed date or import. If M-T06/M-T07 not done, use hardcoded dates.
   - **Validate:** `npx tsc --noEmit && npx eslint app/sitemap.ts`
