@@ -2004,7 +2004,7 @@ Read `c:\Users\Trevor\Documents\firm\app\not-found.tsx`. Confirm it exports only
 
 ## Task T018: Add Dynamic OG Images for Blog Posts
 
-**Status:** `[ ]` PENDING
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 

@@ -1,63 +1,12 @@
-import { ImageResponse } from "next/og";
+import { createOGImageResponse, OG_IMAGE_CONTENT_TYPE, OG_IMAGE_SIZE } from "./lib/og-image-helper";
 
-export const size = {
-  width: 1200,
-  height: 630,
-};
-
-export const contentType = "image/png";
+export const size = OG_IMAGE_SIZE;
+export const contentType = OG_IMAGE_CONTENT_TYPE;
 
 export default async function Image() {
-  return new ImageResponse(
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        width: "100%",
-        height: "100%",
-        background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
-        color: "white",
-        padding: "60px",
-      }}
-    >
-      <div
-        style={{
-          fontSize: "24px",
-          fontWeight: 500,
-          opacity: 0.7,
-          marginBottom: "20px",
-          letterSpacing: "2px",
-          textTransform: "uppercase",
-        }}
-      >
-        Elevate Digital
-      </div>
-      <div
-        style={{
-          fontSize: "64px",
-          fontWeight: 700,
-          lineHeight: 1.1,
-          textAlign: "center",
-          marginBottom: "20px",
-        }}
-      >
-        Web Design, SEO & Analytics
-      </div>
-      <div
-        style={{
-          fontSize: "28px",
-          fontWeight: 400,
-          opacity: 0.8,
-          textAlign: "center",
-        }}
-      >
-        Transform your digital presence
-      </div>
-    </div>,
-    {
-      ...size,
-    },
-  );
+  return createOGImageResponse({
+    title: "Web Design, SEO & Analytics",
+    description: "Transform your digital presence",
+    category: "Elevate Digital",
+  });
 }
