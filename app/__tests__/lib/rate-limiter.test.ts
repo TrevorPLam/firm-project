@@ -72,7 +72,7 @@ describe("rate-limiter", () => {
 
       const { Ratelimit } = await import("@upstash/ratelimit");
       const mockLimit = vi.fn().mockRejectedValue(new Error("Redis connection failed"));
-      (Ratelimit as any).mockImplementation(() => ({
+      (Ratelimit as unknown as ReturnType<typeof vi.fn>).mockImplementation(() => ({
         limit: mockLimit,
       }));
 

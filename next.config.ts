@@ -16,8 +16,9 @@ const nextConfig: NextConfig = {
   // Temporarily disabled due to params access issues with Cache Components
   cacheComponents: false,
   // Stable in Next.js 16; auto-memoizes components and reduces manual memo.
-  // Temporarily disabled due to Windows build worker issues
-  reactCompiler: false,
+  // Environment-aware toggle: set ENABLE_REACT_COMPILER=true to enable.
+  // Defaults to false in production until build performance is measured.
+  reactCompiler: process.env.ENABLE_REACT_COMPILER === 'true',
   async headers() {
     return [
       {

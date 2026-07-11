@@ -53,3 +53,21 @@ For Google Ads conversion tracking:
 2. Tools & Settings > Conversions
 3. Create a new conversion action
 4. Copy the Conversion ID and Label
+
+## React Compiler Configuration
+
+The React Compiler is available in Next.js 16 for automatic memoization of components and hooks. It is controlled via the `ENABLE_REACT_COMPILER` environment variable.
+
+**Current Status:** Disabled by default due to a build failure with opengraph-image generation (vips_tracked: out of memory error).
+
+**To enable the compiler:**
+```bash
+# In .env.local
+ENABLE_REACT_COMPILER=true
+```
+
+**Build Performance Impact:**
+- Without compiler: ~56 seconds (baseline)
+- With compiler: Build fails due to memory issue
+
+**Recommendation:** Keep the compiler disabled until the memory issue with opengraph-image generation is resolved. The environment-aware toggle allows for easy testing once the issue is fixed.
