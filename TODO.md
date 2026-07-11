@@ -1928,7 +1928,7 @@ Read `c:\Users\Trevor\Documents\firm\app\[locale\]\layout.tsx` and any child pag
 
 ## Task T017: Add Robots Noindex to 404 Page
 
-**Status:** `[ ]` PENDING
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -1971,13 +1971,34 @@ Read `c:\Users\Trevor\Documents\firm\app\not-found.tsx`. Confirm it exports only
 
 ### Subtasks
 
-#### T017.1 [AGENT] Add metadata to root not-found
+#### T017.1 [AGENT] Add metadata to root not-found ✅
 
 - **Targeted file path:** `c:\Users\Trevor\Documents\firm\app\not-found.tsx`
 - **Description:** Add `export const metadata = { robots: { index: false } };`.
 - **Commands:**
   - `npx tsc --noEmit`
   - `npm run build -- --webpack`
+
+### Implementation Notes
+
+**Status:** Completed successfully. Added metadata export with robots noindex directive to the 404 page.
+
+**Changes Made:**
+- Added `import type { Metadata } from "next"` to not-found.tsx
+- Added `export const metadata: Metadata = { robots: { index: false } };` to prevent 404 page from being indexed
+- Kept existing 404 UI unchanged as required
+
+**Research Findings:**
+- Next.js automatically injects `robots: { index: false }` for 404 pages
+- Adding it manually creates duplicate robots meta tags, but this is harmless from an SEO perspective
+- Search engines aggregate directives across duplicate tags and apply the most restrictive interpretation
+- The page is still treated as noindex even with duplicate tags
+
+**Verification:**
+- Type checking passes with no errors
+- Linting passes with no errors
+- Build completes successfully with 41 static pages generated
+- No new build errors or warnings introduced
 
 ---
 
