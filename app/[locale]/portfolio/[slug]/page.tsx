@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Link } from '../../../../i18n/navigation';
 import Image from "next/image";
 import { ScrollReveal } from "../../../components/scroll-reveal";
+import { SocialShare } from "../../../components/social-share";
 import { notFound } from "next/navigation";
 import { getCaseStudyBySlug, getAllSlugs } from "../../../lib/portfolio-data";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../../lib/schema";
@@ -83,26 +84,33 @@ export default async function CaseStudyPage({
               <p className="text-foreground/70 mb-8 text-xl leading-relaxed md:text-2xl">
                 {study.description}
               </p>
-              <div className="text-foreground/60 flex items-center gap-6">
-                <div className="flex items-center gap-3">
-                  {study.clientLogo ? (
-                    <Image
-                      src={study.clientLogo}
-                      alt={`${study.client} logo`}
-                      width={32}
-                      height={32}
-                      className="h-8 w-8 rounded object-contain"
-                    />
-                  ) : null}
+              <div className="text-foreground/60 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div className="flex items-center gap-6">
+                  <div className="flex items-center gap-3">
+                    {study.clientLogo ? (
+                      <Image
+                        src={study.clientLogo}
+                        alt={`${study.client} logo`}
+                        width={32}
+                        height={32}
+                        className="h-8 w-8 rounded object-contain"
+                      />
+                    ) : null}
+                    <div>
+                      <span className="font-semibold">Client:</span>{" "}
+                      {study.client}
+                    </div>
+                  </div>
                   <div>
-                    <span className="font-semibold">Client:</span>{" "}
-                    {study.client}
+                    <span className="font-semibold">Timeline:</span>{" "}
+                    {study.timeline}
                   </div>
                 </div>
-                <div>
-                  <span className="font-semibold">Timeline:</span>{" "}
-                  {study.timeline}
-                </div>
+                <SocialShare
+                  url={`${process.env.NEXT_PUBLIC_SITE_URL || ''}/portfolio/${slug}`}
+                  title={study.title}
+                  description={study.description}
+                />
               </div>
             </div>
           </ScrollReveal>

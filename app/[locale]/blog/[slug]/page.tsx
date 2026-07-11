@@ -5,6 +5,7 @@ import { Link } from '../../../../i18n/navigation';
 import Image from "next/image";
 import { SanitizedContent } from "../../../components/sanitized-content";
 import { NewsletterForm } from "../../../components/newsletter-form";
+import { SocialShare } from "../../../components/social-share";
 import { getPostBySlug, getAllPosts } from "../../../lib/blog-data";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../../lib/schema";
 
@@ -106,38 +107,45 @@ export default async function BlogPostPage({
               <p className="text-foreground/70 mb-8 text-xl leading-relaxed">
                 {post.excerpt}
               </p>
-              <div className="text-foreground/60 flex items-center gap-6">
-                <div className="flex items-center gap-3">
-                  {post.author.image ? (
-                    <Image
-                      src={post.author.image}
-                      alt={post.author.name}
-                      width={40}
-                      height={40}
-                      className="h-10 w-10 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full">
-                      <span className="text-primary font-semibold">
-                        {post.author.name
-                          .split(" ")
-                          .map((n) => n[0])
-                          .filter(Boolean)
-                          .join("")}
-                      </span>
+              <div className="text-foreground/60 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div className="flex items-center gap-6">
+                  <div className="flex items-center gap-3">
+                    {post.author.image ? (
+                      <Image
+                        src={post.author.image}
+                        alt={post.author.name}
+                        width={40}
+                        height={40}
+                        className="h-10 w-10 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full">
+                        <span className="text-primary font-semibold">
+                          {post.author.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .filter(Boolean)
+                            .join("")}
+                        </span>
+                      </div>
+                    )}
+                    <div>
+                      <div className="text-foreground font-semibold">
+                        {post.author.name}
+                      </div>
+                      <div className="text-sm">{post.author.role}</div>
                     </div>
-                  )}
-                  <div>
-                    <div className="text-foreground font-semibold">
-                      {post.author.name}
-                    </div>
-                    <div className="text-sm">{post.author.role}</div>
                   </div>
+                  <div>•</div>
+                  <div>{post.date}</div>
+                  <div>•</div>
+                  <div>{post.readTime}</div>
                 </div>
-                <div>•</div>
-                <div>{post.date}</div>
-                <div>•</div>
-                <div>{post.readTime}</div>
+                <SocialShare
+                  url={`${process.env.NEXT_PUBLIC_SITE_URL || ''}/blog/${slug}`}
+                  title={post.title}
+                  description={post.excerpt}
+                />
               </div>
             </div>
           </ScrollReveal>
