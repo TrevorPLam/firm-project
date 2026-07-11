@@ -1379,7 +1379,7 @@ Add vitest types to tsconfig.json types array or install @types/vitest
 
 ---
 
-## [ ] M-T17 | STATUS: PENDING | PRIORITY: MEDIUM
+## [x] M-T17 | STATUS: DONE | PRIORITY: MEDIUM
 
 ### Add aria-live regions for dynamic form messages
 
@@ -1405,9 +1405,15 @@ Add vitest types to tsconfig.json types array or install @types/vitest
 
 **Depends on:** H-T07 | **Blocks:** None
 
+**Implementation notes:**
+- Added `role="status"` and `aria-live="polite"` to the form message container (lines 22-24)
+- Single container handles both success and error messages
+- Screen readers will now announce form submission results without interrupting user
+- Typecheck passes, lint passes, all 45 tests pass
+
 ### Subtasks
 
-- [ ] M-T17.1 [AGENT] Add aria-live to form message containers
+- [x] M-T17.1 [AGENT] Add aria-live to form message containers
   - **File:** `app/components/contact-form.tsx`
   - **Action:** Find the success message and error message JSX blocks. Wrap each in a container with `role="status" aria-live="polite"`. If the container already exists, add the attributes to it.
   - **Validate:** `npx eslint app/components/contact-form.tsx && npx tsc --noEmit`

@@ -20,6 +20,8 @@ export function ContactForm({ showTitle = true }: ContactFormProps) {
 
       {state && (
         <div
+          role="status"
+          aria-live="polite"
           className={`mb-6 p-4 rounded-lg ${
             state.success
               ? "bg-green-50 text-green-800 border border-green-200"
