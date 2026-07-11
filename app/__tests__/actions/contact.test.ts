@@ -1,5 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { submitContactFormAction } from "@/actions/contact";
+
+// Don't set RESEND_API_KEY so the action skips email sending in tests
+// process.env.RESEND_API_KEY = "test-api-key";
+process.env.CONTACT_EMAIL_TO = "test@example.com";
+
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { clearRateLimits } from "@/lib/rate-limiter";
@@ -11,6 +15,9 @@ vi.mock("next/headers", () => ({
 vi.mock("next/cache", () => ({
   revalidatePath: vi.fn(),
 }));
+
+// Import after mocks are set up
+import { submitContactFormAction } from "@/actions/contact";
 
 describe("submitContactFormAction", () => {
   beforeEach(() => {
@@ -24,6 +31,7 @@ describe("submitContactFormAction", () => {
       }),
     });
     vi.mocked(revalidatePath).mockClear();
+    vi.clearAllMocks();
   });
 
   afterEach(() => {

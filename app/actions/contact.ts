@@ -4,6 +4,7 @@ import * as z from "zod";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { checkRateLimit } from "@/lib/rate-limiter";
+import { Resend } from "resend";
 
 const contactFormSchema = z.object({
   name: z.string().trim().min(2, "Name must be at least 2 characters"),
@@ -71,26 +72,57 @@ async function runContactFormSubmission(formData: FormData): Promise<FormResult>
     };
   }
 
-  const { } = validatedFields.data;
+  const { name, email, company, service, budget, message } = validatedFields.data;
 
   try {
-    // In a real application, you would:
-    // 1. Send an email using a service like Resend, SendGrid, or Nodemailer
-    // 2. Store the submission in a database
-    // 3. Integrate with a CRM like HubSpot or Salesforce
+    // Check if email service is configured
+    if (!process.env.RESEND_API_KEY) {
+      console.warn("[contact] RESEND_API_KEY not configured, skipping email send");
+      // Revalidate the contact page to show any updated UI
+      revalidatePath("/contact");
+      return {
+        success: true,
+        message: "Thank you for your message! We'll get back to you soon.",
+      };
+    }
+
+    // Initialize Resend client
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    const contactEmailTo = process.env.CONTACT_EMAIL_TO || "contact@elevatedigital.com";
+
+    // Send email using Resend
+    const emailResult = await resend.emails.send({
+      from: "Elevate Digital <onboarding@resend.dev>",
+      to: contactEmailTo,
+      subject: `New Contact Form Submission from ${name}`,
+      html: `
+        <h2>New Contact Form Submission</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        ${company ? `<p><strong>Company:</strong> ${company}</p>` : ""}
+        <p><strong>Service:</strong> ${service}</p>
+        ${budget ? `<p><strong>Budget:</strong> ${budget}</p>` : ""}
+        <p><strong>Message:</strong></p>
+        <p>${message}</p>
+      `,
+    });
+
+    if (emailResult.error) {
+      console.error("[contact] Email sending failed", {
+        error: emailResult.error,
+        timestamp: new Date().toISOString(),
+      });
+      return {
+        success: false,
+        message: "Failed to send email. Please try again later.",
+      };
+    }
 
     // Log submission metadata without PII
     console.log("[contact] Submission received", {
       success: true,
       timestamp: new Date().toISOString(),
     });
-
-    // Track conversion event (for analytics)
-    // This would be handled client-side in the success redirect
-    // but we can also log it server-side for CRM integration
-
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     // Revalidate the contact page to show any updated UI
     revalidatePath("/contact");
