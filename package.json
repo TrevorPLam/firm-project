@@ -31,7 +31,7 @@
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^4.3.0",
     "@vitest/ui": "^2.0.0",
-    "babel-plugin-react-compiler": "^19.0.0-beta-7df4455-20250508",
+    "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
     "eslint-plugin-zod": "^4.7.0",
