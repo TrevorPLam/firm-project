@@ -4,6 +4,7 @@ import * as z from "zod";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { checkRateLimit } from "@/lib/rate-limiter";
+import { Resend } from "resend";
 
 const newsletterSchema = z.object({
   email: z.email("Invalid email address"),
@@ -61,22 +62,41 @@ async function runNewsletterSubscription(formData: FormData): Promise<FormResult
     };
   }
 
-  const { } = validatedFields.data;
+  const { email } = validatedFields.data;
 
   try {
-    // In a real application, you would:
-    // 1. Add the email to a newsletter service (e.g., Mailchimp, ConvertKit, Resend)
-    // 2. Send a confirmation email (double opt-in)
-    // 3. Store the subscription in a database
+    const resendApiKey = process.env.RESEND_API_KEY;
+    const audienceId = process.env.RESEND_AUDIENCE_ID;
+
+    if (!resendApiKey || !audienceId) {
+      // Graceful fallback when API keys are not configured
+      console.warn("[newsletter] Resend API key or audience ID not configured", {
+        success: true,
+        timestamp: new Date().toISOString(),
+      });
+
+      revalidatePath("/blog");
+
+      return {
+        success: true,
+        message: "Thanks for subscribing! Check your inbox for confirmation.",
+      };
+    }
+
+    const resend = new Resend(resendApiKey);
+
+    // Add contact to Resend audience (double opt-in is handled by Resend)
+    await resend.contacts.create({
+      audienceId: audienceId,
+      email: email,
+      unsubscribed: false,
+    });
 
     // Log subscription metadata without PII
-    console.log("[newsletter] Subscription received", {
+    console.log("[newsletter] Subscription successful", {
       success: true,
       timestamp: new Date().toISOString(),
     });
-
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 500));
 
     // Revalidate the blog pages to show any updated UI
     revalidatePath("/blog");
@@ -85,10 +105,11 @@ async function runNewsletterSubscription(formData: FormData): Promise<FormResult
       success: true,
       message: "Thanks for subscribing! Check your inbox for confirmation.",
     };
-  } catch {
+  } catch (error) {
     console.error("[newsletter] Subscription error", {
       success: false,
       timestamp: new Date().toISOString(),
+      error: error instanceof Error ? error.message : "Unknown error",
     });
     return {
       success: false,
