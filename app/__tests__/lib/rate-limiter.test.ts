@@ -1,74 +1,81 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 
-// Mock the rate limiter module directly
-vi.mock('@/lib/rate-limiter', () => ({
-  checkRateLimit: vi.fn(),
-  checkRateLimitWithMetadata: vi.fn(),
-  clearRateLimits: vi.fn(),
-  getRateLimitCount: vi.fn(),
-}));
-
-import { checkRateLimit, checkRateLimitWithMetadata, clearRateLimits, getRateLimitCount } from "@/lib/rate-limiter";
-
-describe("checkRateLimit", () => {
+describe("rate-limiter", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    // Clear environment variables to ensure clean state
+    delete process.env.UPSTASH_REDIS_REST_URL;
+    delete process.env.UPSTASH_REDIS_REST_TOKEN;
   });
 
-  it("should return true when rate limit allows the request", async () => {
-    vi.mocked(checkRateLimit).mockResolvedValue(true);
-    const result = await checkRateLimit("test-key", 10, 60000);
-    expect(result).toBe(true);
+  describe("graceful degradation", () => {
+    it("should return true when Redis is not configured", async () => {
+      // Ensure Redis is not configured
+      delete process.env.UPSTASH_REDIS_REST_URL;
+      delete process.env.UPSTASH_REDIS_REST_TOKEN;
+
+      const { checkRateLimit } = await import("@/lib/rate-limiter");
+      const result = await checkRateLimit("test-key", 10, 60000);
+      expect(result).toBe(true);
+    });
+
+    it("should return success metadata when Redis is not configured", async () => {
+      delete process.env.UPSTASH_REDIS_REST_URL;
+      delete process.env.UPSTASH_REDIS_REST_TOKEN;
+
+      const { checkRateLimitWithMetadata } = await import("@/lib/rate-limiter");
+      const result = await checkRateLimitWithMetadata("test-key", 10, 60000);
+      expect(result.success).toBe(true);
+      expect(result.limit).toBe(10);
+      expect(result.remaining).toBe(10);
+    });
+
+    it("should return 0 count when Redis is not configured", async () => {
+      delete process.env.UPSTASH_REDIS_REST_URL;
+      delete process.env.UPSTASH_REDIS_REST_TOKEN;
+
+      const { getRateLimitCount } = await import("@/lib/rate-limiter");
+      const count = await getRateLimitCount("test-key");
+      expect(count).toBe(0);
+    });
+
+    it("should clear rate limits without error when Redis is not configured", async () => {
+      delete process.env.UPSTASH_REDIS_REST_URL;
+      delete process.env.UPSTASH_REDIS_REST_TOKEN;
+
+      const { clearRateLimits } = await import("@/lib/rate-limiter");
+      await expect(clearRateLimits()).resolves.not.toThrow();
+    });
   });
 
-  it("should return false when rate limit is exceeded", async () => {
-    vi.mocked(checkRateLimit).mockResolvedValue(false);
-    const result = await checkRateLimit("test-key", 10, 60000);
-    expect(result).toBe(false);
-  });
-});
+  describe("public API surface", () => {
+    it("should export all public functions", async () => {
+      const module = await import("@/lib/rate-limiter");
+      expect(typeof module.checkRateLimit).toBe("function");
+      expect(typeof module.checkRateLimitWithMetadata).toBe("function");
+      expect(typeof module.clearRateLimits).toBe("function");
+      expect(typeof module.getRateLimitCount).toBe("function");
+    });
 
-describe("checkRateLimitWithMetadata", () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
+    it("should accept valid parameters for checkRateLimit", async () => {
+      delete process.env.UPSTASH_REDIS_REST_URL;
+      delete process.env.UPSTASH_REDIS_REST_TOKEN;
 
-  it("should return metadata when rate limit allows the request", async () => {
-    const mockResult = {
-      success: true,
-      limit: 10,
-      remaining: 7,
-      reset: Date.now() + 60000,
-    };
-    vi.mocked(checkRateLimitWithMetadata).mockResolvedValue(mockResult);
-    const result = await checkRateLimitWithMetadata("test-key", 10, 60000);
-    expect(result).toEqual(mockResult);
-  });
+      const { checkRateLimit } = await import("@/lib/rate-limiter");
+      // Should not throw with valid parameters
+      await expect(checkRateLimit("key", 10, 60000)).resolves.toBe(true);
+    });
 
-  it("should return metadata when rate limit is exceeded", async () => {
-    const mockResult = {
-      success: false,
-      limit: 10,
-      remaining: 0,
-      reset: Date.now() + 60000,
-    };
-    vi.mocked(checkRateLimitWithMetadata).mockResolvedValue(mockResult);
-    const result = await checkRateLimitWithMetadata("test-key", 10, 60000);
-    expect(result).toEqual(mockResult);
-  });
-});
+    it("should accept valid parameters for checkRateLimitWithMetadata", async () => {
+      delete process.env.UPSTASH_REDIS_REST_URL;
+      delete process.env.UPSTASH_REDIS_REST_TOKEN;
 
-describe("clearRateLimits", () => {
-  it("should clear rate limits without error", async () => {
-    vi.mocked(clearRateLimits).mockResolvedValue(undefined);
-    await expect(clearRateLimits()).resolves.not.toThrow();
-  });
-});
-
-describe("getRateLimitCount", () => {
-  it("should return the current count", async () => {
-    vi.mocked(getRateLimitCount).mockResolvedValue(5);
-    const count = await getRateLimitCount("test-key");
-    expect(count).toBe(5);
+      const { checkRateLimitWithMetadata } = await import("@/lib/rate-limiter");
+      const result = await checkRateLimitWithMetadata("key", 10, 60000);
+      expect(result).toHaveProperty("success");
+      expect(result).toHaveProperty("limit");
+      expect(result).toHaveProperty("remaining");
+      expect(result).toHaveProperty("reset");
+    });
   });
 });

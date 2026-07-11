@@ -32,24 +32,55 @@ export interface RateLimitResult {
  * Falls back to undefined if credentials are not configured.
  */
 let redis: Redis | null = null;
-let ratelimit: Ratelimit | null = null;
 
 if (typeof window === 'undefined') {
   try {
     if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
       redis = Redis.fromEnv();
-      ratelimit = new Ratelimit({
-        redis: redis,
-        limiter: Ratelimit.slidingWindow(10, '10 s'),
-        analytics: true,
-        prefix: 'ratelimit',
-      });
     } else {
       console.warn('[rate-limiter] Upstash Redis credentials not configured, rate limiting disabled');
     }
   } catch (error) {
     console.error('[rate-limiter] Failed to initialize Upstash Redis:', error);
   }
+}
+
+/**
+ * Factory cache for Ratelimit instances keyed by limit:window.
+ * Reuses instances to preserve Upstash's in-memory cache optimization.
+ */
+const limiterCache = new Map<string, Ratelimit>();
+
+/**
+ * Get or create a Ratelimit instance for the given limit and window.
+ * Uses a factory cache to reuse instances across requests.
+ *
+ * @param limit - Maximum number of requests allowed in the window
+ * @param windowMs - Time window in milliseconds
+ * @returns Ratelimit instance
+ */
+function getLimiter(limit: number, windowMs: number): Ratelimit | null {
+  if (!redis) {
+    return null;
+  }
+
+  const cacheKey = `${limit}:${windowMs}`;
+  
+  // Return cached instance if available
+  if (limiterCache.has(cacheKey)) {
+    return limiterCache.get(cacheKey)!;
+  }
+
+  // Create new instance and cache it
+  const limiter = new Ratelimit({
+    redis: redis,
+    limiter: Ratelimit.slidingWindow(limit, `${windowMs} ms`),
+    analytics: true,
+    prefix: 'ratelimit',
+  });
+
+  limiterCache.set(cacheKey, limiter);
+  return limiter;
 }
 
 /**
@@ -76,21 +107,16 @@ if (typeof window === 'undefined') {
  * ```
  */
 export async function checkRateLimit(key: string, limit: number, windowMs: number): Promise<boolean> {
+  // Get limiter from factory cache
+  const limiter = getLimiter(limit, windowMs);
+  
   // If Upstash is not configured, allow all requests (graceful degradation)
-  if (!ratelimit) {
+  if (!limiter) {
     console.warn('[rate-limiter] Rate limiting disabled - Upstash Redis not configured');
     return true;
   }
 
   try {
-    // Create a dynamic limiter for the specific limit and window
-    const limiter = new Ratelimit({
-      redis: redis!,
-      limiter: Ratelimit.slidingWindow(limit, `${windowMs} ms`),
-      analytics: true,
-      prefix: 'ratelimit',
-    });
-
     const result = await limiter.limit(key);
 
     // Log rate limit events for monitoring
@@ -140,8 +166,11 @@ export async function checkRateLimitWithMetadata(
   limit: number,
   windowMs: number
 ): Promise<RateLimitResult> {
+  // Get limiter from factory cache
+  const limiter = getLimiter(limit, windowMs);
+  
   // If Upstash is not configured, return success with default values
-  if (!ratelimit) {
+  if (!limiter) {
     console.warn('[rate-limiter] Rate limiting disabled - Upstash Redis not configured');
     return {
       success: true,
@@ -152,13 +181,6 @@ export async function checkRateLimitWithMetadata(
   }
 
   try {
-    const limiter = new Ratelimit({
-      redis: redis!,
-      limiter: Ratelimit.slidingWindow(limit, `${windowMs} ms`),
-      analytics: true,
-      prefix: 'ratelimit',
-    });
-
     const result = await limiter.limit(key);
 
     if (!result.success) {
@@ -228,14 +250,17 @@ export async function clearRateLimits(): Promise<void> {
  * ```
  */
 export async function getRateLimitCount(key: string): Promise<number> {
-  if (!ratelimit) {
+  // Use default limiter (10 requests per 10 seconds) for count queries
+  const limiter = getLimiter(10, 10000);
+  
+  if (!limiter) {
     console.warn('[rate-limiter] Cannot get count - Upstash Redis not configured');
     return 0;
   }
 
   try {
     // Use the limit method to get current count
-    const result = await ratelimit.limit(key);
+    const result = await limiter.limit(key);
     return result.limit - result.remaining;
   } catch (error) {
     console.error('[rate-limiter] Failed to get rate limit count:', error);
