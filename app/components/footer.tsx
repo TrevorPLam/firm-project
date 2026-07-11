@@ -1,5 +1,6 @@
 import { Link } from '../../i18n/navigation';
 import { CopyrightYear } from "./copyright-year";
+import { motion } from "motion/react";
 
 export function Footer() {
   return (
@@ -22,54 +23,54 @@ export function Footer() {
           <div>
             <h4 className="mb-4 font-semibold">Quick Links</h4>
             <ul className="space-y-2">
-              <li>
+              <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
                 <Link
                   href="/services"
                   className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   Services
                 </Link>
-              </li>
-              <li>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
                 <Link
                   href="/about"
                   className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   About
                 </Link>
-              </li>
-              <li>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
                 <Link
                   href="/portfolio"
                   className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   Portfolio
                 </Link>
-              </li>
-              <li>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
                 <Link
                   href="/pricing"
                   className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   Pricing
                 </Link>
-              </li>
-              <li>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
                 <Link
                   href="/blog"
                   className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   Blog
                 </Link>
-              </li>
-              <li>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
                 <Link
                   href="/contact"
                   className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   Contact
                 </Link>
-              </li>
+              </motion.div>
             </ul>
           </div>
 
@@ -77,22 +78,22 @@ export function Footer() {
           <div>
             <h4 className="mb-4 font-semibold">Legal</h4>
             <ul className="space-y-2">
-              <li>
+              <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
                 <Link
                   href="/legal/privacy"
                   className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   Privacy Policy
                 </Link>
-              </li>
-              <li>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
                 <Link
                   href="/legal/terms"
                   className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   Terms of Service
                 </Link>
-              </li>
+              </motion.div>
             </ul>
           </div>
         </div>

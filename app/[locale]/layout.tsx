@@ -11,6 +11,7 @@ import { Footer } from "../components/footer";
 import { Loading } from "../components/loading";
 import { ErrorBoundary } from "../components/error-boundary";
 import { Analytics } from "../components/analytics";
+import { PageTransition } from "../components/page-transition";
 import {
   organizationSchema,
   faqSchema,
@@ -134,7 +135,9 @@ export default async function LocaleLayout({ children, params }: Props) {
               <Navigation />
             </Suspense>
             <main id="main-content" tabIndex={-1} className="flex-1">
-              <Suspense fallback={<Loading />}>{children}</Suspense>
+              <Suspense fallback={<Loading />}>
+                <PageTransition>{children}</PageTransition>
+              </Suspense>
             </main>
             <Suspense fallback={<Loading />}>
               <Footer />
