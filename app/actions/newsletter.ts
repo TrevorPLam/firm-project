@@ -61,7 +61,7 @@ async function runNewsletterSubscription(formData: FormData): Promise<FormResult
     };
   }
 
-  const { email: _email } = validatedFields.data;
+  const { } = validatedFields.data;
 
   try {
     // In a real application, you would:
@@ -85,7 +85,7 @@ async function runNewsletterSubscription(formData: FormData): Promise<FormResult
       success: true,
       message: "Thanks for subscribing! Check your inbox for confirmation.",
     };
-  } catch (_error) {
+  } catch {
     console.error("[newsletter] Subscription error", {
       success: false,
       timestamp: new Date().toISOString(),

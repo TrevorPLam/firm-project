@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { getAllPosts, getAllSlugs } from '@/lib/blog-data';
+import { getAllPosts } from '@/lib/blog-data';
 import { getAllSlugs as getAllPortfolioSlugs } from '@/lib/portfolio-data';
 
 export default function sitemap(): MetadataRoute.Sitemap {

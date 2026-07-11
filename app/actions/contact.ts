@@ -71,7 +71,7 @@ async function runContactFormSubmission(formData: FormData): Promise<FormResult>
     };
   }
 
-  const { name: _name, email: _email, company: _company, service: _service, budget: _budget, message: _message } = validatedFields.data;
+  const { } = validatedFields.data;
 
   try {
     // In a real application, you would:
@@ -99,7 +99,7 @@ async function runContactFormSubmission(formData: FormData): Promise<FormResult>
       success: true,
       message: "Thank you for your message! We'll get back to you soon.",
     };
-  } catch (error) {
+  } catch {
     console.error("[contact] Submission error", {
       success: false,
       timestamp: new Date().toISOString(),
