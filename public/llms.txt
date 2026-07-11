@@ -1,0 +1,49 @@
+# Elevate Digital
+
+> Elevate Digital is a full-service digital marketing agency that helps businesses grow through data-driven strategies, creative campaigns, and technical excellence. We specialize in SEO, PPC, content marketing, web development, and analytics for B2B and B2C clients.
+
+Our team combines marketing expertise with technical depth to deliver measurable results. We focus on transparency, ROI-driven campaigns, and long-term client partnerships.
+
+## Core Services
+
+- [Services Overview](https://elevatedigital.com/services): Complete list of our digital marketing services including SEO, PPC, content marketing, and web development.
+- [SEO Services](https://elevatedigital.com/services#seo): Search engine optimization services focused on technical SEO, content strategy, and link building.
+- [PPC Advertising](https://elevatedigital.com/services#ppc): Pay-per-click campaign management across Google Ads, Facebook Ads, and LinkedIn Ads.
+- [Content Marketing](https://elevatedigital.com/services#content): Content strategy, blog creation, and thought leadership content for B2B brands.
+- [Web Development](https://elevatedigital.com/services#web): Custom website development with Next.js, React, and modern frameworks.
+
+## Portfolio & Case Studies
+
+- [Portfolio Overview](https://elevatedigital.com/portfolio): Our complete portfolio of client work and success stories.
+- [Case Studies](https://elevatedigital.com/portfolio): Detailed case studies showing campaign results, ROI metrics, and strategic approaches for clients across various industries.
+
+## About & Company
+
+- [About Us](https://elevatedigital.com/about): Company history, team information, our values, and what makes Elevate Digital different.
+- [Pricing](https://elevatedigital.com/pricing): Transparent pricing models for our services with monthly/yearly billing options.
+
+## Resources & Blog
+
+- [Blog](https://elevatedigital.com/blog): Marketing insights, industry trends, strategy guides, and tactical advice from our team.
+- [FAQ](https://elevatedigital.com/faq): Frequently asked questions about our services, processes, and working with us.
+
+## Legal & Policies
+
+- [Privacy Policy](https://elevatedigital.com/legal/privacy): How we collect, use, and protect client and visitor data.
+- [Terms of Service](https://elevatedigital.com/legal/terms): Terms and conditions for using our website and services.
+
+## Contact & Support
+
+- [Contact Form](https://elevatedigital.com/contact): Get in touch for a consultation, project inquiry, or partnership discussion.
+- [Newsletter Signup](https://elevatedigital.com/contact): Subscribe to our newsletter for marketing insights and company updates.
+
+## Technical & SEO
+
+- [Sitemap](https://elevatedigital.com/sitemap.xml): XML sitemap of all indexable pages for search engines.
+- [Robots.txt](https://elevatedigital.com/robots.txt): Crawler permissions including AI crawler access for GEO optimization.
+
+## Optional
+
+- [SEO Documentation](https://elevatedigital.com/docs/seo.md): Internal documentation on SEO strategy, AI crawler permissions, and GEO optimization.
+- [Security Documentation](https://elevatedigital.com/docs/security.md): Security headers, configurations, and best practices.
+- [Rate Limiting Documentation](https://elevatedigital.com/docs/rate-limiting.md): Rate limiting implementation and production recommendations.

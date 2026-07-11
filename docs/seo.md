@@ -6,6 +6,7 @@ This document covers SEO strategies, AI crawler permissions, and Generative Engi
 
 - [AI Crawler Permissions](#ai-crawler-permissions)
 - [Generative Engine Optimization (GEO)](#generative-engine-optimization-geo)
+- [llms.txt File](#llms-txt-file)
 - [AI Crawler Testing](#ai-crawler-testing)
 - [GEO Monitoring](#geo-monitoring)
 - [Related Resources](#related-resources)
@@ -97,6 +98,96 @@ Generative Engine Optimization (GEO) is the practice of optimizing content for A
 | Optimization | Keywords, backlinks, technical SEO | Content quality, clarity, authority |
 | Citation Format | Blue links with snippets | Inline citations in AI responses |
 | Measurement | Search rankings, organic traffic | AI citation frequency, referral traffic |
+
+---
+
+## llms.txt File
+
+### What is llms.txt?
+
+llms.txt is a standardized Markdown file at the root of a domain (`/llms.txt`) that provides AI systems with a curated overview of a website's most important content. Proposed by Jeremy Howard of Answer.AI in 2024, it's designed for Business-to-Agent (B2A) interactions - helping AI agents understand and navigate your content effectively.
+
+### Purpose
+
+Unlike sitemaps (which list all pages for search engines) or robots.txt (which controls crawler access), llms.txt provides:
+
+- **Curated content map**: Highlights the most important pages and resources
+- **Context for AI systems**: Helps LLMs understand your site structure and purpose
+- **B2A optimization**: Enables AI agents to find and cite your content accurately
+- **Inference-time usage**: Primarily used when users explicitly request information about your brand
+
+### Our llms.txt Structure
+
+Our llms.txt file follows the 2026 specification with these sections:
+
+#### H1 Header
+- Site name: "Elevate Digital"
+
+#### Blockquote Summary
+- One-sentence description of what Elevate Digital is and who it's for
+- Additional context about our approach and differentiators
+
+#### H2 Sections
+- **Core Services**: Links to service pages (SEO, PPC, content, web development)
+- **Portfolio & Case Studies**: Client work and success stories
+- **About & Company**: Company information, team, pricing
+- **Resources & Blog**: Blog content and educational resources
+- **Legal & Policies**: Privacy policy, terms of service
+- **Contact & Support**: Contact form and newsletter signup
+- **Technical & SEO**: Sitemap, robots.txt, and technical documentation
+
+#### Optional Section
+- Internal documentation (SEO, security, rate limiting docs)
+- Lower-priority resources that AI agents can skip under context pressure
+
+### Link Format
+
+All links follow the exact specification format:
+```markdown
+- [Page Title](https://elevatedigital.com/page): One-line description of content and when to fetch it.
+```
+
+### How AI Systems Use llms.txt
+
+1. **Content Discovery**: AI agents fetch llms.txt to understand site structure
+2. **Context Building**: Use the curated links to build context about your brand
+3. **Citation Accuracy**: Reference the correct pages when answering user questions
+4. **Priority Handling**: Skip "Optional" sections when context is limited
+
+### When to Update llms.txt
+
+Update llms.txt when:
+- Adding new major service offerings or pages
+- Restructuring the website navigation
+- Publishing significant case studies or portfolio pieces
+- Adding important documentation or resources
+- Changing pricing models or contact methods
+- Annually for comprehensive review
+
+### Validation
+
+To validate your llms.txt file:
+
+1. **Accessibility**: Ensure it's available at `https://elevatedigital.com/llms.txt`
+2. **Format**: Verify proper Markdown structure (H1, blockquote, H2 sections)
+3. **Links**: Check all links are valid and return 200 status
+4. **Descriptions**: Ensure each link has a clear, one-line description
+5. **Parsing**: Test with AI systems to ensure they can parse correctly
+
+### Best Practices
+
+- **Keep it concise**: Focus on the most important pages
+- **Clear descriptions**: Each link should explain when an agent should fetch it
+- **Logical grouping**: Use H2 sections to group related content
+- **Use Optional wisely**: Put secondary information in the Optional section
+- **Update regularly**: Keep llms.txt in sync with site changes
+- **Test with AI**: Verify AI systems can understand and use your llms.txt
+
+### Related Resources
+
+- [llms.txt Specification](https://llmstxt.org/) - Official specification and examples
+- [LLMs.txt in 2026: The Full Guide](https://limy.ai/blog/llms.txt-in-2026-the-full-guide) - Comprehensive guide on B2A optimization
+- [llmstxt.site](https://llmstxt.site/) - Directory of llms.txt files on the web
 
 ---
 
@@ -202,9 +293,10 @@ curl -A "PerplexityBot" https://elevatedigital.com/robots.txt
 - When changing GEO strategy or crawler permissions
 - When new major AI crawlers are introduced
 - When monitoring reveals significant citation changes
+- When updating llms.txt structure or content
 - Annually for comprehensive review
 
 ### Related Tasks
 
-- P0-003: Configure AI Crawler Permissions (this task)
-- P0-004: Create llms.txt File (follows this task)
+- P0-003: Configure AI Crawler Permissions (completed)
+- P0-004: Create llms.txt File (completed)
