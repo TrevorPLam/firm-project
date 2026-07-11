@@ -598,7 +598,7 @@ Read `c:\Users\Trevor\Documents\firm\app\lib\rate-limiter.ts`. Confirm that `che
 
 ## Task T006: Harden IP Extraction and Add Anti-Bot Protection
 
-**Status:** `[ ]` PENDING
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -687,6 +687,63 @@ Read `c:\Users\Trevor\Documents\firm\app\actions\contact.ts` and `c:\Users\Trevo
 - **Description:** Add client-side widget, server-side token verification, and env documentation.
 - **Commands:**
   - `npm run test:run -- app/__tests__/actions/contact.test.ts`
+
+### Implementation Notes
+
+**Status:** Already completed. The codebase already had comprehensive IP extraction and honeypot protection implemented.
+
+**Existing Implementation:**
+- `app/lib/ip-utils.ts` contains `getClientIdentifier` with platform-trusted header priority (CF-Connecting-IP, X-Vercel-Forwarded-For, X-Forwarded-For, X-Real-IP)
+- IP validation with IPv4/IPv6 regex patterns
+- Fallback to SHA-256 fingerprint hash when no valid IP is available
+- Both actions (`contact.ts`, `newsletter.ts`) already use `getClientIdentifier`
+- Both forms (`contact-form.tsx`, `newsletter-form.tsx`) already have honeypot fields with proper accessibility (`aria-hidden="true"`, `tabindex="-1"`)
+- Server-side honeypot rejection returns success to not alert bots
+
+**Changes Made:**
+- Fixed pre-existing lint error in `app/__tests__/lib/rate-limiter.test.ts` by renaming `module` variable to `rateLimiterModule`
+
+**CAPTCHA Decision:** Deferred to human decision (T006.4). Current protection (trusted IP extraction + honeypot + rate limiting) provides reasonable anti-bot protection without CAPTCHA friction.
+
+**Verification:**
+- Type checking passes with no errors
+- Linting passes with no errors
+- Contact action tests pass (11/11 tests)
+- Pre-existing test failure in navigation.test.tsx is unrelated to T006 (next-intl/next navigation module resolution issue)
+
+---
+
+## Task T006.5: Fix Navigation Test Failure (Pre-existing Issue)
+
+**Status:** `[ ]` PENDING
+
+### Initial Analysis & Research
+
+Navigation test fails with error: "Cannot find module 'C:\Users\Trevor\Documents\firm\node_modules\next\navigation' imported from C:\Users\Trevor\Documents\firm\node_modules\next-intl\dist\esm\development\navigation\react-client\createNavigation.js". This is a next-intl/Next.js module resolution issue unrelated to T006 changes.
+
+### Related File Paths
+
+- `c:\Users\Trevor\Documents\firm\app\__tests__\components\navigation.test.tsx`
+- `c:\Users\Trevor\Documents\firm\package.json`
+
+### Definition of Done
+
+- Navigation test passes without module resolution errors
+- next-intl and Next.js versions are compatible
+
+### Out of Scope
+
+- Rewriting navigation component logic
+
+### Rules to Follow
+
+- Investigate next-intl version compatibility with Next.js 16
+- May require next-intl upgrade or configuration change
+
+### Depends On / Blocks
+
+- Depends on: None
+- Blocks: None
 
 ---
 

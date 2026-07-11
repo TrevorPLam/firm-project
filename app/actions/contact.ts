@@ -4,6 +4,7 @@ import * as z from "zod";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { checkRateLimit } from "@/lib/rate-limiter";
+import { getClientIdentifier } from "@/lib/ip-utils";
 import { Resend } from "resend";
 
 const contactFormSchema = z.object({
@@ -36,12 +37,22 @@ export async function submitContactFormAction(
 }
 
 async function runContactFormSubmission(formData: FormData): Promise<FormResult> {
+  // Honeypot check - reject if bot filled the hidden field
+  const honeypotValue = formData.get("website");
+  if (honeypotValue && typeof honeypotValue === "string" && honeypotValue.trim() !== "") {
+    console.log("[contact] Honeypot triggered - bot detected");
+    // Return success to not alert the bot
+    return {
+      success: true,
+      message: "Thank you for your message! We'll get back to you soon.",
+    };
+  }
+
   // Rate limiting check
   const headerList = await headers();
-  const forwardedFor = headerList.get("x-forwarded-for") ?? "anonymous";
-  const ip = forwardedFor.split(",")[0]?.trim() ?? "anonymous";
+  const identifier = getClientIdentifier(headerList);
   
-  const rateLimitKey = `contact:${ip}`;
+  const rateLimitKey = `contact:${identifier}`;
   const isAllowed = await checkRateLimit(rateLimitKey, 5, 600000); // 5 requests per 10 minutes
   
   if (!isAllowed) {

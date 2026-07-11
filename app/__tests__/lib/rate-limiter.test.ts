@@ -50,11 +50,11 @@ describe("rate-limiter", () => {
 
   describe("public API surface", () => {
     it("should export all public functions", async () => {
-      const module = await import("@/lib/rate-limiter");
-      expect(typeof module.checkRateLimit).toBe("function");
-      expect(typeof module.checkRateLimitWithMetadata).toBe("function");
-      expect(typeof module.clearRateLimits).toBe("function");
-      expect(typeof module.getRateLimitCount).toBe("function");
+      const rateLimiterModule = await import("@/lib/rate-limiter");
+      expect(typeof rateLimiterModule.checkRateLimit).toBe("function");
+      expect(typeof rateLimiterModule.checkRateLimitWithMetadata).toBe("function");
+      expect(typeof rateLimiterModule.clearRateLimits).toBe("function");
+      expect(typeof rateLimiterModule.getRateLimitCount).toBe("function");
     });
 
     it("should accept valid parameters for checkRateLimit", async () => {

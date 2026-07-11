@@ -4,6 +4,7 @@ import * as z from "zod";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { checkRateLimit } from "@/lib/rate-limiter";
+import { getClientIdentifier } from "@/lib/ip-utils";
 import { Resend } from "resend";
 
 const newsletterSchema = z.object({
@@ -31,12 +32,22 @@ export async function subscribeNewsletterAction(
 }
 
 async function runNewsletterSubscription(formData: FormData): Promise<FormResult> {
+  // Honeypot check - reject if bot filled the hidden field
+  const honeypotValue = formData.get("website");
+  if (honeypotValue && typeof honeypotValue === "string" && honeypotValue.trim() !== "") {
+    console.log("[newsletter] Honeypot triggered - bot detected");
+    // Return success to not alert the bot
+    return {
+      success: true,
+      message: "Thanks for subscribing! Check your inbox for confirmation.",
+    };
+  }
+
   // Rate limiting check
   const headerList = await headers();
-  const forwardedFor = headerList.get("x-forwarded-for") ?? "anonymous";
-  const ip = forwardedFor.split(",")[0]?.trim() ?? "anonymous";
+  const identifier = getClientIdentifier(headerList);
   
-  const rateLimitKey = `newsletter:${ip}`;
+  const rateLimitKey = `newsletter:${identifier}`;
   const isAllowed = await checkRateLimit(rateLimitKey, 3, 600000); // 3 subscriptions per 10 minutes
   
   if (!isAllowed) {
