@@ -72,6 +72,7 @@ describe("Navigation", () => {
       await user.tab();
       await user.tab();
       await user.tab();
+      await user.tab();
 
       const getStartedButton = screen
         .getAllByText("Get Started")
@@ -110,9 +111,14 @@ describe("Navigation", () => {
       await user.tab();
       await user.tab();
       await user.tab();
+      await user.tab();
       expect(getStartedButton).toHaveFocus();
 
-      // Shift+Tab should move to previous item
+      // Shift+Tab should move to previous item (SearchBar in mobile menu)
+      await user.tab({ shift: true });
+      // SearchBar is now in the mobile menu, skip specific check
+
+      // Continue backwards to Contact
       await user.tab({ shift: true });
       expect(contactLink).toHaveFocus();
 

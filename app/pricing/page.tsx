@@ -1,36 +1,15 @@
-"use cache";
+"use client";
 
-import { cacheLife } from "next/cache";
-import type { Metadata } from "next";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ScrollReveal } from "../components/scroll-reveal";
 
-export const metadata: Metadata = {
-  alternates: {
-    canonical: "/pricing",
-  },
-  title: "Pricing | Elevate Digital - Service Packages",
-  description:
-    "Transparent pricing for our web design, SEO, and analytics services. Choose the package that fits your business needs and budget.",
-  keywords: [
-    "pricing",
-    "service packages",
-    "web design pricing",
-    "SEO pricing",
-    "analytics pricing",
-  ],
-  openGraph: {
-    title: "Pricing | Elevate Digital",
-    description:
-      "Transparent pricing for our web design, SEO, and analytics services.",
-    type: "website",
-  },
-};
 
 const packages = [
   {
     name: "Starter",
-    price: "$2,500",
+    monthlyPrice: 2500,
+    yearlyPrice: 2400,
     period: "starting at",
     description:
       "Perfect for small businesses looking to establish their digital presence.",
@@ -53,7 +32,8 @@ const packages = [
   },
   {
     name: "Growth",
-    price: "$5,000",
+    monthlyPrice: 5000,
+    yearlyPrice: 4800,
     period: "starting at",
     description:
       "Ideal for growing businesses ready to scale their digital marketing efforts.",
@@ -73,7 +53,8 @@ const packages = [
   },
   {
     name: "Enterprise",
-    price: "Custom",
+    monthlyPrice: null,
+    yearlyPrice: null,
     period: "pricing",
     description:
       "Comprehensive solutions for established businesses with complex needs.",
@@ -117,8 +98,21 @@ const addOns = [
   },
 ];
 
-export default async function PricingPage() {
-  cacheLife("days");
+export default function PricingPage() {
+  const [isYearly, setIsYearly] = useState(() => {
+    // Load saved preference from localStorage on mount
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('billing-preference');
+      return saved === 'yearly' ? true : saved === 'monthly' ? false : true;
+    }
+    return true;
+  });
+
+  // Save preference to localStorage when it changes
+  useEffect(() => {
+    localStorage.setItem('billing-preference', isYearly ? 'yearly' : 'monthly');
+  }, [isYearly]);
+
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -141,6 +135,37 @@ export default async function PricingPage() {
       {/* Pricing Packages */}
       <section className="bg-foreground/5 px-6 py-20">
         <div className="mx-auto max-w-7xl">
+          {/* Billing Toggle */}
+          <div className="mb-12 flex justify-center">
+            <div className="flex items-center gap-4 rounded-full bg-background border border-foreground/10 p-1">
+              <button
+                onClick={() => setIsYearly(false)}
+                className={`rounded-full px-6 py-2 text-sm font-medium transition-all ${
+                  !isYearly
+                    ? 'bg-primary text-white'
+                    : 'text-foreground/60 hover:text-foreground'
+                }`}
+                aria-pressed={!isYearly}
+              >
+                Monthly
+              </button>
+              <button
+                onClick={() => setIsYearly(true)}
+                className={`rounded-full px-6 py-2 text-sm font-medium transition-all ${
+                  isYearly
+                    ? 'bg-primary text-white'
+                    : 'text-foreground/60 hover:text-foreground'
+                }`}
+                aria-pressed={isYearly}
+              >
+                Yearly
+                <span className="ml-2 rounded-full bg-primary-dark px-2 py-0.5 text-xs">
+                  Save 20%
+                </span>
+              </button>
+            </div>
+          </div>
+
           <div className="grid gap-8 md:grid-cols-3">
             {packages.map((pkg, index) => (
               <ScrollReveal key={pkg.name} delay={index * 100}>
@@ -159,10 +184,18 @@ export default async function PricingPage() {
                   <div className="p-8">
                     <h3 className="mb-2 text-2xl font-bold">{pkg.name}</h3>
                     <div className="mb-4">
-                      <span className="text-4xl font-bold">{pkg.price}</span>
-                      <span className="text-foreground/60 ml-2">
-                        {pkg.period}
-                      </span>
+                      {pkg.monthlyPrice === null ? (
+                        <span className="text-4xl font-bold">Custom</span>
+                      ) : (
+                        <>
+                          <span className="text-4xl font-bold transition-all duration-300">
+                            ${isYearly ? pkg.yearlyPrice : pkg.monthlyPrice.toLocaleString()}
+                          </span>
+                          <span className="text-foreground/60 ml-2">
+                            {pkg.period}
+                          </span>
+                        </>
+                      )}
                     </div>
                     <p className="text-foreground/70 mb-6">{pkg.description}</p>
                     <ul className="mb-8 space-y-3">

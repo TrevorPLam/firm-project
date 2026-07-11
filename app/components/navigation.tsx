@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
+import { SearchBar } from "./search-bar";
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -132,6 +133,7 @@ export function Navigation() {
           >
             Contact
           </Link>
+          <SearchBar />
         </div>
 
         <div className="hidden md:block">
@@ -224,6 +226,9 @@ export function Navigation() {
             >
               Contact
             </Link>
+            <div className="flex items-center gap-2 py-2">
+              <SearchBar onClose={() => setIsMobileMenuOpen(false)} />
+            </div>
             <Link
               href="/contact"
               className="bg-primary hover:bg-primary-dark mt-2 rounded-full px-6 py-2.5 text-center font-medium text-white transition-colors"
