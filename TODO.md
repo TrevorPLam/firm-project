@@ -1691,7 +1691,7 @@ Error: Route "/portfolio/[slug]" used `new Date()` before accessing either uncac
 
 ---
 
-## [ ] L-T06 | STATUS: PENDING | PRIORITY: LOW
+## [x] L-T06 | STATUS: DONE | PRIORITY: LOW
 
 ### Update blog post dates to current year
 
@@ -1716,9 +1716,14 @@ Error: Route "/portfolio/[slug]" used `new Date()` before accessing either uncac
 
 **Depends on:** None | **Blocks:** None
 
+**Implementation notes:**
+- Updated all 6 blog post dates to 2026 in app/lib/blog-data.ts
+- Dates maintain chronological order (newest first): July 10, June 15, May 20, April 28, March 15, February 10
+- Typecheck passes with no errors
+
 ### Subtasks
 
-- [ ] L-T06.1 [AGENT] Update blog post dates
+- [x] L-T06.1 [AGENT] Update blog post dates
   - **File:** `app/blog/[slug]/page.tsx` (or `app/lib/blog-data.ts`)
   - **Action:** Update each post's `date` field to a 2026 date. Maintain chronological order (newest first). Use realistic dates (e.g., "June 15, 2026", "May 20, 2026", etc.).
   - **Validate:** `npx tsc --noEmit`

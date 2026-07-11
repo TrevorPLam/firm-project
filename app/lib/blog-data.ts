@@ -40,7 +40,7 @@ const blogPosts: Record<string, BlogPost> = {
     title: "10 Web Design Trends to Watch in 2025",
     excerpt: "Explore the latest web design trends that will shape the digital landscape in 2025, from minimalism to advanced interactivity.",
     category: "Web Design",
-    date: "January 15, 2025",
+    date: "July 10, 2026",
     readTime: "5 min read",
     author: {
       name: "David Park",
@@ -91,7 +91,7 @@ const blogPosts: Record<string, BlogPost> = {
     title: "The Complete Guide to SEO for Local Businesses",
     excerpt: "Learn how to optimize your online presence for local search and attract more customers in your area with proven SEO strategies.",
     category: "SEO",
-    date: "January 10, 2025",
+    date: "June 15, 2026",
     readTime: "8 min read",
     author: {
       name: "Emily Rodriguez",
@@ -144,7 +144,7 @@ const blogPosts: Record<string, BlogPost> = {
     title: "Understanding Core Web Vitals and Their Impact",
     excerpt: "Discover why Core Web Vitals matter for SEO and user experience, and how to optimize your website for better performance.",
     category: "Analytics",
-    date: "January 5, 2025",
+    date: "May 20, 2026",
     readTime: "6 min read",
     author: {
       name: "Jessica Taylor",
@@ -208,7 +208,7 @@ const blogPosts: Record<string, BlogPost> = {
     title: "How to Build a Conversion-Optimized Landing Page",
     excerpt: "Master the art of creating landing pages that convert with our comprehensive guide covering design, copy, and optimization.",
     category: "Web Design",
-    date: "December 28, 2024",
+    date: "April 28, 2026",
     readTime: "7 min read",
     author: {
       name: "Sarah Mitchell",
@@ -259,7 +259,7 @@ const blogPosts: Record<string, BlogPost> = {
     title: "The Future of AI in Digital Marketing",
     excerpt: "Explore how artificial intelligence is transforming digital marketing and what it means for businesses in the coming years.",
     category: "Digital Marketing",
-    date: "December 20, 2024",
+    date: "March 15, 2026",
     readTime: "6 min read",
     author: {
       name: "Alex Thompson",
@@ -301,7 +301,7 @@ const blogPosts: Record<string, BlogPost> = {
     title: "Content Strategy: Quality vs Quantity in 2025",
     excerpt: "Learn why creating high-quality, valuable content is more important than ever for SEO and audience engagement.",
     category: "Content Strategy",
-    date: "December 15, 2024",
+    date: "February 10, 2026",
     readTime: "5 min read",
     author: {
       name: "Alex Thompson",
