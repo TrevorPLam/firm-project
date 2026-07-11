@@ -16,6 +16,7 @@ export const metadata: Metadata = {
 const blogPosts = [
   {
     id: 1,
+    slug: "web-design-trends-2025",
     title: "10 Web Design Trends to Watch in 2025",
     excerpt: "Explore the latest web design trends that will shape the digital landscape in 2025, from minimalism to advanced interactivity.",
     category: "Web Design",
@@ -25,6 +26,7 @@ const blogPosts = [
   },
   {
     id: 2,
+    slug: "local-seo-guide",
     title: "The Complete Guide to SEO for Local Businesses",
     excerpt: "Learn how to optimize your online presence for local search and attract more customers in your area with proven SEO strategies.",
     category: "SEO",
@@ -34,6 +36,7 @@ const blogPosts = [
   },
   {
     id: 3,
+    slug: "core-web-vitals",
     title: "Understanding Core Web Vitals and Their Impact",
     excerpt: "Discover why Core Web Vitals matter for SEO and user experience, and how to optimize your website for better performance.",
     category: "Analytics",
@@ -43,6 +46,7 @@ const blogPosts = [
   },
   {
     id: 4,
+    slug: "conversion-landing-pages",
     title: "How to Build a Conversion-Optimized Landing Page",
     excerpt: "Master the art of creating landing pages that convert with our comprehensive guide covering design, copy, and optimization.",
     category: "Web Design",
@@ -52,6 +56,7 @@ const blogPosts = [
   },
   {
     id: 5,
+    slug: "ai-digital-marketing",
     title: "The Future of AI in Digital Marketing",
     excerpt: "Explore how artificial intelligence is transforming digital marketing and what it means for businesses in the coming years.",
     category: "Digital Marketing",
@@ -61,6 +66,7 @@ const blogPosts = [
   },
   {
     id: 6,
+    slug: "content-strategy-2025",
     title: "Content Strategy: Quality vs Quantity in 2025",
     excerpt: "Learn why creating high-quality, valuable content is more important than ever for SEO and audience engagement.",
     category: "Content Strategy",
@@ -95,25 +101,27 @@ export default function BlogPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogPosts.map((post, index) => (
               <ScrollReveal key={post.id} delay={index * 100}>
-                <article className="bg-background rounded-2xl border border-foreground/10 hover:border-primary/50 transition-all hover:shadow-xl overflow-hidden">
-                  <div className="p-8">
-                    <div className="flex items-center gap-2 mb-4">
-                      <span className="px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full">
-                        {post.category}
-                      </span>
+                <Link href={`/blog/${post.slug}`} className="group">
+                  <article className="bg-background rounded-2xl border border-foreground/10 group-hover:border-primary/50 transition-all group-hover:shadow-xl overflow-hidden">
+                    <div className="p-8">
+                      <div className="flex items-center gap-2 mb-4">
+                        <span className="px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full">
+                          {post.category}
+                        </span>
+                      </div>
+                      <h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors">
+                        {post.title}
+                      </h3>
+                      <p className="text-foreground/70 mb-6 leading-relaxed">
+                        {post.excerpt}
+                      </p>
+                      <div className="flex items-center justify-between text-sm text-foreground/60">
+                        <span>{post.date}</span>
+                        <span>{post.readTime}</span>
+                      </div>
                     </div>
-                    <h3 className="text-2xl font-bold mb-3 hover:text-primary transition-colors cursor-pointer">
-                      {post.title}
-                    </h3>
-                    <p className="text-foreground/70 mb-6 leading-relaxed">
-                      {post.excerpt}
-                    </p>
-                    <div className="flex items-center justify-between text-sm text-foreground/60">
-                      <span>{post.date}</span>
-                      <span>{post.readTime}</span>
-                    </div>
-                  </div>
-                </article>
+                  </article>
+                </Link>
               </ScrollReveal>
             ))}
           </div>
