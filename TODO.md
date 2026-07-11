@@ -1160,7 +1160,7 @@ Error: Route "/blog/[slug]" used `new Date()` before accessing either uncached d
 
 ---
 
-## [ ] M-T13 | STATUS: PENDING | PRIORITY: MEDIUM
+## [x] M-T13 | STATUS: DONE | PRIORITY: MEDIUM
 
 ### Add skip-to-content link for keyboard accessibility
 
@@ -1187,9 +1187,17 @@ Error: Route "/blog/[slug]" used `new Date()` before accessing either uncached d
 
 **Depends on:** H-T07 | **Blocks:** None
 
+**Implementation notes:**
+- Added skip-to-content link as first element in `<body>` with `sr-only focus:not-sr-only` pattern
+- Link becomes visible when focused with proper positioning and styling
+- Added `id="main-content"` and `tabIndex={-1}` to `<main>` element
+- Typecheck passes, lint passes (pre-existing unused var warnings in contact.ts, newsletter.ts, sitemap.ts remain)
+- All 41 tests passing
+- Follows WCAG 2.2 SC 2.4.1 Bypass Blocks requirement
+
 ### Subtasks
 
-- [ ] M-T13.1 [AGENT] Add skip link and main id
+- [x] M-T13.1 [AGENT] Add skip link and main id
   - **File:** `app/layout.tsx`
   - **Action:** Add skip link as first element in `<body>`: `<a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg">Skip to main content</a>`. Add `id="main-content" tabIndex={-1}` to `<main>`.
   - **Validate:** `npx eslint app/layout.tsx && npx tsc --noEmit`
