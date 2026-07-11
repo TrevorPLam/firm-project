@@ -1,5 +1,21 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 
+// Mock @upstash/redis and @upstash/ratelimit at the package boundary
+const mockRedis = {
+  keys: vi.fn().mockResolvedValue([]),
+  del: vi.fn(),
+};
+
+vi.mock("@upstash/redis", () => ({
+  Redis: {
+    fromEnv: vi.fn(() => mockRedis),
+  },
+}));
+
+vi.mock("@upstash/ratelimit", () => ({
+  Ratelimit: vi.fn(),
+}));
+
 describe("rate-limiter", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -45,6 +61,24 @@ describe("rate-limiter", () => {
 
       const { clearRateLimits } = await import("@/lib/rate-limiter");
       await expect(clearRateLimits()).resolves.not.toThrow();
+    });
+  });
+
+  describe("rate limiting with Redis configured", () => {
+    it("should handle Redis errors gracefully", async () => {
+      // Configure Redis environment variables before import
+      process.env.UPSTASH_REDIS_REST_URL = "https://test.upstash.io";
+      process.env.UPSTASH_REDIS_REST_TOKEN = "test-token";
+
+      const { Ratelimit } = await import("@upstash/ratelimit");
+      const mockLimit = vi.fn().mockRejectedValue(new Error("Redis connection failed"));
+      (Ratelimit as any).mockImplementation(() => ({
+        limit: mockLimit,
+      }));
+
+      const { checkRateLimit } = await import("@/lib/rate-limiter");
+      const result = await checkRateLimit("test-key", 10, 60000);
+      expect(result).toBe(true); // Graceful degradation
     });
   });
 
