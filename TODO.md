@@ -230,7 +230,7 @@
 
 ## Task 005: Update sitemap dates and remove unused import
 
-- [ ] **Status**: PENDING
+- [x] **Status**: COMPLETED
 - **Related Files**:
   - `app/sitemap.ts`
 - **Definition of Done**:
@@ -252,6 +252,13 @@
 - **Depends On**: Task 001 (for import removal)
 - **Blocks**: None
 
+**Implementation Notes**:
+- Updated static route lastModified dates from `new Date('2025-01-15')` to `new Date()` for current timestamps
+- Updated portfolio lastModified dates from `new Date('2025-01-10')` to `new Date()` for current timestamps
+- Note: The unused import removal was already completed in Task 001-05, so no import changes were needed
+- Sitemap generates correctly with dynamic current dates
+- All quality assurance checks pass: typecheck, lint, and build succeed
+
 ### Subtasks
 
 #### 005-01: Update static route lastModified dates
@@ -261,6 +268,7 @@
 - **Commands**:
   - `npm run build`
   - `curl http://localhost:3000/sitemap.xml` (after dev server start)
+- ✅ **Completed**: Changed to `new Date()` on line 24
 
 #### 005-02: Update portfolio lastModified dates
 - **Agent**: AGENT
@@ -268,6 +276,7 @@
 - **Description**: Change `new Date('2025-01-10')` to `new Date()` for portfolio entries. Consider using actual project completion dates if available in data.
 - **Commands**:
   - `npm run build`
+- ✅ **Completed**: Changed to `new Date()` on line 42
 
 ---
 

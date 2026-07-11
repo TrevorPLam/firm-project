@@ -21,7 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticSitemapEntries = staticRoutes.map((route) => ({
     url: `${baseUrl}${route}`,
-    lastModified: new Date('2025-01-15'),
+    lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: route === '' ? 1 : 0.7,
   }));
@@ -39,7 +39,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const portfolioSlugs = getAllPortfolioSlugs();
   const portfolioSitemapEntries = portfolioSlugs.map((slug) => ({
     url: `${baseUrl}/portfolio/${slug}`,
-    lastModified: new Date('2025-01-10'),
+    lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.6,
   }));
