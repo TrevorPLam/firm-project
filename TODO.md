@@ -181,9 +181,9 @@
 
 ## Task 004: Resolve Vitest CJS deprecation warning
 
-- [ ] **Status**: PENDING
+- [x] **Status**: COMPLETED
 - **Related Files**:
-  - `vitest.config.ts`
+  - `vitest.config.mjs` (renamed from .ts)
   - `package.json`
 - **Definition of Done**:
   - CJS deprecation warning no longer appears during test runs
@@ -203,6 +203,12 @@
 - **Depends On**: None
 - **Blocks**: None
 
+**Implementation Notes**:
+- Renamed `vitest.config.ts` to `vitest.config.mjs` to use ESM format
+- Added `import { fileURLToPath } from 'url'` and created ESM-compatible `__dirname` using `path.dirname(fileURLToPath(import.meta.url))`
+- CJS deprecation warning no longer appears during test runs
+- All 45 tests pass successfully after the change
+
 ### Subtasks
 
 #### 004-01: Convert vitest.config.ts to ESM format
@@ -211,6 +217,7 @@
 - **Description**: Rename `vitest.config.ts` to `vitest.config.mjs` and update to use ESM syntax. Change `import` statements to use `.js` extensions if needed, or set `"type": "module"` in package.json.
 - **Commands**:
   - `npm run test:run`
+- ✅ **Completed**: File renamed to .mjs and updated with ESM-compatible __dirname
 
 #### 004-02: Add VITE_CJS_IGNORE_WARNING environment variable
 - **Agent**: AGENT
