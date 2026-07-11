@@ -25,54 +25,54 @@ export function Footer() {
           <div>
             <h4 className="mb-4 font-semibold">Quick Links</h4>
             <ul className="space-y-2">
-              <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+              <motion.li whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
                 <Link
                   href="/services"
                   className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   Services
                 </Link>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+              </motion.li>
+              <motion.li whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
                 <Link
                   href="/about"
                   className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   About
                 </Link>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+              </motion.li>
+              <motion.li whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
                 <Link
                   href="/portfolio"
                   className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   Portfolio
                 </Link>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+              </motion.li>
+              <motion.li whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
                 <Link
                   href="/pricing"
                   className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   Pricing
                 </Link>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+              </motion.li>
+              <motion.li whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
                 <Link
                   href="/blog"
                   className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   Blog
                 </Link>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+              </motion.li>
+              <motion.li whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
                 <Link
                   href="/contact"
                   className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   Contact
                 </Link>
-              </motion.div>
+              </motion.li>
             </ul>
           </div>
 
@@ -80,22 +80,22 @@ export function Footer() {
           <div>
             <h4 className="mb-4 font-semibold">Legal</h4>
             <ul className="space-y-2">
-              <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+              <motion.li whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
                 <Link
                   href="/legal/privacy"
                   className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   Privacy Policy
                 </Link>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+              </motion.li>
+              <motion.li whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
                 <Link
                   href="/legal/terms"
                   className="text-foreground/60 hover:text-foreground transition-colors"
                 >
                   Terms of Service
                 </Link>
-              </motion.div>
+              </motion.li>
             </ul>
           </div>
 

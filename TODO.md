@@ -1145,7 +1145,7 @@ Read `c:\Users\Trevor\Documents\firm\app\[locale\]\page.tsx`, `c:\Users\Trevor\D
 
 ## Task T010: Fix Footer Invalid HTML
 
-**Status:** `[ ]` PENDING
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -1192,7 +1192,7 @@ Read `c:\Users\Trevor\Documents\firm\app\components\footer.tsx`. Confirm that `<
 
 ### Subtasks
 
-#### T010.1 [AGENT] Refactor list markup
+#### T010.1 [AGENT] Refactor list markup ✅
 
 - **Targeted file path:** `c:\Users\Trevor\Documents\firm\app\components\footer.tsx`
 - **Description:** Wrap each link in `<li>` and apply `motion.div` or `motion.li` correctly.
@@ -1201,12 +1201,41 @@ Read `c:\Users\Trevor\Documents\firm\app\components\footer.tsx`. Confirm that `<
   - `npm run test:run -- app/__tests__/components/footer.test.tsx` (create if missing)
   - `npm run lint`
 
-#### T010.2 [AGENT] Add footer markup test
+#### T010.2 [AGENT] Add footer markup test ✅
 
 - **Targeted file path:** `c:\Users\Trevor\Documents\firm\app\__tests__\components\footer.test.tsx`
 - **Description:** Assert that every `<ul>` in the footer has only `<li>` children.
 - **Commands:**
   - `npm run test:run -- app/__tests__/components/footer.test.tsx`
+
+### Implementation Notes
+
+**Status:** Completed successfully. Fixed invalid HTML structure in footer component by replacing `<motion.div>` with `<motion.li>` elements.
+
+**Root Cause:** The footer component had `<motion.div>` elements as direct children of `<ul>` elements in both the Quick Links and Legal sections. This violates HTML specification which requires `<ul>` and `<ol>` elements to only contain `<li>` elements as direct children (with minor exceptions for script-supporting elements).
+
+**Changes Made:**
+- Replaced all `<motion.div>` with `<motion.li>` in Quick Links section (6 items)
+- Replaced all `<motion.div>` with `<motion.li>` in Legal section (2 items)
+- Preserved hover scale animation (`whileHover={{ scale: 1.05 }}`) on all list items
+- Created comprehensive unit tests in `app/__tests__/components/footer.test.tsx`:
+  - Tests that footer renders without crashing
+  - Tests that all `<ul>` elements contain only `<li>` children (valid HTML structure)
+  - Tests that all quick links render correctly
+  - Tests that all legal links render correctly
+  - Tests that social links have correct aria-labels
+
+**Benefits:**
+- Valid HTML structure that complies with W3C specification
+- Improved accessibility: screen readers can now correctly announce list structure and item count
+- Preserved visual behavior: hover animations still work via `motion.li`
+- Better semantic markup for SEO and assistive technologies
+
+**Verification:**
+- Type checking passes with no errors
+- Linting passes with no errors
+- All 5 footer tests pass
+- Total test count: 59 tests (5 new footer tests + 54 existing tests)
 
 ---
 
