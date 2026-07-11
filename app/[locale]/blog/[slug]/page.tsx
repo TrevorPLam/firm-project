@@ -8,6 +8,9 @@ import { NewsletterForm } from "../../../components/newsletter-form";
 import { SocialShare } from "../../../components/social-share";
 import { getPostBySlug, getAllPosts } from "../../../lib/blog-data";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../../lib/schema";
+import { setRequestLocale } from 'next-intl/server';
+import { routing } from '../../../../i18n/routing';
+import { hasLocale } from 'next-intl';
 
 // Temporarily disabled due to Windows build worker issue
 // export async function generateStaticParams() {
@@ -52,6 +55,13 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string; locale: string }>;
 }) {
   const { slug, locale } = await params;
+
+  // Enable static rendering
+  if (!hasLocale(routing.locales, locale)) {
+    return null;
+  }
+  setRequestLocale(locale);
+
   const post = getPostBySlug(slug);
 
   if (!post) {

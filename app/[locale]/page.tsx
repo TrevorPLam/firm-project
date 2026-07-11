@@ -3,6 +3,9 @@ import { ScrollReveal } from "../components/scroll-reveal";
 import { ContactForm } from "../components/contact-form";
 import type { Metadata } from "next";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../lib/schema";
+import { setRequestLocale } from 'next-intl/server';
+import { routing } from '../../i18n/routing';
+import { hasLocale } from 'next-intl';
 
 export const metadata: Metadata = {
   alternates: {
@@ -16,6 +19,12 @@ export default async function Home({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+
+  // Enable static rendering
+  if (!hasLocale(routing.locales, locale)) {
+    return null;
+  }
+  setRequestLocale(locale);
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: `/${locale}` },

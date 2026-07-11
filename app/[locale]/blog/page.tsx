@@ -7,6 +7,9 @@ import { Link } from '../../../i18n/navigation';
 import { getAllPosts } from "../../lib/blog-data";
 import { NewsletterForm } from "../../components/newsletter-form";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
+import { setRequestLocale } from 'next-intl/server';
+import { routing } from '../../../i18n/routing';
+import { hasLocale } from 'next-intl';
 
 export const metadata: Metadata = {
   alternates: {
@@ -37,6 +40,13 @@ export default async function BlogPage({
 }) {
   cacheLife("days");
   const { locale } = await params;
+
+  // Enable static rendering
+  if (!hasLocale(routing.locales, locale)) {
+    return null;
+  }
+  setRequestLocale(locale);
+
   const posts = getAllPosts();
 
   const breadcrumbSchema = generateBreadcrumbSchema([

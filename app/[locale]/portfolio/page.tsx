@@ -6,6 +6,9 @@ import { Link } from '../../../i18n/navigation';
 import { ScrollReveal } from "../../components/scroll-reveal";
 import { getAllCaseStudies } from "../../lib/portfolio-data";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
+import { setRequestLocale } from 'next-intl/server';
+import { routing } from '../../../i18n/routing';
+import { hasLocale } from 'next-intl';
 
 export const metadata: Metadata = {
   alternates: {
@@ -36,6 +39,13 @@ export default async function PortfolioPage({
 }) {
   cacheLife("days");
   const { locale } = await params;
+
+  // Enable static rendering
+  if (!hasLocale(routing.locales, locale)) {
+    return null;
+  }
+  setRequestLocale(locale);
+
   const caseStudies = getAllCaseStudies();
 
   const breadcrumbSchema = generateBreadcrumbSchema([

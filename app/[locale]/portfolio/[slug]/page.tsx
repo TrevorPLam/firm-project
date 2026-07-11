@@ -6,6 +6,9 @@ import { SocialShare } from "../../../components/social-share";
 import { notFound } from "next/navigation";
 import { getCaseStudyBySlug, getAllSlugs } from "../../../lib/portfolio-data";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../../lib/schema";
+import { setRequestLocale } from 'next-intl/server';
+import { routing } from '../../../../i18n/routing';
+import { hasLocale } from 'next-intl';
 
 export async function generateStaticParams() {
   const slugs = getAllSlugs();
@@ -48,6 +51,13 @@ export default async function CaseStudyPage({
   params: Promise<{ slug: string; locale: string }>;
 }) {
   const { slug, locale } = await params;
+
+  // Enable static rendering
+  if (!hasLocale(routing.locales, locale)) {
+    return null;
+  }
+  setRequestLocale(locale);
+
   const study = getCaseStudyBySlug(slug);
 
   if (!study) {

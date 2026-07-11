@@ -5,6 +5,9 @@ import type { Metadata } from "next";
 import { Link } from '../../../i18n/navigation';
 import { ScrollReveal } from "../../components/scroll-reveal";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
+import { setRequestLocale } from 'next-intl/server';
+import { routing } from '../../../i18n/routing';
+import { hasLocale } from 'next-intl';
 
 export const metadata: Metadata = {
   alternates: {
@@ -35,6 +38,12 @@ export default async function ServicesPage({
 }) {
   cacheLife("days");
   const { locale } = await params;
+
+  // Enable static rendering
+  if (!hasLocale(routing.locales, locale)) {
+    return null;
+  }
+  setRequestLocale(locale);
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: `/${locale}` },
