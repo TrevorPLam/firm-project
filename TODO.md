@@ -694,7 +694,7 @@ Error: Route "/blog/[slug]" used `new Date()` before accessing either uncached d
 
 ---
 
-## [ ] M-T03 | STATUS: PENDING | PRIORITY: MEDIUM
+## [x] M-T03 | STATUS: DONE | PRIORITY: MEDIUM
 
 ### Add security headers to next.config.ts
 
@@ -718,9 +718,16 @@ Error: Route "/blog/[slug]" used `new Date()` before accessing either uncached d
 
 **Depends on:** None | **Blocks:** None
 
+**Implementation notes:**
+- Added `headers()` async function to next.config.ts returning array of header rules
+- Applied to all routes with source: "/(.*)"
+- All 4 security headers verified in response: X-Frame-Options: DENY, X-Content-Type-Options: nosniff, Referrer-Policy: strict-origin-when-cross-origin, Permissions-Policy: camera=(), microphone=(), geolocation=()
+- Build succeeds with all pages prerendered correctly
+- Typecheck passes, lint passes
+
 ### Subtasks
 
-- [ ] M-T03.1 [AGENT] Add security headers
+- [x] M-T03.1 [AGENT] Add security headers
   - **File:** `next.config.ts`
   - **Action:** Add `headers()` async function returning `[{ source: "/(.*)", headers: [{key: "X-Frame-Options", value: "DENY"}, ...] }]`.
   - **Validate:** `npm run build && npm start` then `curl -I http://localhost:3000`
