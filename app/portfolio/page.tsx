@@ -4,6 +4,7 @@ import { cacheLife } from "next/cache";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ScrollReveal } from "../components/scroll-reveal";
+import { getAllCaseStudies } from "../lib/portfolio-data";
 
 export const metadata: Metadata = {
   alternates: {
@@ -19,65 +20,9 @@ export const metadata: Metadata = {
   },
 };
 
-const caseStudies = [
-  {
-    id: 1,
-    title: "E-Commerce Redesign",
-    category: "Web Design",
-    client: "TechStyle Boutique",
-    description: "Complete e-commerce website redesign resulting in 150% increase in conversions and improved user experience.",
-    results: ["150% increase in conversions", "40% improvement in page load speed", "60% reduction in bounce rate"],
-    tags: ["Web Design", "E-commerce", "UX/UI"],
-  },
-  {
-    id: 2,
-    title: "Local SEO Campaign",
-    category: "SEO",
-    client: "Metro Dental Group",
-    description: "Comprehensive local SEO strategy that increased organic traffic by 300% and improved Google Business Profile visibility.",
-    results: ["300% increase in organic traffic", "Top 3 rankings for 15+ local keywords", "200% increase in appointment requests"],
-    tags: ["SEO", "Local SEO", "Analytics"],
-  },
-  {
-    id: 3,
-    title: "Analytics Implementation",
-    category: "Analytics",
-    client: "Fitness First Chain",
-    description: "Full analytics setup with custom dashboards and conversion tracking, enabling data-driven marketing decisions.",
-    results: ["Improved marketing ROI by 45%", "Real-time performance insights", "Automated reporting system"],
-    tags: ["Analytics", "GA4", "Data Strategy"],
-  },
-  {
-    id: 4,
-    title: "SaaS Website Development",
-    category: "Web Design",
-    client: "CloudSync Solutions",
-    description: "Modern SaaS website with interactive product demos and optimized conversion funnels for B2B audience.",
-    results: ["85% increase in trial signups", "Improved lead quality score", "Enhanced brand perception"],
-    tags: ["Web Design", "SaaS", "B2B"],
-  },
-  {
-    id: 5,
-    title: "Content Strategy & SEO",
-    category: "SEO",
-    client: "GreenHome Products",
-    description: "Content-first SEO strategy with blog optimization and pillar pages, establishing topical authority in sustainable home products.",
-    results: ["250% increase in blog traffic", "Featured in 50+ industry publications", "Established thought leadership"],
-    tags: ["SEO", "Content Strategy", "Blog"],
-  },
-  {
-    id: 6,
-    title: "Performance Optimization",
-    category: "Web Design",
-    client: "NewsPortal Media",
-    description: "Complete performance optimization for high-traffic news website, improving Core Web Vitals and user experience.",
-    results: ["90+ Lighthouse performance score", "50% improvement in load times", "Improved ad revenue"],
-    tags: ["Web Design", "Performance", "Optimization"],
-  },
-];
-
 export default async function PortfolioPage() {
   cacheLife("days");
+  const caseStudies = getAllCaseStudies();
   return (
     <div className="flex flex-col">
       {/* Hero Section */}

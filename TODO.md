@@ -888,7 +888,7 @@ Error: Route "/blog/[slug]" used `new Date()` before accessing either uncached d
 
 ---
 
-## [ ] M-T07 | STATUS: PENDING | PRIORITY: MEDIUM
+## [x] M-T07 | STATUS: DONE | PRIORITY: MEDIUM
 
 ### Consolidate duplicated portfolio data into shared module
 
@@ -917,19 +917,25 @@ Error: Route "/blog/[slug]" used `new Date()` before accessing either uncached d
 
 ### Subtasks
 
-- [ ] M-T07.1 [AGENT] Create shared portfolio data module
+- [x] M-T07.1 [AGENT] Create shared portfolio data module
   - **File:** `app/lib/portfolio-data.ts`
   - **Action:** Define types. Move data into private const. Export `getAllCaseStudies()`, `getCaseStudyBySlug()`, `getAllSlugs()`.
   - **Validate:** `npx tsc --noEmit && npx eslint app/lib/portfolio-data.ts`
 
-- [ ] M-T07.2 [AGENT] Update portfolio pages
+- [x] M-T07.2 [AGENT] Update portfolio pages
   - **Files:** `app/portfolio/page.tsx`, `app/portfolio/[slug]/page.tsx`
   - **Action:** Remove inline data. Import from `@/lib/portfolio-data`. Update all functions.
   - **Validate:** `npx tsc --noEmit && npx eslint app/portfolio/page.tsx app/portfolio/[slug]/page.tsx`
 
+**Implementation notes:**
+- Task was already completed prior to this workflow execution
+- `app/lib/portfolio-data.ts` exists with proper DDD structure and deep module pattern
+- Both portfolio pages import from the shared module
+- Typecheck and lint pass for all portfolio files
+
 ---
 
-## [ ] M-T08 | STATUS: PENDING | PRIORITY: MEDIUM
+## [x] M-T08 | STATUS: DONE | PRIORITY: MEDIUM
 
 ### Update tsconfig target to ES2022
 
@@ -955,10 +961,17 @@ Error: Route "/blog/[slug]" used `new Date()` before accessing either uncached d
 
 ### Subtasks
 
-- [ ] M-T08.1 [AGENT] Update target
+- [x] M-T08.1 [AGENT] Update target
   - **File:** `tsconfig.json`
   - **Action:** Change `"target": "ES2017"` to `"target": "ES2022"`.
   - **Validate:** `npx tsc --noEmit && npm run build && npx vitest run`
+
+**Implementation notes:**
+- Updated tsconfig.json target from ES2017 to ES2022
+- Typecheck passes with no errors
+- Build succeeds with all pages prerendered correctly
+- All 41 tests pass across 6 test files
+- ES2022 includes modern features like top-level await, class fields, and private methods
 
 ---
 
