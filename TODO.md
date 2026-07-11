@@ -138,7 +138,7 @@ Compare against the official Tailwind CSS v4 PostCSS installation guide.
 
 ## Task T002: Fix Tailwind Plugin Import Bug
 
-**Status:** `[ ]` PENDING
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -196,6 +196,10 @@ Read `c:\Users\Trevor\Documents\firm\tailwind.config.mjs` and confirm that `impo
 - **TDD:** SanitizedContent tests pass.
 - **Commands:**
   - `npm run test:run -- app/__tests__/components/sanitized-content.test.tsx`
+
+### Implementation Notes
+
+**Status:** Already completed during T001. The `tailwind.config.mjs` was recreated with a static `require("@tailwindcss/typography")` import instead of a dynamic `import()` expression. SanitizedContent tests pass, confirming .prose classes render correctly.
 
 ---
 
@@ -871,6 +875,30 @@ Read `c:\Users\Trevor\Documents\firm\app\components\footer.tsx`. Confirm that `<
 - **Description:** Assert that every `<ul>` in the footer has only `<li>` children.
 - **Commands:**
   - `npm run test:run -- app/__tests__/components/footer.test.tsx`
+
+---
+
+## Issue I001: Portfolio Route Suspense Error
+
+**Status:** `[ ]` PENDING
+
+### Description
+
+The portfolio route `/[locale]/portfolio/[slug]` fails during build with error: "Uncached data was accessed outside of <Suspense>. This delays the entire page from rendering, resulting in a slow user experience."
+
+### Related File Paths
+
+- `c:\Users\Trevor\Documents\firm\app\[locale]\portfolio\[slug]\page.tsx`
+
+### Definition of Done
+
+- Portfolio route uses `<Suspense>` boundary for async data fetching
+- Build completes without prerender errors
+- Portfolio pages render correctly in production
+
+### Priority
+
+**High** - Blocks production builds
 
 ---
 
