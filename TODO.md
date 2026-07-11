@@ -402,10 +402,10 @@
 
 ## Task 008: Document rate limiter limitations
 
-- [ ] **Status**: PENDING
+- [x] **Status**: COMPLETED
 - **Related Files**:
   - `app/lib/rate-limiter.ts`
-  - `README.md` or `docs/rate-limiting.md`
+  - `docs/rate-limiting.md`
 - **Definition of Done**:
   - Documentation explains in-memory limitations
   - Recommendations for production deployment
@@ -426,6 +426,20 @@
 - **Depends On**: None
 - **Blocks**: None
 
+**Implementation Notes**:
+- Added comprehensive JSDoc module-level documentation to `app/lib/rate-limiter.ts` explaining in-memory limitations, serverless incompatibility, and production recommendations
+- Added detailed JSDoc comments to all functions, constants, and the rate limit Map with warnings about serverless/multi-instance limitations
+- Created `docs/rate-limiting.md` with comprehensive documentation including:
+  - Current implementation explanation
+  - Detailed limitations section (serverless, multi-instance, edge runtime, fixed window algorithm)
+  - Production recommendations (Upstash Redis, traditional Redis, Cloudflare Durable Objects)
+  - Code examples for each production solution
+  - Step-by-step migration guide
+  - Algorithm comparison table
+  - Layered rate limiting strategy
+  - References to best practice articles
+- All quality assurance checks pass: typecheck, lint, and build succeed
+
 ### Subtasks
 
 #### 008-01: Add JSDoc comments to rate-limiter module
@@ -434,6 +448,7 @@
 - **Description**: Add comprehensive JSDoc comments explaining the in-memory limitation, serverless incompatibility, and recommendation to use Redis/Upstash for production.
 - **Commands**:
   - `npm run build`
+- ✅ **Completed**: Added module-level JSDoc with production warnings, detailed function documentation with examples, and warnings about serverless/multi-instance limitations
 
 #### 008-02: Create rate limiting documentation
 - **Agent**: AGENT
@@ -441,6 +456,7 @@
 - **Description**: Create documentation explaining the current implementation, its limitations, and recommended production alternatives. Include code examples for Redis/Upstash integration.
 - **Commands**:
   - `npm run build`
+- ✅ **Completed**: Created comprehensive documentation with current implementation, limitations, production alternatives (Upstash, Redis, Durable Objects), migration guide, algorithm comparison, and references
 
 ---
 
