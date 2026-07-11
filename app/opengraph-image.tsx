@@ -9,57 +9,55 @@ export const contentType = "image/png";
 
 export default async function Image() {
   return new ImageResponse(
-    (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+        height: "100%",
+        background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
+        color: "white",
+        padding: "60px",
+      }}
+    >
       <div
         style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100%",
-          height: "100%",
-          background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
-          color: "white",
-          padding: "60px",
+          fontSize: "24px",
+          fontWeight: 500,
+          opacity: 0.7,
+          marginBottom: "20px",
+          letterSpacing: "2px",
+          textTransform: "uppercase",
         }}
       >
-        <div
-          style={{
-            fontSize: "24px",
-            fontWeight: 500,
-            opacity: 0.7,
-            marginBottom: "20px",
-            letterSpacing: "2px",
-            textTransform: "uppercase",
-          }}
-        >
-          Elevate Digital
-        </div>
-        <div
-          style={{
-            fontSize: "64px",
-            fontWeight: 700,
-            lineHeight: 1.1,
-            textAlign: "center",
-            marginBottom: "20px",
-          }}
-        >
-          Web Design, SEO & Analytics
-        </div>
-        <div
-          style={{
-            fontSize: "28px",
-            fontWeight: 400,
-            opacity: 0.8,
-            textAlign: "center",
-          }}
-        >
-          Transform your digital presence
-        </div>
+        Elevate Digital
       </div>
-    ),
+      <div
+        style={{
+          fontSize: "64px",
+          fontWeight: 700,
+          lineHeight: 1.1,
+          textAlign: "center",
+          marginBottom: "20px",
+        }}
+      >
+        Web Design, SEO & Analytics
+      </div>
+      <div
+        style={{
+          fontSize: "28px",
+          fontWeight: 400,
+          opacity: 0.8,
+          textAlign: "center",
+        }}
+      >
+        Transform your digital presence
+      </div>
+    </div>,
     {
       ...size,
-    }
+    },
   );
 }

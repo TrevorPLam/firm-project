@@ -15,7 +15,7 @@ describe("Navigation", () => {
       // Verify menu is open (check mobile menu version)
       const servicesLinks = screen.getAllByText("Services");
       const mobileServicesLink = servicesLinks.find((el) =>
-        el.className.includes("py-2")
+        el.className.includes("py-2"),
       );
       expect(mobileServicesLink).toBeVisible();
 
@@ -39,7 +39,7 @@ describe("Navigation", () => {
       // Focus should be on the first menu item (Services in mobile menu)
       const servicesLinks = screen.getAllByText("Services");
       const mobileServicesLink = servicesLinks.find((el) =>
-        el.className.includes("py-2")
+        el.className.includes("py-2"),
       );
       expect(mobileServicesLink).toHaveFocus();
     });
@@ -54,7 +54,7 @@ describe("Navigation", () => {
       // Get mobile menu links
       const servicesLinks = screen.getAllByText("Services");
       const servicesLink = servicesLinks.find((el) =>
-        el.className.includes("py-2")
+        el.className.includes("py-2"),
       );
       const aboutLinks = screen.getAllByText("About");
       const aboutLink = aboutLinks.find((el) => el.className.includes("py-2"));
@@ -73,9 +73,9 @@ describe("Navigation", () => {
       await user.tab();
       await user.tab();
 
-      const getStartedButton = screen.getAllByText("Get Started").find(
-        (el) => el.className.includes("text-center")
-      );
+      const getStartedButton = screen
+        .getAllByText("Get Started")
+        .find((el) => el.className.includes("text-center"));
       expect(getStartedButton).toHaveFocus();
 
       // Tab should cycle back to first item (focus trap)
@@ -93,15 +93,17 @@ describe("Navigation", () => {
       // Get mobile menu links
       const servicesLinks = screen.getAllByText("Services");
       const servicesLink = servicesLinks.find((el) =>
-        el.className.includes("py-2")
+        el.className.includes("py-2"),
       );
       const contactLinks = screen.getAllByText("Contact");
-      const contactLink = contactLinks.find((el) => el.className.includes("py-2"));
+      const contactLink = contactLinks.find((el) =>
+        el.className.includes("py-2"),
+      );
 
       // Move to last item (Get Started in mobile menu)
-      const getStartedButton = screen.getAllByText("Get Started").find(
-        (el) => el.className.includes("text-center")
-      );
+      const getStartedButton = screen
+        .getAllByText("Get Started")
+        .find((el) => el.className.includes("text-center"));
       await user.tab();
       await user.tab();
       await user.tab();

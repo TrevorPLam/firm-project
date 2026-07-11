@@ -6,7 +6,11 @@ import { Footer } from "./components/footer";
 import { Loading } from "./components/loading";
 import { ErrorBoundary } from "./components/error-boundary";
 import { Analytics } from "./components/analytics";
-import { organizationSchema, faqSchema, generateSchemaJsonLd } from "./lib/schema";
+import {
+  organizationSchema,
+  faqSchema,
+  generateSchemaJsonLd,
+} from "./lib/schema";
 import { Suspense } from "react";
 
 const geistSans = Geist({
@@ -20,23 +24,35 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://elevatedigital.com"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://elevatedigital.com",
+  ),
   alternates: {
     canonical: "/",
   },
   title: "Elevate Digital | Web Design, SEO & Analytics Agency",
-  description: "Transform your digital presence with expert web design, SEO, and analytics services. We create experiences that convert visitors into customers.",
-  keywords: ["web design", "SEO", "analytics", "digital marketing", "website development", "conversion optimization"],
+  description:
+    "Transform your digital presence with expert web design, SEO, and analytics services. We create experiences that convert visitors into customers.",
+  keywords: [
+    "web design",
+    "SEO",
+    "analytics",
+    "digital marketing",
+    "website development",
+    "conversion optimization",
+  ],
   authors: [{ name: "Elevate Digital" }],
   openGraph: {
     title: "Elevate Digital | Web Design, SEO & Analytics Agency",
-    description: "Transform your digital presence with expert web design, SEO, and analytics services.",
+    description:
+      "Transform your digital presence with expert web design, SEO, and analytics services.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Elevate Digital | Web Design, SEO & Analytics Agency",
-    description: "Transform your digital presence with expert web design, SEO, and analytics services.",
+    description:
+      "Transform your digital presence with expert web design, SEO, and analytics services.",
   },
 };
 
@@ -73,10 +89,10 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col">
+      <body className="flex min-h-full flex-col">
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg"
+          className="focus:bg-primary sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-lg focus:px-4 focus:py-2 focus:text-white"
         >
           Skip to main content
         </a>
@@ -88,9 +104,7 @@ export default function RootLayout({
             <Navigation />
           </Suspense>
           <main id="main-content" tabIndex={-1} className="flex-1">
-            <Suspense fallback={<Loading />}>
-              {children}
-            </Suspense>
+            <Suspense fallback={<Loading />}>{children}</Suspense>
           </main>
           <Suspense fallback={<Loading />}>
             <Footer />

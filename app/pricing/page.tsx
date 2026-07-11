@@ -10,11 +10,19 @@ export const metadata: Metadata = {
     canonical: "/pricing",
   },
   title: "Pricing | Elevate Digital - Service Packages",
-  description: "Transparent pricing for our web design, SEO, and analytics services. Choose the package that fits your business needs and budget.",
-  keywords: ["pricing", "service packages", "web design pricing", "SEO pricing", "analytics pricing"],
+  description:
+    "Transparent pricing for our web design, SEO, and analytics services. Choose the package that fits your business needs and budget.",
+  keywords: [
+    "pricing",
+    "service packages",
+    "web design pricing",
+    "SEO pricing",
+    "analytics pricing",
+  ],
   openGraph: {
     title: "Pricing | Elevate Digital",
-    description: "Transparent pricing for our web design, SEO, and analytics services.",
+    description:
+      "Transparent pricing for our web design, SEO, and analytics services.",
     type: "website",
   },
 };
@@ -24,7 +32,8 @@ const packages = [
     name: "Starter",
     price: "$2,500",
     period: "starting at",
-    description: "Perfect for small businesses looking to establish their digital presence.",
+    description:
+      "Perfect for small businesses looking to establish their digital presence.",
     features: [
       "5-page responsive website",
       "Basic SEO setup",
@@ -34,14 +43,20 @@ const packages = [
       "1 month of support",
       "Basic performance optimization",
     ],
-    excluded: ["Custom design", "Advanced SEO", "Content creation", "E-commerce"],
+    excluded: [
+      "Custom design",
+      "Advanced SEO",
+      "Content creation",
+      "E-commerce",
+    ],
     popular: false,
   },
   {
     name: "Growth",
     price: "$5,000",
     period: "starting at",
-    description: "Ideal for growing businesses ready to scale their digital marketing efforts.",
+    description:
+      "Ideal for growing businesses ready to scale their digital marketing efforts.",
     features: [
       "10-page custom website",
       "Advanced SEO optimization",
@@ -60,7 +75,8 @@ const packages = [
     name: "Enterprise",
     price: "Custom",
     period: "pricing",
-    description: "Comprehensive solutions for established businesses with complex needs.",
+    description:
+      "Comprehensive solutions for established businesses with complex needs.",
     features: [
       "Unlimited pages",
       "Full SEO campaign",
@@ -106,15 +122,16 @@ export default async function PricingPage() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6">
-        <div className="max-w-7xl mx-auto">
+      <section className="px-6 pt-32 pb-20">
+        <div className="mx-auto max-w-7xl">
           <ScrollReveal>
             <div className="max-w-3xl">
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-tight">
+              <h1 className="mb-6 text-5xl leading-tight font-bold tracking-tight md:text-7xl">
                 Transparent Pricing
               </h1>
-              <p className="text-xl md:text-2xl text-foreground/70 mb-8 leading-relaxed">
-                Choose the package that fits your business needs. No hidden fees, no surprises — just clear, straightforward pricing.
+              <p className="text-foreground/70 mb-8 text-xl leading-relaxed md:text-2xl">
+                Choose the package that fits your business needs. No hidden
+                fees, no surprises — just clear, straightforward pricing.
               </p>
             </div>
           </ScrollReveal>
@@ -122,35 +139,37 @@ export default async function PricingPage() {
       </section>
 
       {/* Pricing Packages */}
-      <section className="py-20 px-6 bg-foreground/5">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8">
+      <section className="bg-foreground/5 px-6 py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid gap-8 md:grid-cols-3">
             {packages.map((pkg, index) => (
               <ScrollReveal key={pkg.name} delay={index * 100}>
                 <div
-                  className={`bg-background rounded-2xl border-2 transition-all hover:shadow-xl overflow-hidden ${
+                  className={`bg-background overflow-hidden rounded-2xl border-2 transition-all hover:shadow-xl ${
                     pkg.popular
-                      ? "border-primary shadow-xl relative"
+                      ? "border-primary relative shadow-xl"
                       : "border-foreground/10 hover:border-primary/50"
                   }`}
                 >
                   {pkg.popular && (
-                    <div className="absolute top-0 right-0 bg-primary text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+                    <div className="bg-primary absolute top-0 right-0 rounded-bl-lg px-3 py-1 text-xs font-bold text-white">
                       MOST POPULAR
                     </div>
                   )}
                   <div className="p-8">
-                    <h3 className="text-2xl font-bold mb-2">{pkg.name}</h3>
+                    <h3 className="mb-2 text-2xl font-bold">{pkg.name}</h3>
                     <div className="mb-4">
                       <span className="text-4xl font-bold">{pkg.price}</span>
-                      <span className="text-foreground/60 ml-2">{pkg.period}</span>
+                      <span className="text-foreground/60 ml-2">
+                        {pkg.period}
+                      </span>
                     </div>
                     <p className="text-foreground/70 mb-6">{pkg.description}</p>
-                    <ul className="space-y-3 mb-8">
+                    <ul className="mb-8 space-y-3">
                       {pkg.features.map((feature) => (
                         <li key={feature} className="flex items-start gap-3">
                           <svg
-                            className="w-5 h-5 text-primary mt-0.5 flex-shrink-0"
+                            className="text-primary mt-0.5 h-5 w-5 flex-shrink-0"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -166,9 +185,12 @@ export default async function PricingPage() {
                         </li>
                       ))}
                       {pkg.excluded.map((feature) => (
-                        <li key={feature} className="flex items-start gap-3 opacity-50">
+                        <li
+                          key={feature}
+                          className="flex items-start gap-3 opacity-50"
+                        >
                           <svg
-                            className="w-5 h-5 text-foreground/40 mt-0.5 flex-shrink-0"
+                            className="text-foreground/40 mt-0.5 h-5 w-5 flex-shrink-0"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -180,15 +202,17 @@ export default async function PricingPage() {
                               d="M6 18L18 6M6 6l12 12"
                             />
                           </svg>
-                          <span className="text-foreground/40 line-through">{feature}</span>
+                          <span className="text-foreground/40 line-through">
+                            {feature}
+                          </span>
                         </li>
                       ))}
                     </ul>
                     <Link
                       href="/contact"
-                      className={`block w-full py-3 text-center rounded-lg font-medium transition-colors ${
+                      className={`block w-full rounded-lg py-3 text-center font-medium transition-colors ${
                         pkg.popular
-                          ? "bg-primary text-white hover:bg-primary-dark"
+                          ? "bg-primary hover:bg-primary-dark text-white"
                           : "bg-foreground/10 text-foreground hover:bg-foreground/20"
                       }`}
                     >
@@ -203,26 +227,29 @@ export default async function PricingPage() {
       </section>
 
       {/* Add-ons Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-7xl mx-auto">
+      <section className="px-6 py-20">
+        <div className="mx-auto max-w-7xl">
           <ScrollReveal>
-            <div className="max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+            <div className="mx-auto mb-16 max-w-3xl text-center">
+              <h2 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl">
                 Add-On Services
               </h2>
-              <p className="text-xl text-foreground/70 leading-relaxed">
-                Enhance your package with additional services to meet your specific needs.
+              <p className="text-foreground/70 text-xl leading-relaxed">
+                Enhance your package with additional services to meet your
+                specific needs.
               </p>
             </div>
           </ScrollReveal>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid gap-6 md:grid-cols-2">
             {addOns.map((addon, index) => (
               <ScrollReveal key={addon.name} delay={index * 100}>
-                <div className="bg-background p-6 rounded-xl border border-foreground/10 hover:border-primary/50 transition-all">
-                  <div className="flex justify-between items-start mb-2">
+                <div className="bg-background border-foreground/10 hover:border-primary/50 rounded-xl border p-6 transition-all">
+                  <div className="mb-2 flex items-start justify-between">
                     <h3 className="text-xl font-bold">{addon.name}</h3>
-                    <span className="text-primary font-semibold">{addon.price}</span>
+                    <span className="text-primary font-semibold">
+                      {addon.price}
+                    </span>
                   </div>
                   <p className="text-foreground/70">{addon.description}</p>
                 </div>
@@ -233,11 +260,11 @@ export default async function PricingPage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 px-6 bg-foreground/5">
-        <div className="max-w-4xl mx-auto">
+      <section className="bg-foreground/5 px-6 py-20">
+        <div className="mx-auto max-w-4xl">
           <ScrollReveal>
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+            <div className="mb-16 text-center">
+              <h2 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl">
                 Frequently Asked Questions
               </h2>
             </div>
@@ -247,28 +274,33 @@ export default async function PricingPage() {
             {[
               {
                 question: "What's included in the starting price?",
-                answer: "Our starting prices include the core features listed in each package. Additional requirements may affect the final price, which we'll discuss during our initial consultation.",
+                answer:
+                  "Our starting prices include the core features listed in each package. Additional requirements may affect the final price, which we'll discuss during our initial consultation.",
               },
               {
                 question: "Do you offer payment plans?",
-                answer: "Yes, we offer flexible payment plans for projects over $5,000. Typically, we require a 50% deposit upfront with the remaining balance split across project milestones.",
+                answer:
+                  "Yes, we offer flexible payment plans for projects over $5,000. Typically, we require a 50% deposit upfront with the remaining balance split across project milestones.",
               },
               {
                 question: "How long does a typical project take?",
-                answer: "Project timelines vary based on scope. Starter packages typically take 2-4 weeks, Growth packages 4-8 weeks, and Enterprise projects are customized based on requirements.",
+                answer:
+                  "Project timelines vary based on scope. Starter packages typically take 2-4 weeks, Growth packages 4-8 weeks, and Enterprise projects are customized based on requirements.",
               },
               {
                 question: "What happens after the project is complete?",
-                answer: "All packages include post-launch support. We also offer ongoing maintenance packages to keep your site secure, updated, and performing optimally.",
+                answer:
+                  "All packages include post-launch support. We also offer ongoing maintenance packages to keep your site secure, updated, and performing optimally.",
               },
               {
                 question: "Can I upgrade my package later?",
-                answer: "Absolutely! We can start with a package that fits your current needs and scale up as your business grows. Many of our clients begin with Starter and upgrade to Growth or Enterprise.",
+                answer:
+                  "Absolutely! We can start with a package that fits your current needs and scale up as your business grows. Many of our clients begin with Starter and upgrade to Growth or Enterprise.",
               },
             ].map((faq, index) => (
               <ScrollReveal key={index} delay={index * 50}>
-                <div className="bg-background p-6 rounded-xl border border-foreground/10">
-                  <h3 className="text-lg font-semibold mb-2">{faq.question}</h3>
+                <div className="bg-background border-foreground/10 rounded-xl border p-6">
+                  <h3 className="mb-2 text-lg font-semibold">{faq.question}</h3>
                   <p className="text-foreground/70">{faq.answer}</p>
                 </div>
               </ScrollReveal>
@@ -278,18 +310,19 @@ export default async function PricingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="px-6 py-20">
+        <div className="mx-auto max-w-4xl text-center">
           <ScrollReveal>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+            <h2 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl">
               Not Sure Which Package is Right for You?
             </h2>
-            <p className="text-xl text-foreground/70 mb-8">
-              Let's discuss your specific needs and create a custom solution that fits your budget and goals.
+            <p className="text-foreground/70 mb-8 text-xl">
+              Let's discuss your specific needs and create a custom solution
+              that fits your budget and goals.
             </p>
             <Link
               href="/contact"
-              className="inline-block px-8 py-4 bg-primary text-white rounded-full font-semibold text-lg hover:bg-primary-dark transition-all hover:scale-105"
+              className="bg-primary hover:bg-primary-dark inline-block rounded-full px-8 py-4 text-lg font-semibold text-white transition-all hover:scale-105"
             >
               Schedule a Consultation
             </Link>

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 interface UseScrollRevealOptions {
   delay?: number;
@@ -18,15 +18,17 @@ export function useScrollReveal({ delay = 0 }: UseScrollRevealOptions = {}) {
 
   useEffect(() => {
     // Check for reduced motion preference
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
     // If user prefers reduced motion, keep content visible and skip animation
     if (prefersReducedMotion) {
       return;
     }
 
     // Check if IntersectionObserver is available
-    if (typeof IntersectionObserver === 'undefined') {
+    if (typeof IntersectionObserver === "undefined") {
       return;
     }
 
@@ -47,8 +49,8 @@ export function useScrollReveal({ delay = 0 }: UseScrollRevealOptions = {}) {
       },
       {
         threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px',
-      }
+        rootMargin: "0px 0px -50px 0px",
+      },
     );
 
     const currentRef = ref.current;
@@ -67,7 +69,11 @@ export function useScrollReveal({ delay = 0 }: UseScrollRevealOptions = {}) {
   return { ref, isVisible, isEnhanced };
 }
 
-export function ScrollReveal({ children, className = '', delay = 0 }: ScrollRevealProps) {
+export function ScrollReveal({
+  children,
+  className = "",
+  delay = 0,
+}: ScrollRevealProps) {
   const { ref, isVisible, isEnhanced } = useScrollReveal({ delay });
 
   return (
@@ -76,9 +82,9 @@ export function ScrollReveal({ children, className = '', delay = 0 }: ScrollReve
       className={`transition-all duration-700 ease-out ${
         isEnhanced
           ? isVisible
-            ? 'opacity-100 translate-y-0 scale-100'
-            : 'opacity-0 translate-y-8 scale-95'
-          : 'opacity-100 translate-y-0 scale-100'
+            ? "translate-y-0 scale-100 opacity-100"
+            : "translate-y-8 scale-95 opacity-0"
+          : "translate-y-0 scale-100 opacity-100"
       } ${className}`}
     >
       {children}

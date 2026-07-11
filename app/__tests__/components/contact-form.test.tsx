@@ -12,7 +12,9 @@ describe("ContactForm", () => {
     expect(screen.getByLabelText(/service interested in/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/project budget/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/message/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /send message/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /send message/i }),
+    ).toBeInTheDocument();
   });
 
   it("renders title when showTitle is true (default)", () => {
@@ -52,7 +54,9 @@ describe("ContactForm", () => {
 
     expect(screen.getByLabelText(/name/i)).toHaveAttribute("required");
     expect(screen.getByLabelText(/email/i)).toHaveAttribute("required");
-    expect(screen.getByLabelText(/service interested in/i)).toHaveAttribute("required");
+    expect(screen.getByLabelText(/service interested in/i)).toHaveAttribute(
+      "required",
+    );
     expect(screen.getByLabelText(/message/i)).toHaveAttribute("required");
   });
 
@@ -60,7 +64,9 @@ describe("ContactForm", () => {
     render(<ContactForm />);
 
     expect(screen.getByLabelText(/company/i)).not.toHaveAttribute("required");
-    expect(screen.getByLabelText(/project budget/i)).not.toHaveAttribute("required");
+    expect(screen.getByLabelText(/project budget/i)).not.toHaveAttribute(
+      "required",
+    );
   });
 
   it("has correct input types", () => {
@@ -76,8 +82,12 @@ describe("ContactForm", () => {
 
     expect(screen.getByPlaceholderText(/your name/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/your@email.com/i)).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/your company name/i)).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/tell us about your project/i)).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText(/your company name/i),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText(/tell us about your project/i),
+    ).toBeInTheDocument();
   });
 
   it("has correct textarea rows", () => {

@@ -4,23 +4,26 @@ import { useActionState } from "react";
 import { subscribeNewsletterAction } from "../actions/newsletter";
 
 export function NewsletterForm() {
-  const [state, formAction, isPending] = useActionState(subscribeNewsletterAction, null);
+  const [state, formAction, isPending] = useActionState(
+    subscribeNewsletterAction,
+    null,
+  );
 
   return (
     <div>
       {state && (
         <div
-          className={`mb-4 p-4 rounded-lg ${
+          className={`mb-4 rounded-lg p-4 ${
             state.success
-              ? "bg-green-50 text-green-800 border border-green-200"
-              : "bg-red-50 text-red-800 border border-red-200"
+              ? "border border-green-200 bg-green-50 text-green-800"
+              : "border border-red-200 bg-red-50 text-red-800"
           }`}
         >
           {state.message}
           {state.errors && (
             <ul className="mt-2 text-sm">
               {Object.entries(state.errors).map(([field, errors]) => (
-                <li key={field} className="list-disc ml-4">
+                <li key={field} className="ml-4 list-disc">
                   {errors.join(", ")}
                 </li>
               ))}
@@ -29,19 +32,22 @@ export function NewsletterForm() {
         </div>
       )}
 
-      <form action={formAction} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+      <form
+        action={formAction}
+        className="mx-auto flex max-w-md flex-col gap-4 sm:flex-row"
+      >
         <input
           type="email"
           name="email"
           placeholder="Enter your email"
           required
           disabled={isPending}
-          className="flex-1 px-4 py-3 rounded-lg border border-foreground/20 bg-background focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all disabled:opacity-50"
+          className="border-foreground/20 bg-background focus:border-primary focus:ring-primary/20 flex-1 rounded-lg border px-4 py-3 transition-all outline-none focus:ring-2 disabled:opacity-50"
         />
         <button
           type="submit"
           disabled={isPending}
-          className="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="bg-primary hover:bg-primary-dark rounded-lg px-6 py-3 font-medium text-white transition-colors disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isPending ? "Subscribing..." : "Subscribe"}
         </button>

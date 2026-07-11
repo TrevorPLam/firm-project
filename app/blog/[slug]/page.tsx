@@ -13,7 +13,11 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) {
@@ -39,7 +43,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function BlogPostPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
 
@@ -50,31 +58,41 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   return (
     <div className="flex flex-col">
       {/* Article Header */}
-      <article className="pt-32 pb-20 px-6">
-        <div className="max-w-4xl mx-auto">
+      <article className="px-6 pt-32 pb-20">
+        <div className="mx-auto max-w-4xl">
           <ScrollReveal>
             <div className="mb-8">
               <Link
                 href="/blog"
-                className="inline-flex items-center gap-2 text-foreground/60 hover:text-foreground transition-colors mb-8"
+                className="text-foreground/60 hover:text-foreground mb-8 inline-flex items-center gap-2 transition-colors"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
                 </svg>
                 Back to Blog
               </Link>
-              <div className="flex items-center gap-2 mb-4">
-                <span className="px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full">
+              <div className="mb-4 flex items-center gap-2">
+                <span className="bg-primary/10 text-primary rounded-full px-3 py-1 text-sm font-medium">
                   {post.category}
                 </span>
               </div>
-              <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 leading-tight">
+              <h1 className="mb-6 text-4xl leading-tight font-bold tracking-tight md:text-6xl">
                 {post.title}
               </h1>
-              <p className="text-xl text-foreground/70 mb-8 leading-relaxed">
+              <p className="text-foreground/70 mb-8 text-xl leading-relaxed">
                 {post.excerpt}
               </p>
-              <div className="flex items-center gap-6 text-foreground/60">
+              <div className="text-foreground/60 flex items-center gap-6">
                 <div className="flex items-center gap-3">
                   {post.author.image ? (
                     <Image
@@ -82,17 +100,23 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                       alt={post.author.name}
                       width={40}
                       height={40}
-                      className="w-10 h-10 rounded-full object-cover"
+                      className="h-10 w-10 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                    <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full">
                       <span className="text-primary font-semibold">
-                        {post.author.name.split(' ').map(n => n[0]).filter(Boolean).join('')}
+                        {post.author.name
+                          .split(" ")
+                          .map((n) => n[0])
+                          .filter(Boolean)
+                          .join("")}
                       </span>
                     </div>
                   )}
                   <div>
-                    <div className="font-semibold text-foreground">{post.author.name}</div>
+                    <div className="text-foreground font-semibold">
+                      {post.author.name}
+                    </div>
                     <div className="text-sm">{post.author.role}</div>
                   </div>
                 </div>
@@ -107,8 +131,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       </article>
 
       {/* Article Content */}
-      <article className="py-20 px-6 bg-foreground/5">
-        <div className="max-w-4xl mx-auto">
+      <article className="bg-foreground/5 px-6 py-20">
+        <div className="mx-auto max-w-4xl">
           <ScrollReveal>
             <SanitizedContent html={post.content} />
           </ScrollReveal>
@@ -116,14 +140,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       </article>
 
       {/* Tags */}
-      <section className="py-20 px-6">
-        <div className="max-w-4xl mx-auto">
+      <section className="px-6 py-20">
+        <div className="mx-auto max-w-4xl">
           <ScrollReveal>
             <div className="flex flex-wrap gap-3">
               {post.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-4 py-2 bg-foreground/5 border border-foreground/10 rounded-lg text-foreground/70 text-sm"
+                  className="bg-foreground/5 border-foreground/10 text-foreground/70 rounded-lg border px-4 py-2 text-sm"
                 >
                   {tag}
                 </span>
@@ -134,10 +158,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       </section>
 
       {/* Author Bio */}
-      <section className="py-20 px-6 bg-foreground/5">
-        <div className="max-w-4xl mx-auto">
+      <section className="bg-foreground/5 px-6 py-20">
+        <div className="mx-auto max-w-4xl">
           <ScrollReveal>
-            <div className="bg-background p-8 rounded-2xl border border-foreground/10">
+            <div className="bg-background border-foreground/10 rounded-2xl border p-8">
               <div className="flex items-start gap-6">
                 {post.author.image ? (
                   <Image
@@ -145,22 +169,30 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                     alt={post.author.name}
                     width={64}
                     height={64}
-                    className="w-16 h-16 rounded-full object-cover flex-shrink-0"
+                    className="h-16 w-16 flex-shrink-0 rounded-full object-cover"
                   />
                 ) : (
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-2xl font-bold text-primary">
-                      {post.author.name.split(' ').map(n => n[0]).filter(Boolean).join('')}
+                  <div className="bg-primary/10 flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full">
+                    <span className="text-primary text-2xl font-bold">
+                      {post.author.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .filter(Boolean)
+                        .join("")}
                     </span>
                   </div>
                 )}
                 <div>
-                  <h3 className="text-xl font-bold mb-1">{post.author.name}</h3>
-                  <p className="text-primary font-medium mb-3">{post.author.role}</p>
-                  <p className="text-foreground/70 mb-4">
-                    {post.author.name} is part of the Elevate Digital team, bringing expertise and insights to help businesses succeed in the digital landscape.
+                  <h3 className="mb-1 text-xl font-bold">{post.author.name}</h3>
+                  <p className="text-primary mb-3 font-medium">
+                    {post.author.role}
                   </p>
-                  <div className="flex items-center gap-2 text-sm text-foreground/60">
+                  <p className="text-foreground/70 mb-4">
+                    {post.author.name} is part of the Elevate Digital team,
+                    bringing expertise and insights to help businesses succeed
+                    in the digital landscape.
+                  </p>
+                  <div className="text-foreground/60 flex items-center gap-2 text-sm">
                     <span className="font-semibold">Expertise:</span>
                     <span>Digital Marketing Strategy</span>
                     <span>•</span>
@@ -176,29 +208,35 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       </section>
 
       {/* Related Posts */}
-      <section className="py-20 px-6">
-        <div className="max-w-4xl mx-auto">
+      <section className="px-6 py-20">
+        <div className="mx-auto max-w-4xl">
           <ScrollReveal>
-            <h2 className="text-3xl font-bold tracking-tight mb-8">Related Articles</h2>
-            <div className="grid md:grid-cols-2 gap-6">
+            <h2 className="mb-8 text-3xl font-bold tracking-tight">
+              Related Articles
+            </h2>
+            <div className="grid gap-6 md:grid-cols-2">
               {getAllPosts()
-                .filter((p) => p.slug !== post.slug && p.category === post.category)
+                .filter(
+                  (p) => p.slug !== post.slug && p.category === post.category,
+                )
                 .slice(0, 2)
                 .map((relatedPost) => (
                   <Link
                     key={relatedPost.slug}
                     href={`/blog/${relatedPost.slug}`}
-                    className="bg-background p-6 rounded-xl border border-foreground/10 hover:border-primary/50 transition-all group"
+                    className="bg-background border-foreground/10 hover:border-primary/50 group rounded-xl border p-6 transition-all"
                   >
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="px-2 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full">
+                    <div className="mb-3 flex items-center gap-2">
+                      <span className="bg-primary/10 text-primary rounded-full px-2 py-1 text-xs font-medium">
                         {relatedPost.category}
                       </span>
                     </div>
-                    <h3 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors">
+                    <h3 className="group-hover:text-primary mb-2 text-lg font-bold transition-colors">
                       {relatedPost.title}
                     </h3>
-                    <p className="text-foreground/60 text-sm">{relatedPost.excerpt}</p>
+                    <p className="text-foreground/60 text-sm">
+                      {relatedPost.excerpt}
+                    </p>
                   </Link>
                 ))}
             </div>
@@ -207,15 +245,16 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       </section>
 
       {/* Newsletter CTA */}
-      <section className="py-20 px-6 bg-foreground/5">
-        <div className="max-w-4xl mx-auto">
+      <section className="bg-foreground/5 px-6 py-20">
+        <div className="mx-auto max-w-4xl">
           <ScrollReveal>
-            <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl p-8 md:p-12 border border-primary/20 text-center">
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+            <div className="from-primary/10 to-primary/5 border-primary/20 rounded-2xl border bg-gradient-to-br p-8 text-center md:p-12">
+              <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">
                 Stay Updated
               </h2>
-              <p className="text-xl text-foreground/70 mb-8">
-                Subscribe to our newsletter for the latest insights on digital marketing, web design, and SEO.
+              <p className="text-foreground/70 mb-8 text-xl">
+                Subscribe to our newsletter for the latest insights on digital
+                marketing, web design, and SEO.
               </p>
               <NewsletterForm />
             </div>

@@ -11,11 +11,19 @@ export const metadata: Metadata = {
     canonical: "/portfolio",
   },
   title: "Portfolio | Elevate Digital - Our Case Studies",
-  description: "Explore our portfolio of successful projects. See how we've helped businesses transform their digital presence with web design, SEO, and analytics.",
-  keywords: ["portfolio", "case studies", "our work", "web design projects", "SEO success stories"],
+  description:
+    "Explore our portfolio of successful projects. See how we've helped businesses transform their digital presence with web design, SEO, and analytics.",
+  keywords: [
+    "portfolio",
+    "case studies",
+    "our work",
+    "web design projects",
+    "SEO success stories",
+  ],
   openGraph: {
     title: "Portfolio | Elevate Digital",
-    description: "Explore our portfolio of successful projects and case studies.",
+    description:
+      "Explore our portfolio of successful projects and case studies.",
     type: "website",
   },
 };
@@ -26,15 +34,17 @@ export default async function PortfolioPage() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6">
-        <div className="max-w-7xl mx-auto">
+      <section className="px-6 pt-32 pb-20">
+        <div className="mx-auto max-w-7xl">
           <ScrollReveal>
             <div className="max-w-3xl">
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-tight">
+              <h1 className="mb-6 text-5xl leading-tight font-bold tracking-tight md:text-7xl">
                 Our Work
               </h1>
-              <p className="text-xl md:text-2xl text-foreground/70 mb-8 leading-relaxed">
-                Explore our portfolio of successful projects. See how we've helped businesses transform their digital presence and achieve measurable results.
+              <p className="text-foreground/70 mb-8 text-xl leading-relaxed md:text-2xl">
+                Explore our portfolio of successful projects. See how we've
+                helped businesses transform their digital presence and achieve
+                measurable results.
               </p>
             </div>
           </ScrollReveal>
@@ -42,29 +52,34 @@ export default async function PortfolioPage() {
       </section>
 
       {/* Case Studies Grid */}
-      <section className="py-20 px-6 bg-foreground/5">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <section className="bg-foreground/5 px-6 py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {caseStudies.map((study, index) => (
               <ScrollReveal key={study.id} delay={index * 100}>
-                <div className="bg-background rounded-2xl border border-foreground/10 hover:border-primary/50 transition-all hover:shadow-xl overflow-hidden">
+                <div className="bg-background border-foreground/10 hover:border-primary/50 overflow-hidden rounded-2xl border transition-all hover:shadow-xl">
                   <div className="p-8">
-                    <div className="flex items-center gap-2 mb-4">
-                      <span className="px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full">
+                    <div className="mb-4 flex items-center gap-2">
+                      <span className="bg-primary/10 text-primary rounded-full px-3 py-1 text-sm font-medium">
                         {study.category}
                       </span>
                     </div>
-                    <h3 className="text-2xl font-bold mb-2">{study.title}</h3>
+                    <h3 className="mb-2 text-2xl font-bold">{study.title}</h3>
                     <p className="text-foreground/60 mb-4">{study.client}</p>
                     <p className="text-foreground/70 mb-6 leading-relaxed">
                       {study.description}
                     </p>
                     <div className="mb-6">
-                      <h4 className="font-semibold mb-3 text-sm">Key Results:</h4>
+                      <h4 className="mb-3 text-sm font-semibold">
+                        Key Results:
+                      </h4>
                       <ul className="space-y-2">
                         {study.results.map((result, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm text-foreground/70">
-                            <span className="w-1.5 h-1.5 bg-primary rounded-full mt-1.5 flex-shrink-0"></span>
+                          <li
+                            key={i}
+                            className="text-foreground/70 flex items-start gap-2 text-sm"
+                          >
+                            <span className="bg-primary mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full"></span>
                             {result}
                           </li>
                         ))}
@@ -74,7 +89,7 @@ export default async function PortfolioPage() {
                       {study.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="px-2 py-1 bg-foreground/5 text-foreground/60 text-xs rounded"
+                          className="bg-foreground/5 text-foreground/60 rounded px-2 py-1 text-xs"
                         >
                           {tag}
                         </span>
@@ -89,25 +104,27 @@ export default async function PortfolioPage() {
       </section>
 
       {/* Process Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-7xl mx-auto">
+      <section className="px-6 py-20">
+        <div className="mx-auto max-w-7xl">
           <ScrollReveal>
-            <div className="max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+            <div className="mx-auto mb-16 max-w-3xl text-center">
+              <h2 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl">
                 Our Approach
               </h2>
-              <p className="text-xl text-foreground/70 leading-relaxed">
-                Every project starts with understanding your goals and ends with delivering measurable results.
+              <p className="text-foreground/70 text-xl leading-relaxed">
+                Every project starts with understanding your goals and ends with
+                delivering measurable results.
               </p>
             </div>
           </ScrollReveal>
 
-          <div className="grid md:grid-cols-4 gap-8">
+          <div className="grid gap-8 md:grid-cols-4">
             {[
               {
                 step: "01",
                 title: "Discovery",
-                description: "Deep dive into your business, audience, and objectives.",
+                description:
+                  "Deep dive into your business, audience, and objectives.",
               },
               {
                 step: "02",
@@ -127,8 +144,10 @@ export default async function PortfolioPage() {
             ].map((item) => (
               <ScrollReveal key={item.step}>
                 <div className="text-center">
-                  <div className="text-5xl font-bold text-primary/20 mb-4">{item.step}</div>
-                  <h3 className="text-xl font-bold mb-3">{item.title}</h3>
+                  <div className="text-primary/20 mb-4 text-5xl font-bold">
+                    {item.step}
+                  </div>
+                  <h3 className="mb-3 text-xl font-bold">{item.title}</h3>
                   <p className="text-foreground/70">{item.description}</p>
                 </div>
               </ScrollReveal>
@@ -138,18 +157,19 @@ export default async function PortfolioPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6 bg-foreground/5">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="bg-foreground/5 px-6 py-20">
+        <div className="mx-auto max-w-4xl text-center">
           <ScrollReveal>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+            <h2 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl">
               Ready to Start Your Project?
             </h2>
-            <p className="text-xl text-foreground/70 mb-8">
-              Let's discuss how we can help you achieve similar results for your business.
+            <p className="text-foreground/70 mb-8 text-xl">
+              Let's discuss how we can help you achieve similar results for your
+              business.
             </p>
             <Link
               href="/contact"
-              className="inline-block px-8 py-4 bg-primary text-white rounded-full font-semibold text-lg hover:bg-primary-dark transition-all hover:scale-105"
+              className="bg-primary hover:bg-primary-dark inline-block rounded-full px-8 py-4 text-lg font-semibold text-white transition-all hover:scale-105"
             >
               Get in Touch
             </Link>

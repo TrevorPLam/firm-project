@@ -53,7 +53,7 @@ export function Navigation() {
       if (e.key !== "Tab") return;
 
       const focusableElements = menuRef.current?.querySelectorAll(
-        'a[href], button:not([disabled])'
+        "a[href], button:not([disabled])",
       );
       if (!focusableElements || focusableElements.length === 0) return;
 
@@ -83,52 +83,52 @@ export function Navigation() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 right-0 left-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-background/80 backdrop-blur-lg border-b border-foreground/10 py-4"
-          : "bg-background/0 backdrop-blur-none border-b border-transparent py-6"
+          ? "bg-background/80 border-foreground/10 border-b py-4 backdrop-blur-lg"
+          : "bg-background/0 border-b border-transparent py-6 backdrop-blur-none"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6">
         <Link href="/" className="text-xl font-bold tracking-tight">
           Elevate Digital
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden items-center gap-8 md:flex">
           <Link
             href="/services"
-            className="text-foreground/80 hover:text-foreground transition-colors hover:scale-105 transform inline-block"
+            className="text-foreground/80 hover:text-foreground inline-block transform transition-colors hover:scale-105"
           >
             Services
           </Link>
           <Link
             href="/about"
-            className="text-foreground/80 hover:text-foreground transition-colors hover:scale-105 transform inline-block"
+            className="text-foreground/80 hover:text-foreground inline-block transform transition-colors hover:scale-105"
           >
             About
           </Link>
           <Link
             href="/portfolio"
-            className="text-foreground/80 hover:text-foreground transition-colors hover:scale-105 transform inline-block"
+            className="text-foreground/80 hover:text-foreground inline-block transform transition-colors hover:scale-105"
           >
             Portfolio
           </Link>
           <Link
             href="/pricing"
-            className="text-foreground/80 hover:text-foreground transition-colors hover:scale-105 transform inline-block"
+            className="text-foreground/80 hover:text-foreground inline-block transform transition-colors hover:scale-105"
           >
             Pricing
           </Link>
           <Link
             href="/blog"
-            className="text-foreground/80 hover:text-foreground transition-colors hover:scale-105 transform inline-block"
+            className="text-foreground/80 hover:text-foreground inline-block transform transition-colors hover:scale-105"
           >
             Blog
           </Link>
           <Link
             href="/contact"
-            className="text-foreground/80 hover:text-foreground transition-colors hover:scale-105 transform inline-block"
+            className="text-foreground/80 hover:text-foreground inline-block transform transition-colors hover:scale-105"
           >
             Contact
           </Link>
@@ -137,7 +137,7 @@ export function Navigation() {
         <div className="hidden md:block">
           <Link
             href="/contact"
-            className="px-6 py-2.5 bg-primary text-white rounded-full font-medium hover:bg-primary-dark transition-all hover:scale-105"
+            className="bg-primary hover:bg-primary-dark rounded-full px-6 py-2.5 font-medium text-white transition-all hover:scale-105"
           >
             Get Started
           </Link>
@@ -147,11 +147,11 @@ export function Navigation() {
         <button
           ref={toggleButtonRef}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="md:hidden p-2"
+          className="p-2 md:hidden"
           aria-label="Toggle menu"
         >
           <svg
-            className="w-6 h-6"
+            className="h-6 w-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -177,53 +177,56 @@ export function Navigation() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div ref={menuRef} className="md:hidden absolute top-full left-0 right-0 bg-background border-b border-foreground/10 py-4 px-6">
+        <div
+          ref={menuRef}
+          className="bg-background border-foreground/10 absolute top-full right-0 left-0 border-b px-6 py-4 md:hidden"
+        >
           <div className="flex flex-col gap-4">
             <Link
               href="/services"
-              className="text-foreground/80 hover:text-foreground transition-colors py-2"
+              className="text-foreground/80 hover:text-foreground py-2 transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Services
             </Link>
             <Link
               href="/about"
-              className="text-foreground/80 hover:text-foreground transition-colors py-2"
+              className="text-foreground/80 hover:text-foreground py-2 transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               About
             </Link>
             <Link
               href="/portfolio"
-              className="text-foreground/80 hover:text-foreground transition-colors py-2"
+              className="text-foreground/80 hover:text-foreground py-2 transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Portfolio
             </Link>
             <Link
               href="/pricing"
-              className="text-foreground/80 hover:text-foreground transition-colors py-2"
+              className="text-foreground/80 hover:text-foreground py-2 transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Pricing
             </Link>
             <Link
               href="/blog"
-              className="text-foreground/80 hover:text-foreground transition-colors py-2"
+              className="text-foreground/80 hover:text-foreground py-2 transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Blog
             </Link>
             <Link
               href="/contact"
-              className="text-foreground/80 hover:text-foreground transition-colors py-2"
+              className="text-foreground/80 hover:text-foreground py-2 transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Contact
             </Link>
             <Link
               href="/contact"
-              className="px-6 py-2.5 bg-primary text-white rounded-full font-medium hover:bg-primary-dark transition-colors text-center mt-2"
+              className="bg-primary hover:bg-primary-dark mt-2 rounded-full px-6 py-2.5 text-center font-medium text-white transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Get Started

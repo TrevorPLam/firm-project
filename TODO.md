@@ -1424,11 +1424,11 @@ Add vitest types to tsconfig.json types array or install @types/vitest
 
 ---
 
-## [ ] L-T01 | STATUS: PENDING | PRIORITY: LOW
+## [x] L-T01 | STATUS: DONE | PRIORITY: LOW
 
 ### Upgrade dev dependencies
 
-**Files:** `package.json`
+**Files:** `package.json`, `.prettierrc` (new), `app/components/copyright-year.tsx` (new), `app/components/footer.tsx`
 
 **Definition of done:**
 - `vitest` upgraded to v3.x
@@ -1451,17 +1451,56 @@ Add vitest types to tsconfig.json types array or install @types/vitest
 
 **Depends on:** H-T05 | **Blocks:** None
 
+**Implementation notes:**
+- Upgraded vitest from ^2.0.0 to ^3.2.7 and @vitest/ui to matching version
+- Upgraded @types/node from ^20 to ^22
+- Installed prettier and prettier-plugin-tailwindcss
+- Created .prettierrc with plugin configuration
+- Formatted all TSX files with prettier (29 files reformatted)
+- Discovered and fixed Next.js 16 prerender error: inline `new Date().getFullYear()` in footer violated prerender rules
+- Created Client Component `CopyrightYear` to handle dynamic year rendering
+- All 45 tests passing with vitest v3.2.7
+- Typecheck passes, lint passes (pre-existing unused var warnings remain)
+- Build succeeds with all pages prerendered correctly
+
 ### Subtasks
 
-- [ ] L-T01.1 [AGENT] Upgrade vitest and @types/node
+- [x] L-T01.1 [AGENT] Upgrade vitest and @types/node
   - **File:** `package.json`
   - **Action:** Run `npm install -D vitest@^3 @types/node@^22`. Verify versions in package.json.
   - **Validate:** `npx vitest run && npx tsc --noEmit`
 
-- [ ] L-T01.2 [AGENT] Install and configure prettier-plugin-tailwindcss
+- [x] L-T01.2 [AGENT] Install and configure prettier-plugin-tailwindcss
   - **File:** `package.json`, `.prettierrc` (new or existing)
   - **Action:** Run `npm install -D prettier prettier-plugin-tailwindcss`. Create or update `.prettierrc` to include `"plugins": ["prettier-plugin-tailwindcss"]`.
   - **Validate:** `npx prettier --check "app/**/*.tsx"` (may show formatting changes, that is expected)
+
+---
+
+## [x] L-T01-ISSUE-001 | STATUS: DONE | PRIORITY: HIGH
+
+### Fix Next.js 16 prerender error in footer copyright year
+
+**Files:** `app/components/footer.tsx`, `app/components/copyright-year.tsx` (new)
+
+**Description:**
+Next.js 16 build failed with error: "Route '/portfolio/[slug]' used `new Date()` before accessing either uncached data or Request data". This was caused by inline `new Date().getFullYear()` in the footer component, which violates Next.js 16's prerender requirements for Server Components.
+
+**Discovered during:** L-T01 quality assurance (build verification)
+
+**Related task:** M-T11 (Make copyright year dynamic)
+
+**Error message:**
+```
+Error: Route "/portfolio/[slug]" used `new Date()` before accessing either uncached data (e.g. `fetch()`) or Request data (e.g. `cookies()`, `headers()`, `connection()`, and `searchParams`). Accessing the current time in a Server Component requires reading one of these data sources first.
+```
+
+**Implementation notes:**
+- Created new Client Component `CopyrightYear` at `app/components/copyright-year.tsx` to handle dynamic year rendering on the client side
+- This avoids Next.js 16's prerender restriction around `new Date()` usage in Server Components
+- Updated `app/components/footer.tsx` to import and use `CopyrightYear` component instead of inline `new Date().getFullYear()`
+- Build now succeeds with all pages prerendered correctly
+- All 45 tests passing, typecheck passes, lint passes
 
 ---
 

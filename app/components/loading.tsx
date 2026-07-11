@@ -1,8 +1,8 @@
 export function Loading() {
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex min-h-screen items-center justify-center">
       <div className="flex flex-col items-center gap-4">
-        <div className="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
+        <div className="border-primary/30 border-t-primary h-12 w-12 animate-spin rounded-full border-4" />
         <p className="text-foreground/60">Loading...</p>
       </div>
     </div>

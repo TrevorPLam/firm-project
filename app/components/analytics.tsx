@@ -1,14 +1,17 @@
-'use client';
+"use client";
 
-import Script from 'next/script';
-import { useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import Script from "next/script";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
-type GtagCommand = 'config' | 'event' | 'js' | 'conversion';
+type GtagCommand = "config" | "event" | "js" | "conversion";
 type GtagFunction = (command: GtagCommand, ...args: unknown[]) => void;
 
 // Shared event parameters accepted by gtag.
-export type GtagEventParams = Record<string, string | number | boolean | undefined>;
+export type GtagEventParams = Record<
+  string,
+  string | number | boolean | undefined
+>;
 
 declare global {
   interface Window {
@@ -24,9 +27,9 @@ export function Analytics() {
 
   useEffect(() => {
     // Track form submission success
-    if (searchParams.get('success') === 'true') {
-      trackEvent('form_submission', {
-        form_type: 'contact',
+    if (searchParams.get("success") === "true") {
+      trackEvent("form_submission", {
+        form_type: "contact",
         success: true,
       });
 
@@ -37,9 +40,9 @@ export function Analytics() {
     }
 
     // Track form submission error
-    if (searchParams.get('error') === 'true') {
-      trackEvent('form_submission', {
-        form_type: 'contact',
+    if (searchParams.get("error") === "true") {
+      trackEvent("form_submission", {
+        form_type: "contact",
         success: false,
       });
     }
@@ -69,45 +72,45 @@ export function Analytics() {
 
 // Helper functions for custom event tracking
 export const trackEvent = (eventName: string, parameters?: GtagEventParams) => {
-  if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('event', eventName, parameters);
+  if (typeof window !== "undefined" && window.gtag) {
+    window.gtag("event", eventName, parameters);
   }
 };
 
 export const trackPageView = (url: string) => {
-  if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('event', 'page_view', {
+  if (typeof window !== "undefined" && window.gtag) {
+    window.gtag("event", "page_view", {
       page_location: url,
     });
   }
 };
 
 export const trackConversion = (conversionId: string, value?: number) => {
-  if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('event', 'conversion', {
+  if (typeof window !== "undefined" && window.gtag) {
+    window.gtag("event", "conversion", {
       send_to: conversionId,
       value: value,
-      currency: 'USD',
+      currency: "USD",
     });
   }
 };
 
 // Track specific marketing events
 export const trackCTAClick = (ctaName: string, location: string) => {
-  trackEvent('cta_click', {
+  trackEvent("cta_click", {
     cta_name: ctaName,
     location: location,
   });
 };
 
 export const trackServiceView = (serviceName: string) => {
-  trackEvent('service_view', {
+  trackEvent("service_view", {
     service_name: serviceName,
   });
 };
 
 export const trackPortfolioClick = (caseStudyTitle: string) => {
-  trackEvent('portfolio_click', {
+  trackEvent("portfolio_click", {
     case_study_title: caseStudyTitle,
   });
 };

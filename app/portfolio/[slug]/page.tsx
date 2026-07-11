@@ -12,7 +12,11 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
   const study = getCaseStudyBySlug(slug);
   if (!study) {
@@ -36,7 +40,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-export default async function CaseStudyPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function CaseStudyPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
   const study = getCaseStudyBySlug(slug);
 
@@ -47,22 +55,22 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6">
-        <div className="max-w-7xl mx-auto">
+      <section className="px-6 pt-32 pb-20">
+        <div className="mx-auto max-w-7xl">
           <ScrollReveal>
             <div className="max-w-3xl">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full">
+              <div className="mb-4 flex items-center gap-2">
+                <span className="bg-primary/10 text-primary rounded-full px-3 py-1 text-sm font-medium">
                   {study.category}
                 </span>
               </div>
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-tight">
+              <h1 className="mb-6 text-5xl leading-tight font-bold tracking-tight md:text-7xl">
                 {study.title}
               </h1>
-              <p className="text-xl md:text-2xl text-foreground/70 mb-8 leading-relaxed">
+              <p className="text-foreground/70 mb-8 text-xl leading-relaxed md:text-2xl">
                 {study.description}
               </p>
-              <div className="flex items-center gap-6 text-foreground/60">
+              <div className="text-foreground/60 flex items-center gap-6">
                 <div className="flex items-center gap-3">
                   {study.clientLogo ? (
                     <Image
@@ -70,15 +78,17 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
                       alt={`${study.client} logo`}
                       width={32}
                       height={32}
-                      className="w-8 h-8 rounded object-contain"
+                      className="h-8 w-8 rounded object-contain"
                     />
                   ) : null}
                   <div>
-                    <span className="font-semibold">Client:</span> {study.client}
+                    <span className="font-semibold">Client:</span>{" "}
+                    {study.client}
                   </div>
                 </div>
                 <div>
-                  <span className="font-semibold">Timeline:</span> {study.timeline}
+                  <span className="font-semibold">Timeline:</span>{" "}
+                  {study.timeline}
                 </div>
               </div>
             </div>
@@ -87,13 +97,15 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       </section>
 
       {/* Results Section */}
-      <section className="py-20 px-6 bg-foreground/5">
-        <div className="max-w-7xl mx-auto">
+      <section className="bg-foreground/5 px-6 py-20">
+        <div className="mx-auto max-w-7xl">
           <ScrollReveal>
-            <div className="grid md:grid-cols-4 gap-8">
+            <div className="grid gap-8 md:grid-cols-4">
               {study.results.map((result, index) => (
                 <div key={index} className="text-center">
-                  <div className="text-5xl font-bold text-primary mb-2">{result.metric}</div>
+                  <div className="text-primary mb-2 text-5xl font-bold">
+                    {result.metric}
+                  </div>
                   <div className="text-foreground/60">{result.label}</div>
                 </div>
               ))}
@@ -103,11 +115,13 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       </section>
 
       {/* Overview */}
-      <section className="py-20 px-6">
-        <div className="max-w-4xl mx-auto">
+      <section className="px-6 py-20">
+        <div className="mx-auto max-w-4xl">
           <ScrollReveal>
-            <h2 className="text-4xl font-bold tracking-tight mb-8">Project Overview</h2>
-            <p className="text-lg text-foreground/70 leading-relaxed mb-8">
+            <h2 className="mb-8 text-4xl font-bold tracking-tight">
+              Project Overview
+            </h2>
+            <p className="text-foreground/70 mb-8 text-lg leading-relaxed">
               {study.overview}
             </p>
           </ScrollReveal>
@@ -115,11 +129,13 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       </section>
 
       {/* Challenge */}
-      <section className="py-20 px-6 bg-foreground/5">
-        <div className="max-w-4xl mx-auto">
+      <section className="bg-foreground/5 px-6 py-20">
+        <div className="mx-auto max-w-4xl">
           <ScrollReveal>
-            <h2 className="text-4xl font-bold tracking-tight mb-8">The Challenge</h2>
-            <p className="text-lg text-foreground/70 leading-relaxed">
+            <h2 className="mb-8 text-4xl font-bold tracking-tight">
+              The Challenge
+            </h2>
+            <p className="text-foreground/70 text-lg leading-relaxed">
               {study.challenge}
             </p>
           </ScrollReveal>
@@ -127,11 +143,13 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       </section>
 
       {/* Solution */}
-      <section className="py-20 px-6">
-        <div className="max-w-4xl mx-auto">
+      <section className="px-6 py-20">
+        <div className="mx-auto max-w-4xl">
           <ScrollReveal>
-            <h2 className="text-4xl font-bold tracking-tight mb-8">Our Solution</h2>
-            <p className="text-lg text-foreground/70 leading-relaxed">
+            <h2 className="mb-8 text-4xl font-bold tracking-tight">
+              Our Solution
+            </h2>
+            <p className="text-foreground/70 text-lg leading-relaxed">
               {study.solution}
             </p>
           </ScrollReveal>
@@ -139,15 +157,17 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       </section>
 
       {/* Technologies */}
-      <section className="py-20 px-6 bg-foreground/5">
-        <div className="max-w-4xl mx-auto">
+      <section className="bg-foreground/5 px-6 py-20">
+        <div className="mx-auto max-w-4xl">
           <ScrollReveal>
-            <h2 className="text-4xl font-bold tracking-tight mb-8">Technologies Used</h2>
+            <h2 className="mb-8 text-4xl font-bold tracking-tight">
+              Technologies Used
+            </h2>
             <div className="flex flex-wrap gap-3">
               {study.technologies.map((tech) => (
                 <span
                   key={tech}
-                  className="px-4 py-2 bg-background border border-foreground/20 rounded-lg text-foreground/70"
+                  className="bg-background border-foreground/20 text-foreground/70 rounded-lg border px-4 py-2"
                 >
                   {tech}
                 </span>
@@ -158,19 +178,27 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       </section>
 
       {/* Testimonial */}
-      <section className="py-20 px-6">
-        <div className="max-w-4xl mx-auto">
+      <section className="px-6 py-20">
+        <div className="mx-auto max-w-4xl">
           <ScrollReveal>
-            <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl p-8 md:p-12 border border-primary/20">
-              <svg className="w-12 h-12 text-primary/30 mb-6" fill="currentColor" viewBox="0 0 24 24">
+            <div className="from-primary/10 to-primary/5 border-primary/20 rounded-2xl border bg-gradient-to-br p-8 md:p-12">
+              <svg
+                className="text-primary/30 mb-6 h-12 w-12"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
               </svg>
-              <p className="text-2xl text-foreground/90 mb-6 leading-relaxed">
+              <p className="text-foreground/90 mb-6 text-2xl leading-relaxed">
                 "{study.testimonial.quote}"
               </p>
               <div>
-                <div className="font-semibold text-lg">{study.testimonial.author}</div>
-                <div className="text-foreground/60">{study.testimonial.role}</div>
+                <div className="text-lg font-semibold">
+                  {study.testimonial.author}
+                </div>
+                <div className="text-foreground/60">
+                  {study.testimonial.role}
+                </div>
               </div>
             </div>
           </ScrollReveal>
@@ -178,15 +206,15 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       </section>
 
       {/* Tags */}
-      <section className="py-20 px-6 bg-foreground/5">
-        <div className="max-w-4xl mx-auto">
+      <section className="bg-foreground/5 px-6 py-20">
+        <div className="mx-auto max-w-4xl">
           <ScrollReveal>
-            <h2 className="text-4xl font-bold tracking-tight mb-8">Services</h2>
+            <h2 className="mb-8 text-4xl font-bold tracking-tight">Services</h2>
             <div className="flex flex-wrap gap-3">
               {study.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-4 py-2 bg-background border border-foreground/20 rounded-lg text-foreground/70"
+                  className="bg-background border-foreground/20 text-foreground/70 rounded-lg border px-4 py-2"
                 >
                   {tag}
                 </span>
@@ -197,18 +225,19 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="px-6 py-20">
+        <div className="mx-auto max-w-4xl text-center">
           <ScrollReveal>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+            <h2 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl">
               Ready to Achieve Similar Results?
             </h2>
-            <p className="text-xl text-foreground/70 mb-8">
-              Let's discuss how we can help you achieve your digital marketing goals.
+            <p className="text-foreground/70 mb-8 text-xl">
+              Let's discuss how we can help you achieve your digital marketing
+              goals.
             </p>
             <Link
               href="/contact"
-              className="inline-block px-8 py-4 bg-primary text-white rounded-full font-semibold text-lg hover:bg-primary-dark transition-all hover:scale-105"
+              className="bg-primary hover:bg-primary-dark inline-block rounded-full px-8 py-4 text-lg font-semibold text-white transition-all hover:scale-105"
             >
               Start Your Project
             </Link>

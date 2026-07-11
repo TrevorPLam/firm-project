@@ -12,11 +12,19 @@ export const metadata: Metadata = {
     canonical: "/blog",
   },
   title: "Blog | Elevate Digital - Digital Marketing Insights",
-  description: "Expert insights on web design, SEO, analytics, and digital marketing strategies. Stay updated with the latest trends and best practices.",
-  keywords: ["digital marketing blog", "SEO tips", "web design insights", "analytics guides", "marketing strategies"],
+  description:
+    "Expert insights on web design, SEO, analytics, and digital marketing strategies. Stay updated with the latest trends and best practices.",
+  keywords: [
+    "digital marketing blog",
+    "SEO tips",
+    "web design insights",
+    "analytics guides",
+    "marketing strategies",
+  ],
   openGraph: {
     title: "Blog | Elevate Digital",
-    description: "Expert insights on web design, SEO, analytics, and digital marketing strategies.",
+    description:
+      "Expert insights on web design, SEO, analytics, and digital marketing strategies.",
     type: "website",
   },
 };
@@ -27,15 +35,17 @@ export default async function BlogPage() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6">
-        <div className="max-w-7xl mx-auto">
+      <section className="px-6 pt-32 pb-20">
+        <div className="mx-auto max-w-7xl">
           <ScrollReveal>
             <div className="max-w-3xl">
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-tight">
+              <h1 className="mb-6 text-5xl leading-tight font-bold tracking-tight md:text-7xl">
                 Blog & Insights
               </h1>
-              <p className="text-xl md:text-2xl text-foreground/70 mb-8 leading-relaxed">
-                Expert insights on web design, SEO, analytics, and digital marketing strategies. Stay updated with the latest trends and best practices.
+              <p className="text-foreground/70 mb-8 text-xl leading-relaxed md:text-2xl">
+                Expert insights on web design, SEO, analytics, and digital
+                marketing strategies. Stay updated with the latest trends and
+                best practices.
               </p>
             </div>
           </ScrollReveal>
@@ -43,26 +53,26 @@ export default async function BlogPage() {
       </section>
 
       {/* Blog Posts Grid */}
-      <section className="py-20 px-6 bg-foreground/5">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <section className="bg-foreground/5 px-6 py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {posts.map((post, index) => (
               <ScrollReveal key={post.id} delay={index * 100}>
                 <Link href={`/blog/${post.slug}`} className="group">
-                  <article className="bg-background rounded-2xl border border-foreground/10 group-hover:border-primary/50 transition-all group-hover:shadow-xl overflow-hidden">
+                  <article className="bg-background border-foreground/10 group-hover:border-primary/50 overflow-hidden rounded-2xl border transition-all group-hover:shadow-xl">
                     <div className="p-8">
-                      <div className="flex items-center gap-2 mb-4">
-                        <span className="px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full">
+                      <div className="mb-4 flex items-center gap-2">
+                        <span className="bg-primary/10 text-primary rounded-full px-3 py-1 text-sm font-medium">
                           {post.category}
                         </span>
                       </div>
-                      <h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors">
+                      <h3 className="group-hover:text-primary mb-3 text-2xl font-bold transition-colors">
                         {post.title}
                       </h3>
                       <p className="text-foreground/70 mb-6 leading-relaxed">
                         {post.excerpt}
                       </p>
-                      <div className="flex items-center justify-between text-sm text-foreground/60">
+                      <div className="text-foreground/60 flex items-center justify-between text-sm">
                         <span>{post.date}</span>
                         <span>{post.readTime}</span>
                       </div>
@@ -76,37 +86,50 @@ export default async function BlogPage() {
       </section>
 
       {/* Topic Clusters */}
-      <section className="py-20 px-6">
-        <div className="max-w-7xl mx-auto">
+      <section className="px-6 py-20">
+        <div className="mx-auto max-w-7xl">
           <ScrollReveal>
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+            <div className="mb-16 text-center">
+              <h2 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl">
                 Explore by Topic
               </h2>
-              <p className="text-xl text-foreground/70 leading-relaxed">
-                Dive deeper into specific areas of digital marketing with our curated topic clusters.
+              <p className="text-foreground/70 text-xl leading-relaxed">
+                Dive deeper into specific areas of digital marketing with our
+                curated topic clusters.
               </p>
             </div>
           </ScrollReveal>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {[
               { name: "Web Design", slug: "web-design", count: 2, icon: "🎨" },
               { name: "SEO", slug: "seo", count: 1, icon: "🔍" },
               { name: "Analytics", slug: "analytics", count: 1, icon: "📊" },
-              { name: "Digital Marketing", slug: "digital-marketing", count: 1, icon: "🚀" },
-              { name: "Content Strategy", slug: "content-strategy", count: 1, icon: "✍️" },
+              {
+                name: "Digital Marketing",
+                slug: "digital-marketing",
+                count: 1,
+                icon: "🚀",
+              },
+              {
+                name: "Content Strategy",
+                slug: "content-strategy",
+                count: 1,
+                icon: "✍️",
+              },
             ].map((topic, index) => (
               <ScrollReveal key={topic.slug} delay={index * 50}>
                 <Link
                   href={`/blog?topic=${topic.slug}`}
-                  className="bg-background p-6 rounded-xl border border-foreground/10 hover:border-primary/50 transition-all hover:shadow-lg group"
+                  className="bg-background border-foreground/10 hover:border-primary/50 group rounded-xl border p-6 transition-all hover:shadow-lg"
                 >
-                  <div className="text-3xl mb-3">{topic.icon}</div>
-                  <h3 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors">
+                  <div className="mb-3 text-3xl">{topic.icon}</div>
+                  <h3 className="group-hover:text-primary mb-2 text-lg font-bold transition-colors">
                     {topic.name}
                   </h3>
-                  <p className="text-foreground/60 text-sm">{topic.count} articles</p>
+                  <p className="text-foreground/60 text-sm">
+                    {topic.count} articles
+                  </p>
                 </Link>
               </ScrollReveal>
             ))}
@@ -115,15 +138,16 @@ export default async function BlogPage() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-4xl mx-auto">
+      <section className="px-6 py-20">
+        <div className="mx-auto max-w-4xl">
           <ScrollReveal>
-            <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl p-8 md:p-12 border border-primary/20 text-center">
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+            <div className="from-primary/10 to-primary/5 border-primary/20 rounded-2xl border bg-gradient-to-br p-8 text-center md:p-12">
+              <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">
                 Stay Updated
               </h2>
-              <p className="text-xl text-foreground/70 mb-8">
-                Subscribe to our newsletter for the latest insights on digital marketing, web design, and SEO.
+              <p className="text-foreground/70 mb-8 text-xl">
+                Subscribe to our newsletter for the latest insights on digital
+                marketing, web design, and SEO.
               </p>
               <NewsletterForm />
             </div>
