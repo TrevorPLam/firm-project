@@ -98,7 +98,7 @@ export function Footer() {
 
         <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-foreground/10 gap-4">
           <div className="text-foreground/60 text-sm">
-            © 2025 Elevate Digital. All rights reserved.
+            © {new Date().getFullYear()} Elevate Digital. All rights reserved.
           </div>
           <div className="flex items-center gap-4">
             {/* Social Media Links (placeholder) */}

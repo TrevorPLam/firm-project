@@ -1076,7 +1076,7 @@ Error: Route "/blog/[slug]" used `new Date()` before accessing either uncached d
 
 ---
 
-## [ ] M-T11 | STATUS: PENDING | PRIORITY: MEDIUM
+## [x] M-T11 | STATUS: DONE | PRIORITY: MEDIUM
 
 ### Make copyright year dynamic
 
@@ -1100,9 +1100,14 @@ Error: Route "/blog/[slug]" used `new Date()` before accessing either uncached d
 
 **Depends on:** None | **Blocks:** None
 
+**Implementation notes:**
+- Replaced hardcoded "© 2025" with "© {new Date().getFullYear()}" on line 101
+- Typecheck passes with no errors
+- Lint passes (pre-existing warnings in contact.ts, newsletter.ts, sitemap.ts are unrelated to this change)
+
 ### Subtasks
 
-- [ ] M-T11.1 [AGENT] Replace hardcoded year
+- [x] M-T11.1 [AGENT] Replace hardcoded year
   - **File:** `app/components/footer.tsx`
   - **Action:** Find "© 2025" text (~line 101). Replace "2025" with `{new Date().getFullYear()}`.
   - **Validate:** `npx eslint app/components/footer.tsx && npx tsc --noEmit`
