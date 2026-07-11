@@ -30,23 +30,23 @@
     color-scheme: dark;
   }
   
-  /* Improve text readability in dark mode */
-  * {
-    text-shadow: 0 0.5px 0 rgba(255, 255, 255, 0.1);
+  /* Improve text readability in dark mode for headings */
+  h1, h2, h3, h4, h5, h6 {
+    text-shadow: 0 0.5px 0 color-mix(in oklch, var(--foreground) 10%, transparent);
   }
   
   /* Enhance border visibility in dark mode */
   .border-foreground\/10 {
-    border-color: rgba(237, 237, 237, 0.15);
+    border-color: color-mix(in oklch, var(--foreground) 15%, transparent);
   }
-  
+
   .border-foreground\/20 {
-    border-color: rgba(237, 237, 237, 0.25);
+    border-color: color-mix(in oklch, var(--foreground) 25%, transparent);
   }
   
   /* Improve button contrast in dark mode */
   .bg-primary {
-    box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
+    box-shadow: 0 0 20px color-mix(in oklch, var(--primary) 30%, transparent);
   }
   
   /* Enhance link visibility */
@@ -57,7 +57,7 @@
   
   /* Improve form input visibility */
   input, textarea, select {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: color-mix(in oklch, var(--foreground) 5%, transparent);
   }
 }
 

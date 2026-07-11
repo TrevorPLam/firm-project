@@ -1336,7 +1336,7 @@ Add vitest types to tsconfig.json types array or install @types/vitest
 
 ---
 
-## [ ] M-T16 | STATUS: PENDING | PRIORITY: MEDIUM
+## [x] M-T16 | STATUS: DONE | PRIORITY: MEDIUM
 
 ### Fix dark mode CSS overrides to use design tokens
 
@@ -1363,9 +1363,16 @@ Add vitest types to tsconfig.json types array or install @types/vitest
 
 **Depends on:** None | **Blocks:** None
 
+**Implementation notes:**
+- Replaced hardcoded rgba values with color-mix() using CSS variables: border-foreground/10, border-foreground/20, button box-shadow, form input background
+- Scoped text-shadow from broad `*` selector to headings only (h1-h6) for better performance
+- All dark mode overrides now respond to --foreground and --primary token changes
+- Used oklch color space for mixing to match existing design system
+- Typecheck passes, lint passes, all 45 tests pass
+
 ### Subtasks
 
-- [ ] M-T16.1 [AGENT] Replace hardcoded rgba with token-based values
+- [x] M-T16.1 [AGENT] Replace hardcoded rgba with token-based values
   - **File:** `app/globals.css`
   - **Action:** Find `.border-foreground\/10` and `.border-foreground\/20` overrides in dark mode media query. Replace `rgba(237, 237, 237, 0.15)` with `color-mix(in oklch, var(--foreground) 15%, transparent)`. Remove or scope the `text-shadow` on `*` to specific elements (e.g., headings only).
   - **Validate:** `npx eslint app/globals.css`
