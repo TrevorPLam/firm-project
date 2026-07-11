@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { sanitizeHtml } from "@/lib/content-sanitizer";
 
-describe("SanitizedContent (via sanitizeHtml)", () => {
+describe("sanitizeHtml", () => {
   it("should render safe HTML unchanged", () => {
     const safeHtml = "<p>safe content</p>";
     const result = sanitizeHtml(safeHtml);
@@ -40,5 +40,18 @@ describe("SanitizedContent (via sanitizeHtml)", () => {
     expect(result).toContain("Bold");
     expect(result).toContain("Italic");
     expect(result).toContain("Link");
+  });
+
+  it("should preserve href attribute on links", () => {
+    const safeHtml = '<a href="https://example.com">Link</a>';
+    const result = sanitizeHtml(safeHtml);
+    expect(result).toContain('href="https://example.com"');
+  });
+
+  it("should remove disallowed tags", () => {
+    const dirtyHtml = "<div>content</div><span>more</span>";
+    const result = sanitizeHtml(dirtyHtml);
+    expect(result).not.toContain("<div>");
+    expect(result).not.toContain("<span>");
   });
 });

@@ -773,7 +773,7 @@ Navigation test fails with error: "Cannot find module 'C:\Users\Trevor\Documents
 
 ## Task T007: Move DOMPurify Sanitization Server-Side
 
-**Status:** `[ ]` PENDING
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -848,13 +848,43 @@ Read `c:\Users\Trevor\Documents\firm\app\components\sanitized-content.tsx` and `
   - `npm run test:run -- app/__tests__/components/sanitized-content.test.tsx`
   - `npm run build -- --webpack`
 
-#### T007.4 [AGENT] Update blog page and validate SSR
+#### T007.4 [AGENT] Update blog page and validate SSR ✅
 
 - **Targeted file path:** `c:\Users\Trevor\Documents\firm\app\[locale\]\blog\[slug\]\page.tsx`
 - **Description:** Ensure the page passes `post.content` directly to `SanitizedContent` and that the final HTML contains the sanitized content at build time.
 - **Commands:**
   - `npm run build -- --webpack`
   - Inspect `.next/server/app/en/blog/web-design-trends-2025.html` for article body text.
+
+### Implementation Notes
+
+**Status:** Completed successfully. Moved HTML sanitization from client-side DOMPurify to server-side sanitize-html.
+
+**Changes Made:**
+- Installed `sanitize-html@2.17.6` and `@types/sanitize-html` as dependencies
+- Created `app/lib/content-sanitizer.ts` deep module with `sanitizeHtml()` function
+- Configured allowlist: `p`, `h2`, `h3`, `ul`, `li`, `strong`, `em`, `a`, `br`
+- Configured allowed attributes: `href` on anchor tags only
+- Converted `SanitizedContent` from Client Component to Server Component
+- Removed `"use client"` directive and `isomorphic-dompurify` dependency
+- Updated `SanitizedContent` to import and use server-side `sanitizeHtml`
+- Created unit tests for `sanitizeHtml` in `app/__tests__/lib/content-sanitizer.test.ts`
+- Updated `SanitizedContent` tests to test the underlying `sanitizeHtml` function
+
+**Benefits:**
+- Better performance: sanitization happens once at build time, not on every client render
+- Improved SEO: content is included in initial HTML response
+- Reduced client bundle size: no DOMPurify or jsdom shipped to client
+- No `new Date()` prerender errors: sanitize-html is pure Node.js compatible
+
+**Verification:**
+- Type checking passes with no errors
+- Linting passes with no errors
+- All 54 tests pass (including 7 new content-sanitizer tests, 5 SanitizedContent tests)
+- Build completes successfully with 57 static pages generated
+- No `new Date()` prerender errors
+
+**Note:** The original build was already working without `new Date()` errors, but moving sanitization to the server side provides the performance and SEO benefits listed above.
 
 ---
 

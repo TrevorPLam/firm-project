@@ -1,22 +1,18 @@
-"use client";
-
-import DOMPurify from "isomorphic-dompurify";
+import { sanitizeHtml } from "@/lib/content-sanitizer";
 
 /**
- * SanitizedContent is a Client Component that safely renders HTML content.
+ * SanitizedContent is a Server Component that safely renders HTML content.
  *
- * This component moves DOMPurify sanitization to the client side to avoid
- * Next.js 16 prerender restrictions around `new Date()` usage in DOMPurify's
- * internal configuration.
+ * This component sanitizes HTML on the server side using sanitize-html,
+ * which is a lightweight, dependency-free sanitizer that works in Node.js
+ * environments without requiring jsdom. This provides better performance
+ * (sanitization happens once at build time), improved SEO (content in initial
+ * HTML), and reduced client bundle size.
  *
  * @param html - The HTML string to sanitize and render
  */
 export function SanitizedContent({ html }: { html: string }) {
-  const sanitizedHtml = DOMPurify.sanitize(html, {
-    ALLOWED_TAGS: ["p", "h2", "h3", "ul", "li", "strong", "em", "a", "br"],
-    ALLOWED_ATTR: ["href"],
-    FORCE_BODY: false,
-  });
+  const sanitizedHtml = sanitizeHtml(html);
 
   return (
     <div
