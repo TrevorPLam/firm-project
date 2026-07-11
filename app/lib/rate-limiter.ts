@@ -1,84 +1,65 @@
 /**
  * @module rate-limiter
- * @description In-memory rate limiting implementation for development and single-instance deployments.
+ * @description Production-ready rate limiting using Upstash Redis for serverless and edge deployments.
  *
- * ⚠️ PRODUCTION LIMITATIONS:
- * - This implementation uses in-memory storage (Map) which is NOT suitable for:
- *   - Serverless environments (Vercel, AWS Lambda, Cloudflare Workers)
- *   - Multi-instance deployments (multiple containers/pods)
- *   - Edge runtime deployments
- * - Each instance maintains its own counter, so scaling horizontally multiplies the effective limit
- * - Serverless functions spin up/down, causing counters to reset unpredictably
- *
- * ✅ RECOMMENDED FOR PRODUCTION:
- * - Use Redis with @upstash/ratelimit for serverless/edge deployments
- * - Use Redis with ioredis for traditional multi-instance deployments
- * - See docs/rate-limiting.md for migration guide and implementation examples
+ * ✅ PRODUCTION READY:
+ * - Uses Upstash Redis for distributed, persistent rate limiting
+ * - Compatible with serverless environments (Vercel, AWS Lambda, Cloudflare Workers)
+ * - Supports multi-instance deployments with shared state
+ * - Edge runtime compatible with HTTP-based Redis
+ * - Implements sliding window algorithm for smooth rate limiting
+ * - Graceful degradation if Redis is unavailable
  *
  * @see https://upstash.com/docs/ratelimit/sdks/ts
  * @see docs/rate-limiting.md
  */
 
-interface RateLimitEntry {
-  count: number;
-  resetAt: number;
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
+
+/**
+ * Rate limit result with metadata for headers and logging.
+ */
+export interface RateLimitResult {
+  success: boolean;
+  limit: number;
+  remaining: number;
+  reset: number;
 }
 
 /**
- * In-memory store for rate limit entries.
- * Each key tracks request count and window reset time.
- *
- * ⚠️ This Map is local to the current process instance.
- * In serverless environments, each function invocation has its own Map.
+ * Initialize Upstash Redis client from environment variables.
+ * Falls back to undefined if credentials are not configured.
  */
-const rateLimitMap = new Map<string, RateLimitEntry>();
+let redis: Redis | null = null;
+let ratelimit: Ratelimit | null = null;
 
-/**
- * Cleanup interval in milliseconds (5 minutes).
- * Expired entries are removed periodically to prevent memory leaks.
- */
-const CLEANUP_INTERVAL = 5 * 60 * 1000;
-
-/**
- * Periodic cleanup timer to remove expired rate limit entries.
- * Prevents unbounded memory growth in long-running processes.
- */
-let cleanupTimer: NodeJS.Timeout | null = null;
-
-/**
- * Starts the periodic cleanup timer for expired rate limit entries.
- * Only runs in server environment (not in browser).
- *
- * ⚠️ In serverless environments, this timer may not run consistently
- * due to function execution time limits and cold starts.
- */
-function startCleanupTimer(): void {
-  if (cleanupTimer) return;
-
-  cleanupTimer = setInterval(() => {
-    const now = Date.now();
-
-    for (const [key, entry] of rateLimitMap.entries()) {
-      if (now >= entry.resetAt) {
-        rateLimitMap.delete(key);
-      }
+if (typeof window === 'undefined') {
+  try {
+    if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+      redis = Redis.fromEnv();
+      ratelimit = new Ratelimit({
+        redis: redis,
+        limiter: Ratelimit.slidingWindow(10, '10 s'),
+        analytics: true,
+        prefix: 'ratelimit',
+      });
+    } else {
+      console.warn('[rate-limiter] Upstash Redis credentials not configured, rate limiting disabled');
     }
-  }, CLEANUP_INTERVAL);
-}
-
-// Start cleanup timer on module load (server-side only)
-if (typeof window === "undefined") {
-  startCleanupTimer();
+  } catch (error) {
+    console.error('[rate-limiter] Failed to initialize Upstash Redis:', error);
+  }
 }
 
 /**
  * Check if a key has exceeded its rate limit.
- * Uses a fixed window approach with automatic cleanup.
+ * Uses sliding window algorithm for smooth rate limiting.
  *
- * ⚠️ LIMITATIONS:
- * - In serverless environments, each invocation has its own counter
- * - In multi-instance deployments, each instance has its own counter
- * - This effectively multiplies the limit by the number of instances
+ * ✅ GRACEFUL DEGRADATION:
+ * - If Redis is not configured or unavailable, allows all requests
+ * - Logs warnings for debugging without blocking functionality
+ * - Suitable for development and production fallback scenarios
  *
  * @param key - Unique identifier for the rate limit (e.g., IP address, user ID)
  * @param limit - Maximum number of requests allowed in the window
@@ -88,44 +69,148 @@ if (typeof window === "undefined") {
  * @example
  * ```ts
  * // Allow 10 requests per minute per IP
- * const allowed = checkRateLimit('192.168.1.1', 10, 60 * 1000);
+ * const allowed = await checkRateLimit('192.168.1.1', 10, 60 * 1000);
  * if (!allowed) {
  *   return new Response('Too many requests', { status: 429 });
  * }
  * ```
  */
-export function checkRateLimit(key: string, limit: number, windowMs: number): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(key);
+export async function checkRateLimit(key: string, limit: number, windowMs: number): Promise<boolean> {
+  // If Upstash is not configured, allow all requests (graceful degradation)
+  if (!ratelimit) {
+    console.warn('[rate-limiter] Rate limiting disabled - Upstash Redis not configured');
+    return true;
+  }
 
-  // If no entry exists or window has expired, create new entry
-  if (!entry || now >= entry.resetAt) {
-    rateLimitMap.set(key, {
-      count: 1,
-      resetAt: now + windowMs,
+  try {
+    // Create a dynamic limiter for the specific limit and window
+    const limiter = new Ratelimit({
+      redis: redis!,
+      limiter: Ratelimit.slidingWindow(limit, `${windowMs} ms`),
+      analytics: true,
+      prefix: 'ratelimit',
     });
+
+    const result = await limiter.limit(key);
+
+    // Log rate limit events for monitoring
+    if (!result.success) {
+      console.log('[rate-limiter] Rate limit exceeded', {
+        key,
+        limit: result.limit,
+        remaining: result.remaining,
+        reset: new Date(result.reset).toISOString(),
+      });
+    }
+
+    return result.success;
+  } catch (error) {
+    // If Redis fails, allow the request (graceful degradation)
+    console.error('[rate-limiter] Redis error, allowing request:', error);
     return true;
   }
-
-  // If under limit, increment count
-  if (entry.count < limit) {
-    entry.count++;
-    return true;
-  }
-
-  // Limit exceeded
-  return false;
 }
 
 /**
- * Clear all rate limit entries from memory.
+ * Check rate limit and return detailed metadata for headers.
+ * Useful for API responses that include rate limit information.
+ *
+ * @param key - Unique identifier for the rate limit
+ * @param limit - Maximum number of requests allowed in the window
+ * @param windowMs - Time window in milliseconds
+ * @returns Rate limit result with metadata
+ *
+ * @example
+ * ```ts
+ * const result = await checkRateLimitWithMetadata('192.168.1.1', 10, 60 * 1000);
+ * if (!result.success) {
+ *   return new Response('Too many requests', {
+ *     status: 429,
+ *     headers: {
+ *       'RateLimit-Limit': result.limit.toString(),
+ *       'RateLimit-Remaining': result.remaining.toString(),
+ *       'RateLimit-Reset': new Date(result.reset).toISOString(),
+ *     }
+ *   });
+ * }
+ * ```
+ */
+export async function checkRateLimitWithMetadata(
+  key: string,
+  limit: number,
+  windowMs: number
+): Promise<RateLimitResult> {
+  // If Upstash is not configured, return success with default values
+  if (!ratelimit) {
+    console.warn('[rate-limiter] Rate limiting disabled - Upstash Redis not configured');
+    return {
+      success: true,
+      limit,
+      remaining: limit,
+      reset: Date.now() + windowMs,
+    };
+  }
+
+  try {
+    const limiter = new Ratelimit({
+      redis: redis!,
+      limiter: Ratelimit.slidingWindow(limit, `${windowMs} ms`),
+      analytics: true,
+      prefix: 'ratelimit',
+    });
+
+    const result = await limiter.limit(key);
+
+    if (!result.success) {
+      console.log('[rate-limiter] Rate limit exceeded', {
+        key,
+        limit: result.limit,
+        remaining: result.remaining,
+        reset: new Date(result.reset).toISOString(),
+      });
+    }
+
+    return {
+      success: result.success,
+      limit: result.limit,
+      remaining: result.remaining,
+      reset: result.reset,
+    };
+  } catch (error) {
+    // If Redis fails, allow the request (graceful degradation)
+    console.error('[rate-limiter] Redis error, allowing request:', error);
+    return {
+      success: true,
+      limit,
+      remaining: limit,
+      reset: Date.now() + windowMs,
+    };
+  }
+}
+
+/**
+ * Clear all rate limit entries from Redis.
  * Useful for testing and manual cleanup.
  *
- * ⚠️ In production with Redis, this would clear all entries globally.
- * With in-memory storage, this only affects the current instance.
+ * ⚠️ This clears all rate limit entries globally across all instances.
+ * Use with caution in production.
  */
-export function clearRateLimits(): void {
-  rateLimitMap.clear();
+export async function clearRateLimits(): Promise<void> {
+  if (!redis) {
+    console.warn('[rate-limiter] Cannot clear limits - Upstash Redis not configured');
+    return;
+  }
+
+  try {
+    // Delete all keys with the rate limit prefix
+    const keys = await redis.keys('ratelimit:*');
+    if (keys.length > 0) {
+      await redis.del(...keys);
+      console.log(`[rate-limiter] Cleared ${keys.length} rate limit entries`);
+    }
+  } catch (error) {
+    console.error('[rate-limiter] Failed to clear rate limits:', error);
+  }
 }
 
 /**
@@ -137,12 +222,23 @@ export function clearRateLimits(): void {
  *
  * @example
  * ```ts
- * const count = getRateLimitCount('192.168.1.1');
+ * const count = await getRateLimitCount('192.168.1.1');
  * const remaining = limit - count;
  * console.log(`Remaining requests: ${remaining}`);
  * ```
  */
-export function getRateLimitCount(key: string): number {
-  const entry = rateLimitMap.get(key);
-  return entry?.count ?? 0;
+export async function getRateLimitCount(key: string): Promise<number> {
+  if (!ratelimit) {
+    console.warn('[rate-limiter] Cannot get count - Upstash Redis not configured');
+    return 0;
+  }
+
+  try {
+    // Use the limit method to get current count
+    const result = await ratelimit.limit(key);
+    return result.limit - result.remaining;
+  } catch (error) {
+    console.error('[rate-limiter] Failed to get rate limit count:', error);
+    return 0;
+  }
 }

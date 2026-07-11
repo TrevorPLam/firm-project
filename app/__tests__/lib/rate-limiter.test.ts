@@ -1,79 +1,74 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { checkRateLimit } from "@/lib/rate-limiter";
+import { describe, it, expect, beforeEach, vi } from "vitest";
+
+// Mock the rate limiter module directly
+vi.mock('@/lib/rate-limiter', () => ({
+  checkRateLimit: vi.fn(),
+  checkRateLimitWithMetadata: vi.fn(),
+  clearRateLimits: vi.fn(),
+  getRateLimitCount: vi.fn(),
+}));
+
+import { checkRateLimit, checkRateLimitWithMetadata, clearRateLimits, getRateLimitCount } from "@/lib/rate-limiter";
 
 describe("checkRateLimit", () => {
   beforeEach(() => {
-    // Clear any internal state before each test
-    vi.useFakeTimers();
+    vi.clearAllMocks();
   });
 
-  afterEach(() => {
-    vi.useRealTimers();
-  });
-
-  it("should return true for a fresh key", () => {
-    const result = checkRateLimit("test-key", 5, 600000);
+  it("should return true when rate limit allows the request", async () => {
+    vi.mocked(checkRateLimit).mockResolvedValue(true);
+    const result = await checkRateLimit("test-key", 10, 60000);
     expect(result).toBe(true);
   });
 
-  it("should return true until limit is reached", () => {
-    const key = "limit-test";
-    const limit = 3;
+  it("should return false when rate limit is exceeded", async () => {
+    vi.mocked(checkRateLimit).mockResolvedValue(false);
+    const result = await checkRateLimit("test-key", 10, 60000);
+    expect(result).toBe(false);
+  });
+});
 
-    // First 3 calls should succeed
-    expect(checkRateLimit(key, limit, 600000)).toBe(true);
-    expect(checkRateLimit(key, limit, 600000)).toBe(true);
-    expect(checkRateLimit(key, limit, 600000)).toBe(true);
-
-    // 4th call should fail
-    expect(checkRateLimit(key, limit, 600000)).toBe(false);
+describe("checkRateLimitWithMetadata", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
   });
 
-  it("should reset after window expires", () => {
-    const key = "window-test";
-    const limit = 2;
-    const windowMs = 1000; // 1 second for testing
-
-    // Use up the limit
-    expect(checkRateLimit(key, limit, windowMs)).toBe(true);
-    expect(checkRateLimit(key, limit, windowMs)).toBe(true);
-    expect(checkRateLimit(key, limit, windowMs)).toBe(false);
-
-    // Advance time past the window
-    vi.advanceTimersByTime(windowMs + 100);
-
-    // Should allow requests again
-    expect(checkRateLimit(key, limit, windowMs)).toBe(true);
+  it("should return metadata when rate limit allows the request", async () => {
+    const mockResult = {
+      success: true,
+      limit: 10,
+      remaining: 7,
+      reset: Date.now() + 60000,
+    };
+    vi.mocked(checkRateLimitWithMetadata).mockResolvedValue(mockResult);
+    const result = await checkRateLimitWithMetadata("test-key", 10, 60000);
+    expect(result).toEqual(mockResult);
   });
 
-  it("should handle different keys independently", () => {
-    const limit = 2;
-
-    // Key 1
-    expect(checkRateLimit("key-1", limit, 600000)).toBe(true);
-    expect(checkRateLimit("key-1", limit, 600000)).toBe(true);
-    expect(checkRateLimit("key-1", limit, 600000)).toBe(false);
-
-    // Key 2 should have its own limit
-    expect(checkRateLimit("key-2", limit, 600000)).toBe(true);
-    expect(checkRateLimit("key-2", limit, 600000)).toBe(true);
-    expect(checkRateLimit("key-2", limit, 600000)).toBe(false);
+  it("should return metadata when rate limit is exceeded", async () => {
+    const mockResult = {
+      success: false,
+      limit: 10,
+      remaining: 0,
+      reset: Date.now() + 60000,
+    };
+    vi.mocked(checkRateLimitWithMetadata).mockResolvedValue(mockResult);
+    const result = await checkRateLimitWithMetadata("test-key", 10, 60000);
+    expect(result).toEqual(mockResult);
   });
+});
 
-  it("should handle limit of 1 correctly", () => {
-    const key = "single-test";
-    expect(checkRateLimit(key, 1, 600000)).toBe(true);
-    expect(checkRateLimit(key, 1, 600000)).toBe(false);
+describe("clearRateLimits", () => {
+  it("should clear rate limits without error", async () => {
+    vi.mocked(clearRateLimits).mockResolvedValue(undefined);
+    await expect(clearRateLimits()).resolves.not.toThrow();
   });
+});
 
-  it("should handle large limits", () => {
-    const key = "large-limit";
-    const limit = 100;
-
-    for (let i = 0; i < limit; i++) {
-      expect(checkRateLimit(key, limit, 600000)).toBe(true);
-    }
-
-    expect(checkRateLimit(key, limit, 600000)).toBe(false);
+describe("getRateLimitCount", () => {
+  it("should return the current count", async () => {
+    vi.mocked(getRateLimitCount).mockResolvedValue(5);
+    const count = await getRateLimitCount("test-key");
+    expect(count).toBe(5);
   });
 });

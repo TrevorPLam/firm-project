@@ -6,7 +6,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
-import { clearRateLimits } from "@/lib/rate-limiter";
+import { checkRateLimit, clearRateLimits } from "@/lib/rate-limiter";
 
 vi.mock("next/headers", () => ({
   headers: vi.fn(),
@@ -14,6 +14,12 @@ vi.mock("next/headers", () => ({
 
 vi.mock("next/cache", () => ({
   revalidatePath: vi.fn(),
+}));
+
+// Mock the rate limiter
+vi.mock("@/lib/rate-limiter", () => ({
+  checkRateLimit: vi.fn(),
+  clearRateLimits: vi.fn(),
 }));
 
 // Import after mocks are set up
@@ -33,7 +39,8 @@ describe("Newsletter Action", () => {
     vi.spyOn(console, "log");
     vi.spyOn(console, "error");
     vi.spyOn(console, "warn");
-    clearRateLimits();
+    vi.mocked(clearRateLimits).mockResolvedValue(undefined);
+    vi.mocked(checkRateLimit).mockResolvedValue(true);
     (headers as unknown as ReturnType<typeof vi.fn>).mockResolvedValue({
       get: vi.fn((header: string) => {
         if (header === "x-forwarded-for") return "127.0.0.1";
@@ -73,7 +80,8 @@ describe("Newsletter Action", () => {
   });
 
   it("should return success for valid subscription", async () => {
-    clearRateLimits(); // Clear rate limits before this test
+    vi.mocked(clearRateLimits).mockResolvedValue(undefined);
+    vi.mocked(checkRateLimit).mockResolvedValue(true);
     const formData = new FormData();
     formData.append("email", "test@example.com");
 
@@ -114,11 +122,13 @@ describe("Newsletter Action", () => {
 
     // First 3 should succeed
     for (let i = 0; i < 3; i++) {
+      vi.mocked(checkRateLimit).mockResolvedValue(true);
       const result = await subscribeNewsletter(formData);
       expect(result.success).toBe(true);
     }
 
     // 4th should be rate limited
+    vi.mocked(checkRateLimit).mockResolvedValue(false);
     const result = await subscribeNewsletter(formData);
     expect(result.success).toBe(false);
     expect(result.message).toContain("Too many subscription attempts");

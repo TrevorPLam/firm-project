@@ -37,7 +37,7 @@ async function runNewsletterSubscription(formData: FormData): Promise<FormResult
   const ip = forwardedFor.split(",")[0]?.trim() ?? "anonymous";
   
   const rateLimitKey = `newsletter:${ip}`;
-  const isAllowed = checkRateLimit(rateLimitKey, 3, 600000); // 3 subscriptions per 10 minutes
+  const isAllowed = await checkRateLimit(rateLimitKey, 3, 600000); // 3 subscriptions per 10 minutes
   
   if (!isAllowed) {
     return {

@@ -1,5 +1,83 @@
 # Security Documentation
 
+## HSTS Implementation
+
+### Overview
+
+HTTP Strict Transport Security (HSTS) is implemented to enforce HTTPS connections and protect against protocol downgrade attacks and cookie hijacking.
+
+### Configuration
+
+The HSTS header is configured in `next.config.ts` with the following directives:
+
+```
+Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+```
+
+- **max-age=31536000**: 1 year (31,536,000 seconds) - browsers will remember the HSTS policy for 1 year
+- **includeSubDomains**: The HSTS policy applies to all subdomains
+- **preload**: The domain is eligible for inclusion in the HSTS preload list
+
+### HSTS Preload Submission
+
+To submit the domain to the HSTS preload list:
+
+1. Visit https://hstspreload.org/
+2. Verify the domain meets all requirements:
+   - Valid SSL certificate
+   - HSTS header with max-age of at least 31536000 (1 year)
+   - includeSubDomains directive present
+   - preload directive present
+   - Redirects from HTTP to HTTPS on the base domain
+3. Submit the domain for preload
+4. Wait for approval (typically several weeks)
+
+**Note**: Once a domain is on the preload list, it cannot be easily removed. Ensure HTTPS is properly configured before submission.
+
+### Security Headers Overview
+
+The application implements the following security headers:
+
+- **Strict-Transport-Security**: Enforces HTTPS connections
+- **X-Frame-Options**: Prevents clickjacking attacks (DENY)
+- **X-Content-Type-Options**: Prevents MIME sniffing (nosniff)
+- **Referrer-Policy**: Controls referrer information (strict-origin-when-cross-origin)
+- **Permissions-Policy**: Restricts browser features (camera, microphone, geolocation)
+- **Content-Security-Policy-Report-Only**: CSP in report-only mode for monitoring
+
+### SSL/TLS Requirements
+
+For HSTS to function correctly:
+
+- Valid SSL/TLS certificate installed
+- TLS 1.3 enabled (recommended)
+- TLS 1.0 and 1.1 disabled
+- No mixed content warnings
+- Proper HTTP to HTTPS redirects
+
+### Security Monitoring Checklist
+
+- [ ] SSL certificate validity and expiry date
+- [ ] TLS configuration (SSL Labs test)
+- [ ] HSTS header presence and correct values
+- [ ] No mixed content warnings
+- [ ] CSP violation reports reviewed
+- [ ] Security headers validated
+- [ ] Dependency vulnerabilities monitored (npm audit)
+
+### Testing HSTS
+
+Test HSTS configuration using:
+
+1. **curl**:
+   ```bash
+   curl -I https://yourdomain.com
+   ```
+
+2. **SSL Labs Test**: https://www.ssllabs.com/ssltest/
+
+3. **Security Headers**: https://securityheaders.com/
+
 ## Known Vulnerabilities
 
 ### PostCSS <8.5.10 (CVE-2026-41305)

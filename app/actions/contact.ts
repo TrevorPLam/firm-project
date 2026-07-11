@@ -42,7 +42,7 @@ async function runContactFormSubmission(formData: FormData): Promise<FormResult>
   const ip = forwardedFor.split(",")[0]?.trim() ?? "anonymous";
   
   const rateLimitKey = `contact:${ip}`;
-  const isAllowed = checkRateLimit(rateLimitKey, 5, 600000); // 5 requests per 10 minutes
+  const isAllowed = await checkRateLimit(rateLimitKey, 5, 600000); // 5 requests per 10 minutes
   
   if (!isAllowed) {
     return {

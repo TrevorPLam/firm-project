@@ -1,875 +1,2548 @@
-# TODO - Elevate Digital
+# TODO: Marketing Site Implementation Tasks
 
-## Task Legend
+This document tracks remaining implementation tasks for the marketing site based on comprehensive analysis against 2026 best practices.
 
-- [ ] Task incomplete
-- [x] Task complete
-- Status: PENDING | IN_PROGRESS | BLOCKED | COMPLETED
-- Agent: AGENT (automated) | HUMAN (manual)
+## Task Status Legend
+- [ ] Not Started
+- [x] Complete
+- [~] In Progress
 
----
-
-## Task 001: Fix lint warnings to unblock CI
-
-- [x] **Status**: COMPLETED
-- **Related Files**:
-  - `app/__tests__/components/navigation.test.tsx`
-  - `app/actions/contact.ts`
-  - `app/actions/newsletter.ts`
-  - `app/sitemap.ts`
-- **Definition of Done**:
-  - All ESLint warnings removed
-  - `npm run lint -- --max-warnings=0` passes
-  - No unused imports or variables
-- **Out of Scope**:
-  - Changing ESLint configuration to ignore warnings
-  - Adding new lint rules
-- **Rules to Follow**:
-  - Remove unused imports
-  - Remove unused destructured variables or prefix with underscore
-  - Maintain test coverage
-- **Advanced Coding Pattern**:
-  - Use ESLint's `no-unused-vars` with `argsIgnorePattern: "^_"` to allow underscore-prefixed variables
-- **Anti-Patterns**:
-  - Commenting out code instead of removing
-  - Adding `// eslint-disable-next-line` without justification
-- **Imports/Exports**:
-  - None affected
-- **Depends On**: None
-- **Blocks**: CI pipeline, merge to main
-
-### Subtasks
-
-#### 001-01: Remove unused fireEvent import from navigation test
-- **Agent**: AGENT
-- **File**: `app/__tests__/components/navigation.test.tsx`
-- **Description**: Remove the unused `fireEvent` import from line 1. The test file uses `userEvent` from `@testing-library/user-event` instead.
-- **Commands**:
-  - `npm run lint -- app/__tests__/components/navigation.test.tsx --max-warnings=0`
-  - `npm run test:run -- app/__tests__/components/navigation.test.tsx`
-
-#### 001-02: Remove unused destructured variables from contact action
-- **Agent**: AGENT
-- **File**: `app/actions/contact.ts`
-- **Description**: Remove destructured variables `_name`, `_email`, `_company`, `_service`, `_budget`, `_message` from line 74. These are destructured but never used.
-- **Commands**:
-  - `npm run lint -- app/actions/contact.ts --max-warnings=0`
-  - `npm run test:run -- app/__tests__/actions/contact.test.ts`
-
-#### 001-03: Remove unused error variable from contact action
-- **Agent**: AGENT
-- **File**: `app/actions/contact.ts`
-- **Description**: Remove the unused `error` variable from line 102. The catch block currently only logs a timestamp and success flag.
-- **Commands**:
-  - `npm run lint -- app/actions/contact.ts --max-warnings=0`
-  - `npm run test:run -- app/__tests__/actions/contact.test.ts`
-
-#### 001-04: Remove unused variables from newsletter action
-- **Agent**: AGENT
-- **File**: `app/actions/newsletter.ts`
-- **Description**: Remove unused `_email` variable from line 64 and unused `_error` variable from line 88.
-- **Commands**:
-  - `npm run lint -- app/actions/newsletter.ts --max-warnings=0`
-
-#### 001-05: Remove unused getAllSlugs import from sitemap
-- **Agent**: AGENT
-- **File**: `app/sitemap.ts`
-- **Description**: Remove the unused `getAllSlugs` import from line 2. The sitemap uses `getAllPosts` and `getAllPortfolioSlugs` but does not need the slug lists.
-- **Commands**:
-  - `npm run lint -- app/sitemap.ts --max-warnings=0`
-  - `npm run build` (to verify sitemap generation)
+## Priority Levels
+- P0: Critical (pre-production blockers)
+- P1: High (post-launch optimization)
+- P2: Medium (growth & scale)
+- P3: Low (nice to have)
 
 ---
 
-## Task 002: Pin TypeScript to stable version
+## P0-001: Implement Production-Ready Rate Limiting
 
-- [x] **Status**: COMPLETED
-- **Related Files**:
-  - `package.json`
-  - `package-lock.json`
-- **Definition of Done**:
-  - TypeScript pinned to `~6.0.3` (stable)
-  - `npm install` completes without errors
-  - `npx tsc --noEmit` passes
-  - Build succeeds
-- **Out of Scope**:
-  - Downgrading to TypeScript 5 unless specifically required
-  - Changing other dependencies
-- **Rules to Follow**:
-  - Use tilde range for patch-level updates
-  - Test after dependency changes
-- **Advanced Coding Pattern**:
-  - Semantic versioning with tilde for patch updates
-- **Anti-Patterns**:
-  - Using caret ranges for core dependencies
-  - Installing pre-release versions in production
-- **Imports/Exports**:
-  - None affected
-- **Depends On**: None
-- **Blocks**: None
+**Status:** [x] Complete  
+**Priority:** P0
 
-### Subtasks
+### Related File Paths
+- app/lib/rate-limiter.ts
+- app/actions/contact.ts
+- app/actions/newsletter.ts
+- docs/rate-limiting.md
+- package.json
+- .env.example
 
-#### 002-01: Update TypeScript dependency to stable version
-- **Agent**: AGENT
-- **File**: `package.json`
-- **Description**: Change `"typescript": "^6.0.0"` to `"typescript": "~6.0.3"` in devDependencies. TypeScript 6.0 is now stable and compatible with Next.js 16 (requires TypeScript 5.1.0+).
-- **Commands**:
-  - `npm install typescript@6.0.3`
-  - `npx tsc --noEmit`
-  - `npm run build`
+### Definition of Done
+- Upstash Redis rate limiting implemented and deployed
+- All rate limit calls migrated to async/await pattern
+- Environment variables configured
+- Tests updated to mock external service
+- Documentation updated with production configuration
+- In-memory implementation removed or deprecated
 
-#### 002-02: Update @types packages to match TypeScript version
-- **Agent**: AGENT
-- **File**: `package.json`
-- **Description**: Ensure `@types/node`, `@types/react`, `@types/react-dom` are compatible with TypeScript 6.0. Update if necessary.
-- **Commands**:
-  - `npm install @types/node@22 @types/react@19 @types/react-dom@19`
-  - `npx tsc --noEmit`
+### Out of Scope
+- Custom rate limiting algorithms beyond Upstash SDK
+- Rate limiting UI/dashboards
+- Per-user rate limits (IP-based only)
 
----
+### Rules to Follow
+- Use Upstash Redis for serverless compatibility
+- Maintain existing function signatures where possible
+- Add proper error handling for Redis failures
+- Implement graceful degradation if Redis unavailable
+- Update all call sites to use async/await
 
-## Task 003: Add typecheck and improve lint scripts
+### Advanced Coding Pattern
+- Sliding window algorithm (built into Upstash SDK)
+- Graceful degradation pattern
+- Async/await migration pattern
+- Environment-based configuration
 
-- [x] **Status**: COMPLETED
-- **Related Files**:
-  - `package.json`
-- **Definition of Done**:
-  - `typecheck` script added
-  - `lint` script includes `--max-warnings=0` and targets all files
-  - Scripts are consistent with CI workflow
-- **Out of Scope**:
-  - Adding new test scripts
-  - Changing existing test behavior
-- **Rules to Follow**:
-  - Scripts should match CI execution
-  - Use `--max-warnings=0` for strict linting
-- **Advanced Coding Pattern**:
-  - NPM scripts as CI/CD entry points
-- **Anti-Patterns**:
-  - Scripts that work differently locally vs CI
-- **Imports/Exports**:
-  - None affected
-- **Depends On**: Task 001
-- **Blocks**: None
+### Anti-Patterns
+- Synchronous rate limit checks in async context
+- Hardcoded Redis URLs
+- Silently failing rate limit checks
+- Blocking main thread on Redis calls
 
-**Implementation Notes**:
-- Added `"typecheck": "tsc --noEmit"` script to package.json
-- Updated `"lint": "eslint"` to `"lint": "eslint . --max-warnings=0"` to match CI behavior
-- Both scripts now execute successfully: typecheck passes, lint passes with no warnings
-- Scripts are now consistent with CI workflow execution
+### Imports/Exports
+```typescript
+// Imports to add
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
 
-### Subtasks
+// Exports to maintain
+export async function checkRateLimit(key: string, limit: number, windowMs: number): Promise<boolean>
+export function clearRateLimits(): void
+export function getRateLimitCount(key: string): Promise<number>
+```
 
-#### 003-01: Add typecheck script to package.json
-- **Agent**: AGENT
-- **File**: `package.json`
-- **Description**: Add `"typecheck": "tsc --noEmit"` to the scripts section. This provides a fast type-check command without emitting files.
-- **Commands**:
-  - `npm run typecheck`
-- ✅ **Completed**: Script added and verified working
+### Depends On
+- None
 
-#### 003-02: Update lint script to include max-warnings flag
-- **Agent**: AGENT
-- **File**: `package.json`
-- **Description**: Change `"lint": "eslint"` to `"lint": "eslint . --max-warnings=0"`. This ensures linting fails on warnings, matching CI behavior.
-- **Commands**:
-  - `npm run lint`
-- ✅ **Completed**: Script updated and verified working
+### Blocks
+- P0-002 (HSTS Implementation) - rate limiting should be stable before security hardening
+- P1-005 (Server-Side Tagging) - rate limiting should be production-ready before adding new endpoints
 
 ---
 
-## Task 004: Resolve Vitest CJS deprecation warning
-
-- [x] **Status**: COMPLETED
-- **Related Files**:
-  - `vitest.config.mjs` (renamed from .ts)
-  - `package.json`
-- **Definition of Done**:
-  - CJS deprecation warning no longer appears during test runs
-  - Tests still pass after configuration change
-- **Out of Scope**:
-  - Migrating to different test framework
-  - Changing test behavior
-- **Rules to Follow**:
-  - Prefer ESM configuration for Vitest
-  - Maintain test compatibility
-- **Advanced Coding Pattern**:
-  - ESM-first configuration for modern Node.js
-- **Anti-Patterns**:
-  - Suppressing warnings without fixing root cause
-- **Imports/Exports**:
-  - None affected
-- **Depends On**: None
-- **Blocks**: None
-
-**Implementation Notes**:
-- Renamed `vitest.config.ts` to `vitest.config.mjs` to use ESM format
-- Added `import { fileURLToPath } from 'url'` and created ESM-compatible `__dirname` using `path.dirname(fileURLToPath(import.meta.url))`
-- CJS deprecation warning no longer appears during test runs
-- All 45 tests pass successfully after the change
-
 ### Subtasks
 
-#### 004-01: Convert vitest.config.ts to ESM format
-- **Agent**: AGENT
-- **File**: `vitest.config.ts`
-- **Description**: Rename `vitest.config.ts` to `vitest.config.mjs` and update to use ESM syntax. Change `import` statements to use `.js` extensions if needed, or set `"type": "module"` in package.json.
-- **Commands**:
-  - `npm run test:run`
-- ✅ **Completed**: File renamed to .mjs and updated with ESM-compatible __dirname
+#### P0-001-01: Install Upstash Dependencies ✅
+**Type:** AGENT  
+**File:** package.json
 
-#### 004-02: Add VITE_CJS_IGNORE_WARNING environment variable
-- **Agent**: AGENT
-- **File**: `package.json`
-- **Description**: If ESM conversion is not feasible, add `VITE_CJS_IGNORE_WARNING=true` to the test script: `"test": "cross-env VITE_CJS_IGNORE_WARNING=true vitest"`. Requires installing `cross-env` if on Windows.
-- **Commands**:
-  - `npm run test:run`
+Install Upstash Redis and rate limiting packages:
+```bash
+npm install @upstash/ratelimit @upstash/redis
+```
+
+Validate installation:
+```bash
+npm list @upstash/ratelimit @upstash/redis
+```
 
 ---
 
-## Task 005: Update sitemap dates and remove unused import
+#### P0-001-02: Add Environment Variables ✅
+**Type:** HUMAN  
+**File:** .env.example
 
-- [x] **Status**: COMPLETED
-- **Related Files**:
-  - `app/sitemap.ts`
-- **Definition of Done**:
-  - Stale hardcoded dates replaced with current dates
-  - Unused import removed
-  - Sitemap generates correctly
-- **Out of Scope**:
-  - Changing sitemap structure
-  - Adding dynamic date fetching from CMS
-- **Rules to Follow**:
-  - Use `new Date()` for current dates
-  - Maintain static generation
-- **Advanced Coding Pattern**:
-  - Static metadata with current timestamps
-- **Anti-Patterns**:
-  - Hardcoded dates that become stale
-- **Imports/Exports**:
-  - Remove: `getAllSlugs` from `@/lib/blog-data`
-- **Depends On**: Task 001 (for import removal)
-- **Blocks**: None
+Add Upstash Redis environment variables to .env.example:
+```
+UPSTASH_REDIS_REST_URL=
+UPSTASH_REDIS_REST_TOKEN=
+```
 
-**Implementation Notes**:
-- Updated static route lastModified dates from `new Date('2025-01-15')` to `new Date()` for current timestamps
-- Updated portfolio lastModified dates from `new Date('2025-01-10')` to `new Date()` for current timestamps
-- Note: The unused import removal was already completed in Task 001-05, so no import changes were needed
-- Sitemap generates correctly with dynamic current dates
-- All quality assurance checks pass: typecheck, lint, and build succeed
-
-### Subtasks
-
-#### 005-01: Update static route lastModified dates
-- **Agent**: AGENT
-- **File**: `app/sitemap.ts`
-- **Description**: Change `new Date('2025-01-15')` to `new Date()` for static routes. This ensures sitemap reflects current content freshness.
-- **Commands**:
-  - `npm run build`
-  - `curl http://localhost:3000/sitemap.xml` (after dev server start)
-- ✅ **Completed**: Changed to `new Date()` on line 24
-
-#### 005-02: Update portfolio lastModified dates
-- **Agent**: AGENT
-- **File**: `app/sitemap.ts`
-- **Description**: Change `new Date('2025-01-10')` to `new Date()` for portfolio entries. Consider using actual project completion dates if available in data.
-- **Commands**:
-  - `npm run build`
-- ✅ **Completed**: Changed to `new Date()` on line 42
+Update docs/rate-limiting.md with environment variable documentation.
 
 ---
 
-## Task 006: Consolidate or remove duplicate sanitization code
+#### P0-001-03: Implement Upstash Rate Limiter ✅
+**Type:** AGENT  
+**File:** app/lib/rate-limiter.ts
 
-- [x] **Status**: COMPLETED
-- **Related Files**:
-  - `app/lib/sanitize.ts`
-  - `app/components/sanitized-content.tsx`
-  - `app/__tests__/lib/sanitize.test.ts`
-- **Definition of Done**:
-  - Single source of truth for DOMPurify configuration
-  - Tests updated to match consolidated implementation
-  - No duplicate code
-- **Out of Scope**:
-  - Changing sanitization policy
-  - Adding new allowed tags/attributes
-- **Rules to Follow**:
-  - Deep module pattern: export typed functions, keep data private
-  - DDD: Sanitization is a bounded context
-- **Advanced Coding Pattern**:
-  - Deep module with single responsibility
-- **Anti-Patterns**:
-  - Duplicating configuration across files
-  - Mixing client/server sanitization logic
-- **Imports/Exports**:
-  - Keep: `SanitizedContent` component
-  - Evaluate: `sanitizeHtml` function
-- **Depends On**: None
-- **Blocks**: None
+Replace in-memory implementation with Upstash Redis:
+- Initialize Ratelimit with Redis from environment
+- Implement sliding window algorithm
+- Add error handling for Redis failures
+- Implement graceful degradation (allow requests if Redis unavailable)
+- Update function signatures to async
+- Add detailed logging for rate limit events
 
-**Implementation Notes**:
-- Audited codebase: `sanitizeHtml` function from `@/lib/sanitize` was only used in its test file, not in the application
-- `SanitizedContent` component is used in `app/blog/[slug]/page.tsx` and is the single source of truth for sanitization
-- Both files had duplicate DOMPurify configuration (identical ALLOWED_TAGS and ALLOWED_ATTR)
-- Removed `app/lib/sanitize.ts` and `app/__tests__/lib/sanitize.test.ts` to eliminate duplication
-- `SanitizedContent` component now serves as the deep module for sanitization with a simple interface
-- All quality assurance checks pass: typecheck, lint, and all 40 tests pass
-
-### Subtasks
-
-#### 006-01: Audit usage of sanitizeHtml function
-- **Agent**: AGENT
-- **File**: All TypeScript/TSX files
-- **Description**: Search for imports of `sanitizeHtml` from `@/lib/sanitize`. If unused, remove the file and test. If used, consolidate to use the component instead.
-- **Commands**:
-  - `grep -r "sanitizeHtml" app/ --include="*.ts" --include="*.tsx"`
-- ✅ **Completed**: Found `sanitizeHtml` only used in its test file, not in application code
-
-#### 006-02: Remove unused sanitize.ts and its test
-- **Agent**: AGENT
-- **File**: `app/lib/sanitize.ts`, `app/__tests__/lib/sanitize.test.ts`
-- **Description**: If `sanitizeHtml` is unused, delete both files. Update `vitest.config.ts` exclude patterns if needed.
-- **Commands**:
-  - `npm run test:run`
-  - `npm run build`
-- ✅ **Completed**: Deleted both files as `sanitizeHtml` was unused
-
-#### 006-03: Consolidate DOMPurify config if both are used
-- **Agent**: AGENT
-- **File**: `app/lib/sanitize.ts`, `app/components/sanitized-content.tsx`
-- **Description**: If both are used, move DOMPurify configuration to `sanitize.ts` and import it in the component. Update tests accordingly.
-- **Commands**:
-  - `npm run test:run -- app/__tests__/components/sanitized-content.test.tsx`
-  - `npm run test:run -- app/__tests__/lib/sanitize.test.ts`
-- ✅ **Completed**: Not needed - `SanitizedContent` is now the single source of truth
+Validate implementation:
+```bash
+npm run typecheck
+```
 
 ---
 
-## Task 007: Improve ErrorBoundary for SSR safety
+#### P0-001-04: Update Contact Form Rate Limiting ✅
+**Type:** AGENT  
+**File:** app/actions/contact.ts
 
-- [x] **Status**: COMPLETED
-- **Related Files**:
-  - `app/components/error-boundary.tsx`
-- **Definition of Done**:
-  - ErrorBoundary works correctly during SSR
-  - No `window` access before hydration
-  - Accessible fallback UI
-- **Out of Scope**:
-  - Implementing full error logging service
-  - Adding error reporting to external service
-- **Rules to Follow**:
-  - Use `useEffect` for client-only operations
-  - Provide accessible error messages
-- **Advanced Coding Pattern**:
-  - React class component with lifecycle methods
-- **Anti-Patterns**:
-  - Accessing `window` during SSR
-  - Using emoji for critical UI elements
-- **Imports/Exports**:
-  - Consider: `useEffect` from `react`
-- **Depends On**: None
-- **Blocks**: None
+Migrate contact form to use async rate limiting:
+- Change `checkRateLimit` call to `await checkRateLimit`
+- Update error handling for async failures
+- Add rate limit headers to response (RateLimit-Limit, RateLimit-Remaining, RateLimit-Reset)
 
-**Implementation Notes**:
-- Extracted error fallback UI into separate `ErrorFallback` functional component
-- Moved `window.location.reload()` into `useEffect` hook to ensure it only runs client-side, preventing SSR errors
-- Replaced emoji ⚠️ with accessible SVG warning icon using proper ARIA attributes (`aria-hidden="true"`, `role="img"`, `aria-label="Warning"`)
-- Changed reload button to automatic reload with "Reloading the page..." message for better UX
-- Fixed TypeScript error with exactOptionalPropertyTypes by using explicit `Error | undefined` type
-- All quality assurance checks pass: typecheck, lint, and all tests pass
-
-### Subtasks
-
-#### 007-01: Replace window.location.reload with useEffect
-- **Agent**: AGENT
-- **File**: `app/components/error-boundary.tsx`
-- **Description**: Move `window.location.reload()` into a `useEffect` hook to prevent SSR errors. Convert to functional component or add `useEffect` to class component.
-- **Commands**:
-  - `npm run test:run` (if tests exist for error boundary)
-  - `npm run build`
-- ✅ **Completed**: Created `ErrorFallback` functional component with `useEffect` for client-side only reload
-
-#### 007-02: Replace emoji with accessible SVG or text
-- **Agent**: AGENT
-- **File**: `app/components/error-boundary.tsx`
-- **Description**: Replace the emoji on line 41 with an SVG icon or text description. Emojis can have inconsistent rendering and accessibility issues.
-- **Commands**:
-  - `npm run build`
-- ✅ **Completed**: Replaced emoji with accessible SVG warning icon with proper ARIA attributes
+Validate implementation:
+```bash
+npm run test -- app/__tests__/actions/contact.test.ts
+```
 
 ---
 
-## Task 008: Document rate limiter limitations
+#### P0-001-05: Update Newsletter Rate Limiting ✅
+**Type:** AGENT  
+**File:** app/actions/newsletter.ts
 
-- [x] **Status**: COMPLETED
-- **Related Files**:
-  - `app/lib/rate-limiter.ts`
-  - `docs/rate-limiting.md`
-- **Definition of Done**:
-  - Documentation explains in-memory limitations
-  - Recommendations for production deployment
-  - Edge runtime compatibility noted
-- **Out of Scope**:
-  - Implementing Redis-based rate limiter
-  - Changing rate limiting logic
-- **Rules to Follow**:
-  - Document technical constraints clearly
-  - Provide migration path for production
-- **Advanced Coding Pattern**:
-  - Documentation as part of module contract
-- **Anti-Patterns**:
-  - Undocumented in-memory state
-  - Assuming single-instance deployment
-- **Imports/Exports**:
-  - None affected
-- **Depends On**: None
-- **Blocks**: None
+Migrate newsletter subscription to use async rate limiting:
+- Change `checkRateLimit` call to `await checkRateLimit`
+- Update error handling for async failures
+- Add rate limit headers to response
 
-**Implementation Notes**:
-- Added comprehensive JSDoc module-level documentation to `app/lib/rate-limiter.ts` explaining in-memory limitations, serverless incompatibility, and production recommendations
-- Added detailed JSDoc comments to all functions, constants, and the rate limit Map with warnings about serverless/multi-instance limitations
-- Created `docs/rate-limiting.md` with comprehensive documentation including:
-  - Current implementation explanation
-  - Detailed limitations section (serverless, multi-instance, edge runtime, fixed window algorithm)
-  - Production recommendations (Upstash Redis, traditional Redis, Cloudflare Durable Objects)
-  - Code examples for each production solution
-  - Step-by-step migration guide
-  - Algorithm comparison table
-  - Layered rate limiting strategy
-  - References to best practice articles
-- All quality assurance checks pass: typecheck, lint, and build succeed
-
-### Subtasks
-
-#### 008-01: Add JSDoc comments to rate-limiter module
-- **Agent**: AGENT
-- **File**: `app/lib/rate-limiter.ts`
-- **Description**: Add comprehensive JSDoc comments explaining the in-memory limitation, serverless incompatibility, and recommendation to use Redis/Upstash for production.
-- **Commands**:
-  - `npm run build`
-- ✅ **Completed**: Added module-level JSDoc with production warnings, detailed function documentation with examples, and warnings about serverless/multi-instance limitations
-
-#### 008-02: Create rate limiting documentation
-- **Agent**: AGENT
-- **File**: `docs/rate-limiting.md` (new file)
-- **Description**: Create documentation explaining the current implementation, its limitations, and recommended production alternatives. Include code examples for Redis/Upstash integration.
-- **Commands**:
-  - `npm run build`
-- ✅ **Completed**: Created comprehensive documentation with current implementation, limitations, production alternatives (Upstash, Redis, Durable Objects), migration guide, algorithm comparison, and references
+Validate implementation:
+```bash
+npm run test -- app/__tests__/actions/newsletter.test.ts
+```
 
 ---
 
-## Task 009: Add Content-Security-Policy header
+#### P0-001-06: Update Rate Limiter Tests ✅
+**Type:** AGENT  
+**File:** app/__tests__/lib/rate-limiter.test.ts
 
-- [x] **Status**: COMPLETED
-- **Related Files**:
-  - `next.config.ts`
-- **Definition of Done**:
-  - CSP header added to security headers
-  - Inline scripts and styles work correctly
-  - Analytics scripts are allowed
-- **Out of Scope**:
-  - Implementing nonce-based CSP
-  - Adding other security headers
-- **Rules to Follow**:
-  - Start with report-only mode for testing
-  - Allow Google Analytics domains
-  - Allow inline styles for Tailwind
-- **Advanced Coding Pattern**:
-  - Security headers as configuration
-- **Anti-Patterns**:
-  - Overly permissive CSP (`default-src *`)
-  - Breaking existing functionality
-- **Imports/Exports**:
-  - None affected
-- **Depends On**: None
-- **Blocks**: None
+Update tests to mock Upstash Redis:
+- Mock @upstash/ratelimit module
+- Test successful rate limit checks
+- Test rate limit exceeded scenarios
+- Test Redis failure graceful degradation
+- Test sliding window behavior
 
-**Implementation Notes**:
-- Added `Content-Security-Policy-Report-Only` header to `next.config.ts` with a permissive policy
-- Policy allows inline scripts and styles for compatibility with Tailwind CSS and JSON-LD schema scripts
-- Whitelisted Google Analytics domains: `www.googletagmanager.com` and `www.google-analytics.com`
-- Included `report-uri` directive for monitoring CSP violations (endpoint needs to be implemented)
-- Used report-only mode to test compatibility before enforcing the policy
-- All quality assurance checks pass: typecheck, lint, and build succeed
-
-### Subtasks
-
-#### 009-01: Add CSP header in report-only mode
-- **Agent**: AGENT
-- **File**: `next.config.ts`
-- **Description**: Add `Content-Security-Policy-Report-Only` header to the headers configuration. Start with a permissive policy to test compatibility.
-- **Commands**:
-  - `npm run build`
-  - `npm run dev` (test with browser DevTools CSP reports)
-- ✅ **Completed**: Added CSP-Report-Only header with permissive policy allowing inline scripts/styles and Google Analytics domains
-
-#### 009-02: Enforce CSP after testing
-- **Agent**: HUMAN
-- **File**: `next.config.ts`
-- **Description**: After testing with report-only mode, switch to enforcing `Content-Security-Policy`. Monitor CSP violation reports in production.
-- **Commands**:
-  - `npm run build`
+Validate tests:
+```bash
+npm run test -- app/__tests__/lib/rate-limiter.test.ts
+```
 
 ---
 
-## Task 010: Implement real contact form backend
+#### P0-001-07: Update Documentation ✅
+**Type:** AGENT  
+**File:** docs/rate-limiting.md
 
-- [x] **Status**: COMPLETED
-- **Related Files**:
-  - `app/actions/contact.ts`
-  - `.env.example`
-  - `package.json`
-  - `app/__tests__/actions/contact.test.ts`
-- **Definition of Done**:
-  - Contact form sends email via Resend/Mailgun
-  - Submissions stored in database or CRM
-  - Environment variables documented
-  - Error handling improved
-- **Out of Scope**:
-  - Building full CRM integration
-  - Adding file uploads
-- **Rules to Follow**:
-  - Use environment variables for API keys
-  - Never log PII
-  - Provide user feedback on errors
-- **Advanced Coding Pattern**:
-  - Server Actions with external API integration
-- **Anti-Patterns**:
-  - Hardcoding API keys
-  - Logging user data
-- **Imports/Exports**:
-  - Add: Resend or Mailgun SDK
-- **Depends On**: None
-- **Blocks**: Production deployment
-
-**Implementation Notes**:
-- Added `RESEND_API_KEY` and `CONTACT_EMAIL_TO` environment variables to `.env.example`
-- Installed `resend` package as email service SDK (chosen over Mailgun for better Next.js integration and pricing)
-- Implemented email sending in `app/actions/contact.ts` using Resend API
-- Added graceful fallback when `RESEND_API_KEY` is not configured (logs warning and returns success)
-- Email includes formatted HTML with all form fields (name, email, company, service, budget, message)
-- Error handling for email sending failures with user-friendly error messages
-- Updated tests to work without API key (action skips email sending when not configured)
-- All quality assurance checks pass: typecheck, lint, and all 40 tests pass
-- **Note**: Database storage (subtask 010-04) was not implemented as it requires additional infrastructure decisions and is better handled as a separate task. The current implementation focuses on email functionality which is the primary requirement for a real contact form backend.
-
-### Subtasks
-
-#### 010-01: Add email service environment variables
-- **Agent**: AGENT
-- **File**: `.env.example`
-- **Description**: Add `RESEND_API_KEY` or `MAILGUN_API_KEY` to `.env.example`. Add `CONTACT_EMAIL_TO` for destination email.
-- **Commands**:
-  - `npm run build`
-- ✅ **Completed**: Added `RESEND_API_KEY` and `CONTACT_EMAIL_TO` to `.env.example`
-
-#### 010-02: Install email service SDK
-- **Agent**: AGENT
-- **File**: `package.json`
-- **Description**: Install `resend` or `@mailgun/mailgun-js` as a dependency. Choose based on preference and pricing.
-- **Commands**:
-  - `npm install resend`
-  - `npm run build`
-- ✅ **Completed**: Installed `resend` package successfully
-
-#### 010-03: Implement email sending in contact action
-- **Agent**: AGENT
-- **File**: `app/actions/contact.ts`
-- **Description**: Replace the simulated delay with actual email sending using the installed SDK. Include form data in email body. Handle errors gracefully.
-- **Commands**:
-  - `npm run test:run -- app/__tests__/actions/contact.test.ts`
-- ✅ **Completed**: Implemented Resend email sending with formatted HTML email body and error handling
-
-#### 010-04: Add database storage for submissions
-- **Agent**: AGENT
-- **File**: `app/actions/contact.ts`
-- **Description**: Add database storage (PostgreSQL, MongoDB, or Vercel Postgres) for contact submissions. Create a submissions table/collection.
-- **Commands**:
-  - `npm run build`
-- ❌ **Skipped**: Database storage requires additional infrastructure decisions. Recommended as separate task after email functionality is validated in production.
-
-#### 010-05: Update contact action tests for real backend
-- **Agent**: AGENT
-- **File**: `app/__tests__/actions/contact.test.ts`
-- **Description**: Mock the email service and database in tests. Verify that email sending and storage are called correctly.
-- **Commands**:
-  - `npm run test:run -- app/__tests__/actions/contact.test.ts`
-- ✅ **Completed**: Updated tests to work without API key by leveraging the graceful fallback in the action
+Update documentation to reflect Upstash implementation:
+- Remove in-memory implementation details
+- Add Upstash configuration instructions
+- Update migration guide (completed steps)
+- Add troubleshooting section for Redis issues
+- Add monitoring recommendations
 
 ---
 
-## Task 011: Implement real newsletter subscription
+#### P0-001-08: Run Full Test Suite ✅
+**Type:** AGENT  
+**File:** N/A
 
-- [x] **Status**: COMPLETED
-- **Related Files**:
-  - `app/actions/newsletter.ts`
-  - `.env.example`
-  - `app/__tests__/actions/newsletter.test.ts`
-- **Definition of Done**:
-  - Newsletter subscriptions sent to Resend
-  - Double opt-in implemented (handled by Resend)
-  - Error handling improved
-- **Out of Scope**:
-  - Building full email marketing automation
-  - Custom newsletter management system
-- **Rules to Follow**:
-  - Use environment variables for API keys
-  - Implement double opt-in for compliance
-  - Never log email addresses
-- **Advanced Coding Pattern**:
-  - Server Actions with third-party API integration
-- **Anti-Patterns**:
-  - Single opt-in (non-compliant)
-  - Hardcoding API keys
-- **Imports/Exports**:
-  - Add: Resend SDK (already installed from Task 010)
-- **Depends On**: None
-- **Blocks**: Production deployment
-
-**Implementation Notes**:
-- Added `RESEND_AUDIENCE_ID` environment variable to `.env.example` for Resend audience configuration
-- Implemented real newsletter subscription using Resend contacts API in `app/actions/newsletter.ts`
-- Resend handles double opt-in automatically when contacts are added to an audience
-- Added graceful fallback when `RESEND_API_KEY` or `RESEND_AUDIENCE_ID` are not configured (logs warning and returns success)
-- Email addresses are never logged to console (PII protection)
-- Created comprehensive test suite in `app/__tests__/actions/newsletter.test.ts` with 6 tests covering validation, PII protection, success cases, error cases, and rate limiting
-- All quality assurance checks pass: typecheck, lint, and all 46 tests pass
-
-### Subtasks
-
-#### 011-01: Add newsletter service environment variables
-- **Agent**: AGENT
-- **File**: `.env.example`
-- **Description**: Add `MAILCHIMP_API_KEY` and `MAILCHIMP_AUDIENCE_ID` (or equivalent for chosen service) to `.env.example`.
-- **Commands**:
-  - `npm run build`
-- ✅ **Completed**: Added `RESEND_AUDIENCE_ID` to `.env.example` (using Resend instead of Mailchimp since it's already installed)
-
-#### 011-02: Install newsletter service SDK
-- **Agent**: AGENT
-- **File**: `package.json`
-- **Description**: Install `@mailchimp/mailchimp_marketing` or similar SDK for chosen newsletter service.
-- **Commands**:
-  - `npm install @mailchimp/mailchimp_marketing`
-  - `npm run build`
-- ✅ **Completed**: Resend SDK already installed from Task 010, no additional installation needed
-
-#### 011-03: Implement newsletter subscription in action
-- **Agent**: AGENT
-- **File**: `app/actions/newsletter.ts`
-- **Description**: Replace simulated delay with actual newsletter subscription using the SDK. Implement double opt-in flow.
-- **Commands**:
-  - `npm run build`
-- ✅ **Completed**: Implemented Resend contacts API integration with double opt-in handled by Resend
-
-#### 011-04: Add tests for newsletter integration
-- **Agent**: AGENT
-- **File**: `app/__tests__/actions/newsletter.test.ts` (new file)
-- **Description**: Create test file for newsletter action. Mock the newsletter service API. Verify subscription is called correctly.
-- **Commands**:
-  - `npm run test:run -- app/__tests__/actions/newsletter.test.ts`
-- ✅ **Completed**: Created test file with 6 tests covering validation, PII protection, success/error cases, and rate limiting
+Run full test suite to ensure no regressions:
+```bash
+npm run test:run
+npm run typecheck
+npm run lint
+```
 
 ---
 
-## Task 012: Add integration tests for contact/newsletter
+## P0-002: Add HSTS Security Header
 
-- [x] **Status**: COMPLETED
-- **Related Files**:
-  - `app/__tests__/actions/contact.test.ts`
-  - `app/__tests__/actions/newsletter.test.ts`
-- **Definition of Done**:
-  - Existing unit tests provide comprehensive coverage
-  - Research conducted on integration testing best practices
-  - Decision documented and implemented
-- **Out of Scope**:
-  - End-to-end tests with real email services
-  - UI-only tests
-- **Rules to Follow**:
-  - Follow current best practices for Next.js Server Actions testing
-  - Prioritize test reliability and maintainability
-- **Advanced Coding Pattern**:
-  - Unit testing with direct SDK mocking for Server Actions
-- **Anti-Patterns**:
-  - Complex integration test setups that duplicate unit test coverage
-  - Mocking SDKs at integration level when unit mocking is sufficient
-- **Imports/Exports**:
-  - None affected
-- **Depends On**: Task 010, Task 011
-- **Blocks**: None
+**Status:** [x] Complete  
+**Priority:** P0
 
-**Implementation Notes**:
-- Conducted research on Next.js Server Actions testing best practices (2025-2026)
-- Found that current best practice is: Vitest for unit tests (direct SDK mocking) + Playwright for E2E tests
-- Existing unit tests in `app/__tests__/actions/` already provide comprehensive coverage:
-  - Validation (Zod schemas)
-  - PII protection (no logging of sensitive data)
-  - Rate limiting behavior
-  - Error handling and graceful fallbacks
-  - Happy path scenarios
-- Integration tests would add complexity without meaningful value:
-  - They would essentially duplicate unit test coverage with more complex mock setup
-  - Mock conflicts are common when trying to mock SDKs at integration level
-  - They don't test the actual HTTP boundary
-- Better integration testing would be Playwright E2E tests for:
-  - Complete form submission flow through the UI
-  - Actual HTTP request/response cycle
-  - Authentication, CSRF protection, and real user behavior
-- Decision: Rely on existing unit tests + add Playwright E2E tests in future for true integration testing
-- All quality assurance checks pass: typecheck, lint, and all 46 tests pass
+### Related File Paths
+- next.config.ts
+- docs/security.md (create if not exists)
 
-### Subtasks
+### Definition of Done
+- HSTS header added to security headers
+- HSTS preload submission documented
+- Security documentation updated
+- HTTPS enforcement verified
 
-#### 012-01: Research integration testing best practices
-- **Agent**: AGENT
-- **Description**: Research current best practices for testing Next.js Server Actions with external services.
-- **Commands**:
-  - Online research on Next.js Server Actions testing patterns
-- ✅ **Completed**: Research shows unit tests with direct mocking + Playwright E2E is preferred approach
+### Out of Scope
+- SSL certificate management
+- Domain-level HSTS configuration
+- HSTS reporting/monitoring
 
-#### 012-02: Evaluate existing test coverage
-- **Agent**: AGENT
-- **Description**: Evaluate if existing unit tests provide sufficient coverage for contact and newsletter actions.
-- **Commands**:
-  - Review `app/__tests__/actions/contact.test.ts` and `app/__tests__/actions/newsletter.test.ts`
-- ✅ **Completed**: Existing tests provide comprehensive coverage of validation, PII protection, rate limiting, and error handling
+### Rules to Follow
+- Use max-age of 31536000 (1 year minimum)
+- Include includeSubDomains directive
+- Include preload directive
+- Add to HSTS preload list after deployment
+- Test in staging before production
 
-#### 012-03: Document decision and update task
-- **Agent**: AGENT
-- **Description**: Document the decision to rely on unit tests instead of creating integration tests.
-- **Commands**:
-  - Update TODO.md with implementation notes
-- ✅ **Completed**: Decision documented with research findings and rationale
+### Advanced Coding Pattern
+- Security header composition pattern
+- Environment-based header configuration
+
+### Anti-Patterns
+- Short max-age values (< 31536000)
+- Missing includeSubDomains for multi-subdomain sites
+- Forgetting preload submission
+- Adding HSTS without HTTPS verification
+
+### Imports/Exports
+No new imports/exports required.
+
+### Depends On
+- None
+
+### Blocks
+- None
 
 ---
 
-## Task 013: Update README with project-specific information
-
-- [x] **Status**: COMPLETED
-- **Related Files**:
-  - `README.md`
-- **Definition of Done**:
-  - README describes actual project
-  - Setup instructions accurate
-  - Development workflow documented
-- **Out of Scope**:
-  - Adding extensive API documentation
-  - Creating separate documentation site
-- **Rules to Follow**:
-  - Keep README concise
-  - Link to detailed docs where needed
-  - Include environment setup
-- **Advanced Coding Pattern**:
-  - README as project entry point
-- **Anti-Patterns**:
-  - Generic Next.js template content
-  - Outdated instructions
-- **Imports/Exports**:
-  - None affected
-- **Depends On**: None
-- **Blocks**: None
-
-**Implementation Notes**:
-- Replaced generic create-next-app README content with project-specific information for Elevate Digital
-- Added comprehensive sections: Features, Getting Started, Environment Setup, Development Workflow, Project Structure, Deployment, and Documentation
-- Environment Setup section links to ENV_SETUP.md for detailed instructions
-- Development Workflow section documents all available scripts and code quality checks
-- Project Structure section provides overview of app directory organization
-- All quality assurance checks pass: typecheck, lint, and build succeed
-
 ### Subtasks
 
-#### 013-01: Replace generic Next.js content
-- **Agent**: AGENT
-- **File**: `README.md`
-- **Description**: Replace the generic `create-next-app` README content with project-specific information about Elevate Digital.
-- **Commands**:
-  - `npm run build`
-- ✅ **Completed**: Replaced with comprehensive project-specific README
+#### P0-002-01: Add HSTS Header to Configuration ✅
+**Type:** AGENT
+**File:** next.config.ts
 
-#### 013-02: Add environment setup section
-- **Agent**: AGENT
-- **File**: `README.md`
-- **Description**: Add section on environment setup, referencing `.env.example` and `ENV_SETUP.md`.
-- **Commands**:
-  - `npm run build`
-- ✅ **Completed**: Added Environment Setup section with link to ENV_SETUP.md
+Add Strict-Transport-Security header to headers array:
+```typescript
+{
+  key: "Strict-Transport-Security",
+  value: "max-age=31536000; includeSubDomains; preload"
+}
+```
 
-#### 013-03: Add development workflow section
-- **Agent**: AGENT
-- **File**: `README.md`
-- **Description**: Add section on development workflow: running dev server, running tests, linting, building.
-- **Commands**:
-  - `npm run build`
-- ✅ **Completed**: Added Development Workflow section with all scripts and code quality checks
+Validate configuration:
+```bash
+npm run build
+```
 
 ---
 
-## Task 014: Fix dependency security vulnerabilities
+#### P0-002-02: Create Security Documentation ✅
+**Type:** AGENT
+**File:** docs/security.md
 
-- [x] **Status**: COMPLETED
-- **Related Files**:
-  - `package.json`
-  - `package-lock.json`
-- **Definition of Done**:
-  - All npm audit vulnerabilities resolved
-  - `npm audit` passes with no vulnerabilities
-  - No breaking changes to application functionality
-- **Out of Scope**:
-  - Upgrading to major versions that require extensive refactoring
-- **Rules to Follow**:
-  - Use `npm audit fix` for automatic fixes when possible
-  - Test thoroughly after dependency updates
-  - Review changelogs for breaking changes
-- **Advanced Coding Pattern**:
-  - Dependency management as part of security hygiene
-- **Anti-Patterns**:
-  - Ignoring security vulnerabilities
-  - Blindly running `npm audit fix --force` without testing
-- **Imports/Exports**:
-  - None affected
-- **Depends On**: None
-- **Blocks**: Security compliance, production deployment
+Create security documentation including:
+- HSTS implementation details
+- HSTS preload submission instructions
+- Security headers overview
+- SSL/TLS requirements
+- Security monitoring checklist
 
-**Implementation Notes**:
-- Ran `npm audit fix` which automatically resolved 2 vulnerabilities (esbuild and related vite dependencies)
-- Remaining vulnerability: postcss <8.5.10 (CVE-2026-41305) in Next.js transitive dependency
-- PostCSS vulnerability requires parsing user-submitted CSS and re-stringifying for HTML embedding - not exploitable in this application
-- Application uses Tailwind CSS with build-time processing, no user-submitted CSS functionality
-- Force fix would require Next.js major version downgrade (16.2.10 → 9.3.3), a breaking change
-- Per npm security best practices, documented as non-exploitable transitive vulnerability in `docs/security.md`
-- All quality assurance checks pass: typecheck, lint, all 46 tests, and build succeed
-- package-lock.json updated with security fixes
+---
+
+#### P0-002-03: Verify HTTPS Configuration
+**Type:** HUMAN
+**File:** N/A
+
+Verify HTTPS is properly configured:
+- SSL certificate valid and not nearing expiry
+- TLS 1.3 enabled
+- TLS 1.0 and 1.1 disabled
+- No mixed content warnings
+- Test with SSL Labs test
+
+---
+
+#### P0-002-04: Submit to HSTS Preload List
+**Type:** HUMAN
+**File:** N/A
+
+Submit domain to HSTS preload list:
+- Visit https://hstspreload.org/
+- Submit domain for preload
+- Verify requirements are met
+- Document submission date
+
+---
+
+## P0-003: Configure AI Crawler Permissions
+
+**Status:** [ ] Not Started  
+**Priority:** P0
+
+### Related File Paths
+- app/robots.ts
+- docs/seo.md (create if not exists)
+
+### Definition of Done
+- AI crawlers (GPTBot, ClaudeBot, PerplexityBot) explicitly allowed in robots.txt
+- GEO documentation created
+- AI crawler permissions tested
+- llms.txt file created
+
+### Out of Scope
+- Custom AI crawler configurations
+- AI crawler analytics
+- Dynamic AI crawler permissions
+
+### Rules to Follow
+- Allow specific AI crawlers by name
+- Maintain disallow for _next directory
+- Keep wildcard disallow for non-production environments
+- Document AI crawler permissions in SEO documentation
+
+### Advanced Coding Pattern
+- Environment-based robots.txt generation
+- Conditional crawler permissions
+
+### Anti-Patterns
+- Blocking all AI crawlers (harms GEO)
+- Allowing all crawlers in non-production
+- Not documenting AI crawler permissions
+
+### Imports/Exports
+No new imports/exports required.
+
+### Depends On
+- None
+
+### Blocks
+- P0-004 (llms.txt creation) - should be done together
+
+---
 
 ### Subtasks
 
-#### 014-01: Run automatic audit fix
-- **Agent**: AGENT
-- **File**: `package.json`, `package-lock.json`
-- **Description**: Run `npm audit fix` to automatically resolve vulnerabilities where possible without breaking changes.
-- **Commands**:
-  - `npm audit fix`
-  - `npm audit`
-  - `npm run test:run`
-- ✅ **Completed**: Resolved 2 vulnerabilities (esbuild and related vite dependencies)
+#### P0-003-01: Update robots.ts for AI Crawlers
+**Type:** AGENT  
+**File:** app/robots.ts
 
-#### 014-02: Verify application functionality after fix
-- **Agent**: AGENT
-- **File**: All application files
-- **Description**: Run full test suite and build to ensure dependency updates don't break functionality.
-- **Commands**:
-  - `npm run typecheck`
-  - `npm run lint`
-  - `npm run test:run`
-  - `npm run build`
-- ✅ **Completed**: All checks pass - typecheck, lint, 46 tests, build
+Add AI crawler permissions to production robots.txt:
+- Add specific allow rules for GPTBot, ClaudeBot, PerplexityBot
+- Maintain existing wildcard rules
+- Add comments explaining AI crawler permissions
 
-#### 014-03: Document remaining vulnerabilities if any
-- **Agent**: AGENT
-- **File**: `docs/security.md` (new file)
-- **Description**: If vulnerabilities remain after automatic fix, document them with rationale for why they cannot be safely resolved and monitoring plan.
-- **Commands**:
-  - `npm run build`
-- ✅ **Completed**: Created `docs/security.md` documenting PostCSS vulnerability as non-exploitable
+Validate robots.txt:
+```bash
+npm run build
+# Check generated robots.txt at .next/server/app/robots.txt
+```
+
+---
+
+#### P0-003-02: Create SEO Documentation
+**Type:** AGENT  
+**File:** docs/seo.md
+
+Create SEO documentation including:
+- AI crawler permissions overview
+- GEO (Generative Engine Optimization) strategy
+- AI crawler testing instructions
+- GEO monitoring recommendations
+- Links to research document
+
+---
+
+#### P0-003-03: Test AI Crawler Access
+**Type:** HUMAN  
+**File:** N/A
+
+Test AI crawler access:
+- Use curl with user-agent for each AI crawler
+- Verify robots.txt is accessible
+- Verify AI crawlers are not blocked
+- Document test results
+
+---
+
+## P0-004: Create llms.txt File
+
+**Status:** [ ] Not Started  
+**Priority:** P0
+
+### Related File Paths
+- public/llms.txt (create)
+- docs/seo.md
+
+### Definition of Done
+- llms.txt file created in public directory
+- File contains project overview and content structure
+- File follows llms.txt specification
+- Documentation updated
+
+### Out of Scope
+- Dynamic llms.txt generation
+- Multiple language llms.txt files
+- Real-time llms.txt updates
+
+### Rules to Follow
+- Follow llms.txt specification from https://llmstxt.org/
+- Include project overview
+- Include content structure
+- Include important URLs
+- Keep file concise and machine-readable
+
+### Advanced Coding Pattern
+- Static file generation pattern
+- Markdown-based documentation
+
+### Anti-Patterns
+- Including sensitive information in llms.txt
+- Making llms.txt too verbose
+- Not updating llms.txt when content changes
+
+### Imports/Exports
+No imports/exports required.
+
+### Depends On
+- P0-003 (AI Crawler Permissions)
+
+### Blocks
+- None
+
+---
+
+### Subtasks
+
+#### P0-004-01: Create llms.txt File
+**Type:** AGENT  
+**File:** public/llms.txt
+
+Create llms.txt file with:
+- Project overview (Elevate Digital marketing site)
+- Content structure (pages, blog, portfolio)
+- Important URLs (sitemap, robots.txt, API endpoints)
+- Contact information
+- Content guidelines for AI systems
+
+Validate file is accessible:
+```bash
+npm run dev
+# Visit http://localhost:3000/llms.txt
+```
+
+---
+
+#### P0-004-02: Update SEO Documentation
+**Type:** AGENT  
+**File:** docs/seo.md
+
+Update SEO documentation to include:
+- llms.txt purpose and structure
+- How AI systems use llms.txt
+- When to update llms.txt
+- llms.txt validation instructions
+
+---
+
+## P0-005: Verify GA4 Data-Driven Attribution
+
+**Status:** [ ] Not Started  
+**Priority:** P0
+
+### Related File Paths
+- app/components/analytics.tsx
+- docs/analytics.md (create if not exists)
+
+### Definition of Done
+- GA4 data-driven attribution confirmed as active
+- Analytics documentation created
+- Attribution model documented
+- Conversion tracking verified
+
+### Out of Scope
+- Custom attribution models
+- Multi-touch attribution implementation
+- Attribution model A/B testing
+
+### Rules to Follow
+- Verify in GA4 admin console
+- Document current attribution model
+- Confirm conversion tracking is working
+- Test attribution data flow
+
+### Advanced Coding Pattern
+- Analytics configuration verification
+- Data validation pattern
+
+### Anti-Patterns
+- Assuming attribution model without verification
+- Not documenting attribution model
+- Relying on last-click attribution
+
+### Imports/Exports
+No new imports/exports required.
+
+### Depends On
+- None
+
+### Blocks
+- P1-005 (Server-Side Tagging) - should verify current setup before adding server-side
+
+---
+
+### Subtasks
+
+#### P0-005-01: Verify GA4 Attribution Model
+**Type:** HUMAN  
+**File:** N/A
+
+Verify GA4 data-driven attribution is active:
+- Log into GA4 admin console
+- Navigate to Admin > Property > Attribution Settings
+- Confirm "Data-driven attribution" is selected
+- Document attribution model settings
+- Take screenshot for documentation
+
+---
+
+#### P0-005-02: Create Analytics Documentation
+**Type:** AGENT  
+**File:** docs/analytics.md
+
+Create analytics documentation including:
+- GA4 configuration details
+- Attribution model information
+- Conversion tracking setup
+- Events being tracked
+- Custom dimensions/metrics
+- Reporting dashboard locations
+
+---
+
+#### P0-005-03: Test Conversion Tracking
+**Type:** HUMAN  
+**File:** N/A
+
+Test conversion tracking:
+- Submit test contact form
+- Subscribe to newsletter
+- Verify events appear in GA4 real-time reports
+- Document conversion funnel setup
+
+---
+
+## P1-001: Implement Server-Side Tagging
+
+**Status:** [ ] Not Started  
+**Priority:** P1
+
+### Related File Paths
+- app/components/analytics.tsx
+- docs/analytics.md
+- package.json
+- .env.example
+
+### Definition of Done
+- GTM Server-Side container implemented
+- Client-side tags migrated to server-side
+- Data quality improved
+- Cookie deprecation impact mitigated
+- Documentation updated
+
+### Out of Scope
+- Custom server-side tag development
+- Third-party server-side integrations beyond GTM
+- Real-time data processing
+
+### Rules to Follow
+- Use Google Tag Manager Server-Side
+- Migrate existing GA4 tags
+- Implement data validation
+- Add error handling
+- Maintain client-side fallback
+
+### Advanced Coding Pattern
+- Server-side tagging pattern
+- Data validation and enrichment
+- Error handling and fallback
+
+### Anti-Patterns
+- Server-side tagging without client-side fallback
+- Not validating data before sending
+- Sending PII in server-side tags
+- Breaking existing analytics during migration
+
+### Imports/Exports
+No new imports/exports required (uses GTM web interface).
+
+### Depends On
+- P0-001 (Production Rate Limiting)
+- P0-005 (GA4 Attribution Verification)
+
+### Blocks
+- P1-002 (Dynamic OG Images) - server-side infrastructure should be stable
+
+---
+
+### Subtasks
+
+#### P1-001-01: Set Up GTM Server-Side Container
+**Type:** HUMAN  
+**File:** N/A
+
+Set up GTM Server-Side container:
+- Create GTM Server-Side container in Google Tag Manager
+- Configure server environment (Vercel or custom)
+- Document container ID and environment details
+- Add environment variables to .env.example
+
+---
+
+#### P1-001-02: Migrate GA4 Tags to Server-Side
+**Type:** HUMAN  
+**File:** N/A
+
+Migrate GA4 tags to server-side:
+- Create GA4 configuration tag in server container
+- Migrate existing GA4 events
+- Test server-side GA4 tags
+- Verify data matches client-side
+
+---
+
+#### P1-001-03: Update Analytics Component
+**Type:** AGENT  
+**File:** app/components/analytics.tsx
+
+Update analytics component to use server-side tagging:
+- Remove client-side GA4 tags (or keep as fallback)
+- Add server-side tagging initialization
+- Implement data layer updates
+- Add error handling
+
+Validate implementation:
+```bash
+npm run typecheck
+npm run lint
+```
+
+---
+
+#### P1-001-04: Update Analytics Documentation
+**Type:** AGENT  
+**File:** docs/analytics.md
+
+Update analytics documentation to include:
+- Server-side tagging architecture
+- Migration steps completed
+- Data validation rules
+- Fallback strategy
+- Monitoring recommendations
+
+---
+
+#### P1-001-05: Test Server-Side Tags
+**Type:** HUMAN  
+**File:** N/A
+
+Test server-side tags:
+- Submit test contact form
+- Subscribe to newsletter
+- Verify events in GA4 real-time reports
+- Compare server-side vs client-side data
+- Document any discrepancies
+
+---
+
+## P1-002: Implement Dynamic OG Images
+
+**Status:** [ ] Not Started  
+**Priority:** P1
+
+### Related File Paths
+- app/opengraph-image.tsx
+- app/blog/[slug]/opengraph-image.tsx (create)
+- app/portfolio/[slug]/opengraph-image.tsx (create)
+- app/services/opengraph-image.tsx (create)
+- app/about/opengraph-image.tsx (create)
+- app/pricing/opengraph-image.tsx (create)
+
+### Definition of Done
+- Dynamic OG image generation implemented for all pages
+- OG images include page-specific content
+- Image optimization configured
+- Fallback to default OG image
+- Documentation updated
+
+### Out of Scope
+- Custom OG image templates per page type
+- User-uploaded OG images
+- A/B testing OG images
+
+### Rules to Follow
+- Use Next.js Image optimization
+- Include page title in OG image
+- Include relevant branding
+- Maintain consistent design
+- Use @vercel/og for generation
+
+### Advanced Coding Pattern
+- Dynamic route-based image generation
+- Template-based image composition
+- Edge runtime for image generation
+
+### Anti-Patterns
+- Generating images on every request without caching
+- Not providing fallback images
+- Including sensitive information in OG images
+- Making OG images too large
+
+### Imports/Exports
+```typescript
+// Imports to add
+import { ImageResponse } from 'next/og'
+```
+
+### Depends On
+- None
+
+### Blocks
+- None
+
+---
+
+### Subtasks
+
+#### P1-002-01: Install OG Image Dependencies
+**Type:** AGENT  
+**File:** package.json
+
+Install @vercel/og package:
+```bash
+npm install @vercel/og
+```
+
+Validate installation:
+```bash
+npm list @vercel/og
+```
+
+---
+
+#### P1-002-02: Create Base OG Image Template
+**Type:** AGENT  
+**File:** app/opengraph-image.tsx
+
+Update existing opengraph-image.tsx to use @vercel/og:
+- Implement dynamic image generation
+- Add branding elements
+- Add default title/description
+- Configure edge runtime
+
+Validate implementation:
+```bash
+npm run build
+```
+
+---
+
+#### P1-002-03: Create Blog Post OG Images
+**Type:** AGENT  
+**File:** app/blog/[slug]/opengraph-image.tsx
+
+Create dynamic OG image for blog posts:
+- Include blog post title
+- Include blog post category
+- Include author name
+- Use consistent branding
+- Add caching
+
+Validate implementation:
+```bash
+npm run build
+```
+
+---
+
+#### P1-002-04: Create Portfolio Case Study OG Images
+**Type:** AGENT  
+**File:** app/portfolio/[slug]/opengraph-image.tsx
+
+Create dynamic OG image for case studies:
+- Include case study title
+- Include client name
+- Include category
+- Use consistent branding
+- Add caching
+
+Validate implementation:
+```bash
+npm run build
+```
+
+---
+
+#### P1-002-05: Create Service Page OG Images
+**Type:** AGENT  
+**File:** app/services/opengraph-image.tsx
+
+Create dynamic OG image for services page:
+- Include service name
+- Include key benefit
+- Use consistent branding
+- Add caching
+
+Validate implementation:
+```bash
+npm run build
+```
+
+---
+
+#### P1-002-06: Test OG Image Generation
+**Type:** HUMAN  
+**File:** N/A
+
+Test OG image generation:
+- Visit multiple pages and check OG images in social media preview tools
+- Use Facebook Sharing Debugger
+- Use Twitter Card Validator
+- Verify images load correctly
+- Check image sizes and dimensions
+
+---
+
+## P1-003: Implement Site Search
+
+**Status:** [ ] Not Started  
+**Priority:** P1
+
+### Related File Paths
+- app/search/page.tsx (create)
+- app/components/search-bar.tsx (create)
+- app/lib/search-data.ts (create)
+- package.json
+- .env.example
+
+### Definition of Done
+- Site search functionality implemented
+- Search indexes all content (pages, blog, portfolio)
+- Search results page created
+- Search bar component added to navigation
+- Algolia or similar service configured
+- Documentation updated
+
+### Out of Scope
+- Advanced search filters
+- Search analytics
+- Search result personalization
+- Voice search
+
+### Rules to Follow
+- Use Algolia for search service
+- Index all content types
+- Implement fuzzy search
+- Add search suggestions
+- Maintain search index automatically
+
+### Advanced Coding Pattern
+- Search index synchronization
+- Debounced search queries
+- Search result ranking
+
+### Anti-Patterns
+- Client-side search of all content (performance issue)
+- Not indexing new content automatically
+- Search without debouncing
+- Breaking search on content updates
+
+### Imports/Exports
+```typescript
+// Imports to add
+import algoliasearch from 'algoliasearch/lite'
+import { InstantSearch } from 'react-instantsearch-dom'
+```
+
+### Depends On
+- None
+
+### Blocks
+- None
+
+---
+
+### Subtasks
+
+#### P1-003-01: Install Search Dependencies
+**Type:** AGENT  
+**File:** package.json
+
+Install Algolia dependencies:
+```bash
+npm install algoliasearch react-instantsearch-dom
+```
+
+Validate installation:
+```bash
+npm list algoliasearch react-instantsearch-dom
+```
+
+---
+
+#### P1-003-02: Configure Algolia
+**Type:** HUMAN  
+**File:** N/A
+
+Configure Algolia:
+- Create Algolia account
+- Create index for content
+- Add environment variables to .env.example
+- Document API keys and index names
+
+---
+
+#### P1-003-03: Create Search Data Module
+**Type:** AGENT  
+**File:** app/lib/search-data.ts
+
+Create search data module:
+- Export search data structure
+- Combine blog, portfolio, and page data
+- Add search-relevant fields
+- Implement index synchronization function
+
+Validate implementation:
+```bash
+npm run typecheck
+```
+
+---
+
+#### P1-003-04: Create Search Bar Component
+**Type:** AGENT  
+**File:** app/components/search-bar.tsx
+
+Create search bar component:
+- Implement search input
+- Add search suggestions
+- Integrate with Algolia
+- Add keyboard navigation
+- Make accessible
+
+Validate implementation:
+```bash
+npm run typecheck
+npm run lint
+```
+
+---
+
+#### P1-003-05: Create Search Results Page
+**Type:** AGENT  
+**File:** app/search/page.tsx
+
+Create search results page:
+- Implement search results display
+- Add filters by content type
+- Add pagination
+- Add no results state
+- Make accessible
+
+Validate implementation:
+```bash
+npm run build
+```
+
+---
+
+#### P1-003-06: Add Search Bar to Navigation
+**Type:** AGENT  
+**File:** app/components/navigation.tsx
+
+Add search bar to navigation:
+- Add search icon/button
+- Integrate search bar component
+- Add mobile search support
+- Maintain responsive design
+
+Validate implementation:
+```bash
+npm run typecheck
+npm run lint
+```
+
+---
+
+#### P1-003-07: Index Content in Algolia
+**Type:** HUMAN  
+**File:** N/A
+
+Index content in Algolia:
+- Run index synchronization
+- Verify all content is indexed
+- Test search functionality
+- Monitor index size
+
+---
+
+#### P1-003-08: Test Search Functionality
+**Type:** HUMAN  
+**File:** N/A
+
+Test search functionality:
+- Test various search queries
+- Test search suggestions
+- Test search results pagination
+- Test mobile search
+- Test keyboard navigation
+
+---
+
+## P1-004: Add Interactive Pricing Toggle
+
+**Status:** [ ] Not Started  
+**Priority:** P1
+
+### Related File Paths
+- app/pricing/page.tsx
+
+### Definition of Done
+- Monthly/yearly billing toggle implemented
+- Prices update dynamically
+- Toggle state persists (localStorage)
+- Animation for price transitions
+- Accessibility considerations addressed
+- Documentation updated
+
+### Out of Scope
+- Custom pricing tiers
+- Tier comparison features
+- Pricing calculator
+
+### Rules to Follow
+- Use client component for interactivity
+- Implement smooth transitions
+- Save preference to localStorage
+- Make toggle accessible
+- Update all pricing displays
+
+### Advanced Coding Pattern
+- State management with useState
+- LocalStorage persistence pattern
+- Animated number transitions
+
+### Anti-Patterns
+- Not persisting user preference
+- Jarring price transitions
+- Inaccessible toggle
+- Not updating all price displays
+
+### Imports/Exports
+```typescript
+// Imports to add
+import { useState, useEffect } from 'react'
+```
+
+### Depends On
+- None
+
+### Blocks
+- None
+
+---
+
+### Subtasks
+
+#### P1-004-01: Add Pricing Toggle State
+**Type:** AGENT  
+**File:** app/pricing/page.tsx
+
+Convert pricing page to client component:
+- Add "use client" directive
+- Add state for billing period (monthly/yearly)
+- Add localStorage persistence
+- Add effect to load saved preference
+
+Validate implementation:
+```bash
+npm run typecheck
+```
+
+---
+
+#### P1-004-02: Update Pricing Data Structure
+**Type:** AGENT  
+**File:** app/pricing/page.tsx
+
+Update pricing data to include monthly and yearly prices:
+- Add monthly and yearly price fields to packages
+- Calculate yearly discount
+- Update price display logic
+
+Validate implementation:
+```bash
+npm run typecheck
+```
+
+---
+
+#### P1-004-03: Create Toggle Component
+**Type:** AGENT  
+**File:** app/pricing/page.tsx
+
+Create billing period toggle:
+- Add toggle UI component
+- Add smooth transition animation
+- Make toggle accessible (keyboard nav, ARIA)
+- Add visual feedback
+
+Validate implementation:
+```bash
+npm run lint
+```
+
+---
+
+#### P1-004-04: Add Price Transition Animation
+**Type:** AGENT  
+**File:** app/pricing/page.tsx
+
+Add animated number transitions:
+- Implement number animation when prices change
+- Use Framer Motion or CSS transitions
+- Ensure smooth visual experience
+
+Validate implementation:
+```bash
+npm run build
+```
+
+---
+
+#### P1-004-05: Test Pricing Toggle
+**Type:** HUMAN  
+**File:** N/A
+
+Test pricing toggle:
+- Test toggle between monthly/yearly
+- Verify prices update correctly
+- Test localStorage persistence
+- Test keyboard navigation
+- Test mobile responsiveness
+
+---
+
+## P1-005: Set Up A/B Testing Infrastructure
+
+**Status:** [ ] Not Started  
+**Priority:** P1
+
+### Related File Paths
+- app/lib/ab-testing.ts (create)
+- docs/cro.md (create)
+- package.json
+- .env.example
+
+### Definition of Done
+- A/B testing tool integrated (VWO or Optimizely)
+- Test configuration module created
+- Documentation for A/B testing created
+- First A/B test planned
+- Team trained on A/B testing process
+
+### Out of Scope
+- Custom A/B testing implementation
+- Machine learning test optimization
+- Real-time test personalization
+
+### Rules to Follow
+- Use established A/B testing platform
+- Implement proper test tracking
+- Document test hypotheses
+- Follow statistical significance requirements
+- Implement test cleanup process
+
+### Advanced Coding Pattern
+- Feature flag pattern
+- Test assignment pattern
+- Event tracking pattern
+
+### Anti-Patterns
+- Running tests without statistical significance
+- Not documenting test hypotheses
+- Tests without clear success criteria
+- Never-ending tests
+
+### Imports/Exports
+```typescript
+// Imports to add (VWO example)
+import vwo from 'vwo-node-sdk'
+```
+
+### Depends On
+- P0-001 (Production Rate Limiting)
+- P0-005 (GA4 Attribution Verification)
+
+### Blocks
+- None
+
+---
+
+### Subtasks
+
+#### P1-005-01: Select A/B Testing Platform
+**Type:** HUMAN  
+**File:** N/A
+
+Select and configure A/B testing platform:
+- Evaluate VWO vs Optimizely
+- Create account
+- Configure project
+- Add environment variables to .env.example
+- Document platform choice
+
+---
+
+#### P1-005-02: Install A/B Testing SDK
+**Type:** AGENT  
+**File:** package.json
+
+Install A/B testing SDK:
+```bash
+npm install vwo-node-sdk
+# or
+npm install @optimizely/optimizely-sdk
+```
+
+Validate installation:
+```bash
+npm list vwo-node-sdk
+```
+
+---
+
+#### P1-005-03: Create A/B Testing Module
+**Type:** AGENT  
+**File:** app/lib/ab-testing.ts
+
+Create A/B testing configuration module:
+- Initialize SDK with environment variables
+- Create test assignment function
+- Create test tracking function
+- Add error handling
+- Add logging
+
+Validate implementation:
+```bash
+npm run typecheck
+```
+
+---
+
+#### P1-005-04: Create CRO Documentation
+**Type:** AGENT  
+**File:** docs/cro.md
+
+Create CRO documentation including:
+- A/B testing process
+- EPIC testing framework
+- Test hypothesis template
+- Statistical significance requirements
+- Test documentation template
+
+---
+
+#### P1-005-05: Plan First A/B Test
+**Type:** HUMAN  
+**File:** docs/cro.md
+
+Plan first A/B test using EPIC framework:
+- Document test hypothesis
+- Score test using EPIC (Experiment, Priority, Impact, Cost)
+- Define success criteria
+- Calculate required sample size
+- Document test plan
+
+---
+
+#### P1-005-06: Implement First A/B Test
+**Type:** AGENT  
+**File:** app/page.tsx
+
+Implement first A/B test:
+- Add test variant logic
+- Implement test tracking
+- Add test to A/B testing platform
+- Test implementation locally
+
+Validate implementation:
+```bash
+npm run build
+```
+
+---
+
+## P2-001: Integrate Headless CMS
+
+**Status:** [ ] Not Started  
+**Priority:** P2
+
+### Related File Paths
+- app/lib/cms-client.ts (create)
+- app/lib/content-types.ts (create)
+- docs/cms.md (create)
+- package.json
+- .env.example
+
+### Definition of Done
+- Headless CMS integrated (Sanity or Contentful)
+- Content types defined
+- Existing content migrated
+- CMS client module created
+- Documentation updated
+- Content editors trained
+
+### Out of Scope
+- Custom CMS development
+- Multiple CMS integrations
+- Real-time content synchronization
+
+### Rules to Follow
+- Use established headless CMS (Sanity or Contentful)
+- Define content types before migration
+- Maintain content type safety with TypeScript
+- Implement content caching
+- Create content migration scripts
+
+### Advanced Coding Pattern
+- CMS client pattern
+- Content type generation
+- Content caching strategy
+- Content migration pattern
+
+### Anti-Patterns
+- Defining content types after migration
+- Not using TypeScript for content types
+- Not caching CMS responses
+- Breaking existing content during migration
+
+### Imports/Exports
+```typescript
+// Imports to add (Sanity example)
+import { createClient } from 'next-sanity'
+import { defineQuery } from 'next-sanity/query'
+```
+
+### Depends On
+- None
+
+### Blocks
+- P2-002 (Multilingual Support) - CMS should support i18n
+- P2-003 (Advanced Animations) - CMS should support animation configuration
+
+---
+
+### Subtasks
+
+#### P2-001-01: Select Headless CMS
+**Type:** HUMAN  
+**File:** N/A
+
+Select and configure headless CMS:
+- Evaluate Sanity vs Contentful
+- Consider MCP support for AI workflows
+- Create account
+- Configure project
+- Add environment variables to .env.example
+
+---
+
+#### P2-001-02: Install CMS Dependencies
+**Type:** AGENT  
+**File:** package.json
+
+Install CMS dependencies:
+```bash
+# For Sanity
+npm install next-sanity @sanity/image-url
+
+# For Contentful
+npm install contentful
+```
+
+Validate installation:
+```bash
+npm list next-sanity
+```
+
+---
+
+#### P2-001-03: Define Content Types
+**Type:** AGENT  
+**File:** app/lib/content-types.ts
+
+Define TypeScript content types:
+- Define Page content type
+- Define BlogPost content type
+- Define CaseStudy content type
+- Define Service content type
+- Export type definitions
+
+Validate implementation:
+```bash
+npm run typecheck
+```
+
+---
+
+#### P2-001-04: Create CMS Client Module
+**Type:** AGENT  
+**File:** app/lib/cms-client.ts
+
+Create CMS client module:
+- Initialize CMS client
+- Create query functions for each content type
+- Add error handling
+- Add caching
+- Add logging
+
+Validate implementation:
+```bash
+npm run typecheck
+```
+
+---
+
+#### P2-001-05: Configure CMS Content Types
+**Type:** HUMAN  
+**File:** N/A
+
+Configure content types in CMS:
+- Set up Page content type in CMS
+- Set up BlogPost content type in CMS
+- Set up CaseStudy content type in CMS
+- Set up Service content type in CMS
+- Configure field validation
+
+---
+
+#### P2-001-06: Migrate Existing Content
+**Type:** AGENT  
+**File:** scripts/migrate-content.ts (create)
+
+Create content migration script:
+- Read existing content from TypeScript files
+- Transform to CMS format
+- Upload to CMS
+- Verify migration
+- Handle errors gracefully
+
+Validate implementation:
+```bash
+npm run typecheck
+npm run build
+```
+
+---
+
+#### P2-001-07: Update Pages to Use CMS
+**Type:** AGENT  
+**File:** app/page.tsx, app/blog/page.tsx, app/portfolio/page.tsx
+
+Update pages to fetch from CMS:
+- Replace hardcoded content with CMS queries
+- Update data fetching logic
+- Add error handling
+- Add loading states
+- Test locally
+
+Validate implementation:
+```bash
+npm run build
+```
+
+---
+
+#### P2-001-08: Create CMS Documentation
+**Type:** AGENT  
+**File:** docs/cms.md
+
+Create CMS documentation including:
+- CMS configuration details
+- Content type definitions
+- Query examples
+- Migration guide
+- Editor guide
+- Troubleshooting
+
+---
+
+#### P2-001-09: Train Content Editors
+**Type:** HUMAN  
+**File:** N/A
+
+Train content editors:
+- Provide CMS access
+- Train on content editing
+- Train on content publishing
+- Provide documentation
+- Set up review process
+
+---
+
+## P2-002: Implement Multilingual Support
+
+**Status:** [ ] Not Started  
+**Priority:** P2
+
+### Related File Paths
+- app/[locale]/ (create directory structure)
+- app/lib/i18n.ts (create)
+- messages/en.json (create)
+- next.config.ts
+- package.json
+- .env.example
+
+### Definition of Done
+- next-intl integrated
+- English and Spanish locales implemented
+- All pages translated
+- Language switcher added
+- URL structure updated (/en/, /es/)
+- Documentation updated
+
+### Out of Scope
+- More than 2 languages initially
+- RTL language support
+- Automatic translation
+- Locale-specific content beyond translations
+
+### Rules to Follow
+- Use next-intl for i18n
+- Maintain content type safety
+- Implement language persistence
+- Add language switcher to navigation
+- Update sitemap for all locales
+
+### Advanced Coding Pattern
+- Locale-based routing
+- Message extraction pattern
+- Language switcher pattern
+
+### Anti-Patterns
+- Hardcoding translations
+- Not maintaining message files
+- Breaking existing URLs
+- Not updating sitemap
+
+### Imports/Exports
+```typescript
+// Imports to add
+import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
+```
+
+### Depends On
+- P2-001 (Headless CMS) - CMS should support i18n
+
+### Blocks
+- None
+
+---
+
+### Subtasks
+
+#### P2-002-01: Install next-intl
+**Type:** AGENT  
+**File:** package.json
+
+Install next-intl:
+```bash
+npm install next-intl
+```
+
+Validate installation:
+```bash
+npm list next-intl
+```
+
+---
+
+#### P2-002-02: Configure next.config.ts for i18n
+**Type:** AGENT  
+**File:** next.config.ts
+
+Configure Next.js for i18n:
+- Add next-intl plugin
+- Configure default locale
+- Configure supported locales
+- Configure locale detection
+
+Validate configuration:
+```bash
+npm run build
+```
+
+---
+
+#### P2-002-03: Create Locale Directory Structure
+**Type:** AGENT  
+**File:** app/[locale]/ (create)
+
+Create locale-based directory structure:
+- Move existing pages to app/[locale]/
+- Update imports and links
+- Test routing
+
+Validate implementation:
+```bash
+npm run build
+```
+
+---
+
+#### P2-002-04: Create Message Files
+**Type:** AGENT  
+**File:** messages/en.json, messages/es.json (create)
+
+Create message files:
+- Create en.json with English translations
+- Create es.json with Spanish translations
+- Extract all user-facing text
+- Maintain message structure
+
+Validate implementation:
+```bash
+npm run typecheck
+```
+
+---
+
+#### P2-002-05: Create i18n Module
+**Type:** AGENT  
+**File:** app/lib/i18n.ts
+
+Create i18n configuration module:
+- Configure next-intl
+- Export locale constants
+- Export translation helpers
+- Add type safety
+
+Validate implementation:
+```bash
+npm run typecheck
+```
+
+---
+
+#### P2-002-06: Add Language Switcher
+**Type:** AGENT  
+**File:** app/components/language-switcher.tsx (create)
+
+Create language switcher component:
+- Add language dropdown
+- Implement language switching
+- Add language persistence
+- Make accessible
+- Add to navigation
+
+Validate implementation:
+```bash
+npm run lint
+```
+
+---
+
+#### P2-002-07: Update Sitemap for Locales
+**Type:** AGENT  
+**File:** app/sitemap.ts
+
+Update sitemap to include all locales:
+- Add locale-specific URLs
+- Add hreflang tags
+- Update priority for localized pages
+
+Validate implementation:
+```bash
+npm run build
+```
+
+---
+
+#### P2-002-08: Test Multilingual Functionality
+**Type:** HUMAN  
+**File:** N/A
+
+Test multilingual functionality:
+- Test language switching
+- Verify all pages are translated
+- Test URL structure
+- Test language persistence
+- Test SEO for both locales
+
+---
+
+## P2-003: Integrate Advanced Animations
+
+**Status:** [ ] Not Started  
+**Priority:** P2
+
+### Related File Paths
+- app/components/scroll-reveal.tsx
+- package.json
+
+### Definition of Done
+- Framer Motion integrated
+- Advanced animations implemented
+- Performance optimized
+- Reduced motion support maintained
+- Documentation updated
+
+### Out of Scope
+- Custom animation libraries
+- 3D animations
+- Video backgrounds
+
+### Rules to Follow
+- Use Framer Motion for animations
+- Maintain reduced motion support
+- Optimize for performance
+- Don't over-animate
+- Test on mobile devices
+
+### Advanced Coding Pattern
+- Framer Motion animation pattern
+- Reduced motion detection pattern
+- Performance optimization pattern
+
+### Anti-Patterns
+- Animating everything
+- Ignoring reduced motion preferences
+- Performance-heavy animations
+- Distracting animations
+
+### Imports/Exports
+```typescript
+// Imports to add
+import { motion } from 'framer-motion'
+```
+
+### Depends On
+- None
+
+### Blocks
+- None
+
+---
+
+### Subtasks
+
+#### P2-003-01: Install Framer Motion
+**Type:** AGENT  
+**File:** package.json
+
+Install Framer Motion:
+```bash
+npm install framer-motion
+```
+
+Validate installation:
+```bash
+npm list framer-motion
+```
+
+---
+
+#### P2-003-02: Update Scroll Reveal Component
+**Type:** AGENT  
+**File:** app/components/scroll-reveal.tsx
+
+Update scroll reveal to use Framer Motion:
+- Replace custom animation with Framer Motion
+- Add more sophisticated animations
+- Maintain reduced motion support
+- Optimize performance
+
+Validate implementation:
+```bash
+npm run typecheck
+npm run lint
+```
+
+---
+
+#### P2-003-03: Add Page Transition Animations
+**Type:** AGENT  
+**File:** app/layout.tsx
+
+Add page transition animations:
+- Add Framer Motion to layout
+- Implement page transitions
+- Add loading states
+- Test transitions
+
+Validate implementation:
+```bash
+npm run build
+```
+
+---
+
+#### P2-003-04: Add Micro-Interactions
+**Type:** AGENT  
+**File:** app/components/navigation.tsx, app/components/footer.tsx
+
+Add micro-interactions:
+- Add hover animations to navigation
+- Add button animations
+- Add link animations
+- Keep animations subtle
+
+Validate implementation:
+```bash
+npm run lint
+```
+
+---
+
+#### P2-003-05: Test Animation Performance
+**Type:** HUMAN  
+**File:** N/A
+
+Test animation performance:
+- Test on mobile devices
+- Test with reduced motion enabled
+- Check Lighthouse scores
+- Verify smooth frame rate (SFR metric)
+
+---
+
+## P2-004: Set Up AI Share of Voice Tracking
+
+**Status:** [ ] Not Started  
+**Priority:** P2
+
+### Related File Paths
+- docs/seo.md
+- .env.example
+
+### Definition of Done
+- AI Share of Voice tracking tool configured (Semrush AI Toolkit or similar)
+- Baseline established
+- Monitoring process documented
+- Reporting cadence established
+- Documentation updated
+
+### Out of Scope
+- Custom AI tracking implementation
+- Real-time AI monitoring
+- AI sentiment analysis
+
+### Rules to Follow
+- Use established AI tracking tool
+- Establish baseline before optimization
+- Monitor citation frequency
+- Track brand visibility in AI answers
+- Review monthly
+
+### Advanced Coding Pattern
+- Third-party tool integration pattern
+- Monitoring and reporting pattern
+
+### Anti-Patterns
+- Not establishing baseline
+- Monitoring without action
+- Ignoring AI citation trends
+- Not documenting findings
+
+### Imports/Exports
+No new imports/exports required (uses external tool).
+
+### Depends On
+- P0-003 (AI Crawler Permissions)
+- P0-004 (llms.txt)
+
+### Blocks
+- None
+
+---
+
+### Subtasks
+
+#### P2-004-01: Select AI Tracking Tool
+**Type:** HUMAN  
+**File:** N/A
+
+Select AI Share of Voice tracking tool:
+- Evaluate Semrush AI Toolkit vs Profound.ai vs Otterly.ai
+- Create account
+- Configure project
+- Add environment variables to .env.example
+
+---
+
+#### P2-004-02: Establish AI Share of Voice Baseline
+**Type:** HUMAN  
+**File:** docs/seo.md
+
+Establish baseline:
+- Run initial AI Share of Voice report
+- Document baseline metrics
+- Identify competitors
+- Document citation sources
+- Save baseline report
+
+---
+
+#### P2-004-03: Update SEO Documentation
+**Type:** AGENT  
+**File:** docs/seo.md
+
+Update SEO documentation to include:
+- AI Share of Voice tracking process
+- Baseline metrics
+- Monitoring cadence
+- Optimization recommendations
+- Reporting template
+
+---
+
+#### P2-004-04: Set Up Monitoring Schedule
+**Type:** HUMAN  
+**File:** N/A
+
+Set up monitoring schedule:
+- Add monthly AI Share of Voice review to calendar
+- Set up automated reports if available
+- Define escalation process for drops
+- Assign responsibility for monitoring
+
+---
+
+#### P2-004-05: Conduct First Monthly Review
+**Type:** HUMAN  
+**File:** docs/seo.md
+
+Conduct first monthly review:
+- Run AI Share of Voice report
+- Compare to baseline
+- Identify trends
+- Document findings
+- Plan optimizations if needed
+
+---
+
+## P3-001: Add Additional Schema Types
+
+**Status:** [ ] Not Started  
+**Priority:** P3
+
+### Related File Paths
+- app/lib/schema.ts
+- app/layout.tsx
+
+### Definition of Done
+- HowTo schema added
+- Product schema added (if applicable)
+- Breadcrumb schema implemented
+- Schema validation tested
+- Documentation updated
+
+### Out of Scope
+- Custom schema types
+- Industry-specific schemas beyond standard
+
+### Rules to Follow
+- Use schema.org standard types
+- Validate schema with Google tools
+- Add schema to relevant pages only
+- Test rich snippet preview
+
+### Advanced Coding Pattern
+- Schema composition pattern
+- Page-specific schema injection
+
+### Anti-Patterns
+- Adding irrelevant schema types
+- Invalid schema markup
+- Schema without content backing
+- Not testing schema validation
+
+### Imports/Exports
+No new imports/exports required.
+
+### Depends On
+- None
+
+### Blocks
+- None
+
+---
+
+### Subtasks
+
+#### P3-001-01: Add HowTo Schema
+**Type:** AGENT  
+**File:** app/lib/schema.ts
+
+Add HowTo schema generator:
+- Create generateHowToSchema function
+- Add to blog posts with how-to content
+- Test schema validation
+
+Validate implementation:
+```bash
+npm run typecheck
+```
+
+---
+
+#### P3-001-02: Add Product Schema
+**Type:** AGENT  
+**File:** app/lib/schema.ts
+
+Add Product schema generator:
+- Create generateProductSchema function
+- Add to pricing page
+- Test schema validation
+
+Validate implementation:
+```bash
+npm run typecheck
+```
+
+---
+
+#### P3-001-03: Implement Breadcrumb Schema
+**Type:** AGENT  
+**File:** app/lib/schema.ts, app/layout.tsx
+
+Implement breadcrumb schema:
+- Update generateBreadcrumbSchema function
+- Add to all pages
+- Test schema validation
+
+Validate implementation:
+```bash
+npm run build
+```
+
+---
+
+#### P3-001-04: Test Schema Validation
+**Type:** HUMAN  
+**File:** N/A
+
+Test schema validation:
+- Use Google Rich Results Test
+- Test multiple pages
+- Verify no errors
+- Check rich snippet preview
+
+---
+
+## P3-002: Add Social Media Integration
+
+**Status:** [ ] Not Started  
+**Priority:** P3
+
+### Related File Paths
+- app/components/social-share.tsx (create)
+- app/components/social-feed.tsx (create)
+- app/lib/social-data.ts (create)
+
+### Definition of Done
+- Social sharing buttons added
+- Social feed integration added
+- Social links updated
+- Open Graph tags verified
+- Documentation updated
+
+### Out of Scope
+- Social media management
+- Social media scheduling
+- Social media analytics
+
+### Rules to Follow
+- Add sharing to relevant pages only
+- Use platform-specific sharing URLs
+- Maintain privacy
+- Don't track without consent
+- Make sharing accessible
+
+### Advanced Coding Pattern
+- Social sharing pattern
+- Third-party API integration pattern
+
+### Anti-Patterns
+- Adding sharing to every page
+- Tracking without consent
+- Breaking privacy
+- Overcomplicating sharing
+
+### Imports/Exports
+No new imports/exports required.
+
+### Depends On
+- P1-002 (Dynamic OG Images)
+
+### Blocks
+- None
+
+---
+
+### Subtasks
+
+#### P3-002-01: Create Social Share Component
+**Type:** AGENT  
+**File:** app/components/social-share.tsx
+
+Create social share component:
+- Add share buttons for major platforms
+- Use platform-specific sharing URLs
+- Add to blog posts
+- Make accessible
+
+Validate implementation:
+```bash
+npm run lint
+```
+
+---
+
+#### P3-002-02: Add Social Feed Integration
+**Type:** AGENT  
+**File:** app/components/social-feed.tsx
+
+Create social feed component:
+- Integrate with social media API
+- Display recent posts
+- Add to footer or dedicated page
+- Handle errors gracefully
+
+Validate implementation:
+```bash
+npm run typecheck
+```
+
+---
+
+#### P3-002-03: Update Social Links
+**Type:** AGENT  
+**File:** app/components/footer.tsx
+
+Update social links in footer:
+- Add social media icons
+- Link to social profiles
+- Add hover effects
+- Make accessible
+
+Validate implementation:
+```bash
+npm run lint
+```
+
+---
+
+#### P3-002-04: Test Social Sharing
+**Type:** HUMAN  
+**File:** N/A
+
+Test social sharing:
+- Test sharing on different platforms
+- Verify OG images display correctly
+- Test on mobile devices
+- Verify privacy compliance
+
+---
+
+## P3-003: Implement Chatbot
+
+**Status:** [ ] Not Started  
+**Priority:** P3
+
+### Related File Paths
+- app/components/chatbot.tsx (create)
+- package.json
+- .env.example
+
+### Definition of Done
+- Chatbot implemented
+- Chatbot integrated with site
+- Chatbot trained on FAQs
+- Chatbot accessible
+- Documentation updated
+
+### Out of Scope
+- Custom AI chatbot development
+- Voice chat
+- Video chat
+
+### Rules to Follow
+- Use established chatbot platform
+- Train on existing FAQs
+- Make chatbot accessible
+- Add chatbot to relevant pages
+- Monitor chatbot performance
+
+### Advanced Coding Pattern
+- Third-party widget integration pattern
+- Chat configuration pattern
+
+### Anti-Patterns
+- Building custom chatbot
+- Not training on FAQs
+- Making chatbot intrusive
+- Not monitoring performance
+
+### Imports/Exports
+No new imports/exports required (uses third-party widget).
+
+### Depends On
+- None
+
+### Blocks
+- None
+
+---
+
+### Subtasks
+
+#### P3-003-01: Select Chatbot Platform
+**Type:** HUMAN  
+**File:** N/A
+
+Select chatbot platform:
+- Evaluate Intercom vs Drift vs Crisp
+- Create account
+- Configure chatbot
+- Train on FAQs from FAQ page
+- Add environment variables to .env.example
+
+---
+
+#### P3-003-02: Integrate Chatbot Widget
+**Type:** AGENT  
+**File:** app/components/chatbot.tsx
+
+Create chatbot component:
+- Add chatbot widget script
+- Configure widget settings
+- Add to layout
+- Test widget display
+
+Validate implementation:
+```bash
+npm run build
+```
+
+---
+
+#### P3-003-03: Train Chatbot on FAQs
+**Type:** HUMAN  
+**File:** N/A
+
+Train chatbot on FAQs:
+- Export FAQ content
+- Upload to chatbot platform
+- Train chatbot
+- Test responses
+- Refine training
+
+---
+
+#### P3-003-04: Test Chatbot Functionality
+**Type:** HUMAN  
+**File:** N/A
+
+Test chatbot functionality:
+- Test common questions
+- Test handoff to human
+- Test on mobile devices
+- Test accessibility
+- Monitor initial conversations
+
+---
+
+## P3-004: Add Additional Content
+
+**Status:** [ ] Not Started  
+**Priority:** P3
+
+### Related File Paths
+- app/lib/blog-data.ts
+- app/lib/portfolio-data.ts
+
+### Definition of Done
+- 10+ blog posts total
+- 10+ case studies total
+- Content calendar created
+- Content promotion plan documented
+- Documentation updated
+
+### Out of Scope
+- Content creation services
+- Content outsourcing
+- Automated content generation
+
+### Rules to Follow
+- Maintain content quality
+- Follow content strategy
+- Optimize for SEO
+- Add internal links
+- Update content regularly
+
+### Advanced Coding Pattern
+- Content data module pattern
+- Content organization pattern
+
+### Anti-Patterns
+- Sacrificing quality for quantity
+- Duplicate content
+- Outdated content
+- Thin content
+
+### Imports/Exports
+No new imports/exports required.
+
+### Depends On
+- P2-001 (Headless CMS) - easier content management
+
+### Blocks
+- None
+
+---
+
+### Subtasks
+
+#### P3-004-01: Create Content Calendar
+**Type:** HUMAN  
+**File:** docs/content-calendar.md (create)
+
+Create content calendar:
+- Plan 6 months of blog posts
+- Plan additional case studies
+- Assign topics to team members
+- Set publication schedule
+- Define promotion strategy
+
+---
+
+#### P3-004-02: Write Additional Blog Posts
+**Type:** HUMAN  
+**File:** app/lib/blog-data.ts
+
+Write 4 additional blog posts:
+- Follow content calendar
+- Optimize for SEO
+- Add internal links
+- Update blog-data.ts
+- Test locally
+
+---
+
+#### P3-004-03: Create Additional Case Studies
+**Type:** HUMAN  
+**File:** app/lib/portfolio-data.ts
+
+Create 4 additional case studies:
+- Follow content calendar
+- Include specific metrics
+- Add testimonials
+- Update portfolio-data.ts
+- Test locally
+
+---
+
+#### P3-004-04: Update Content Promotion Plan
+**Type:** HUMAN  
+**File:** docs/content-promotion.md (create)
+
+Create content promotion plan:
+- Define promotion channels
+- Create social media schedule
+- Plan email newsletter inclusion
+- Define outreach strategy
+- Set tracking metrics
+
+---
+
+## P3-005: Implement Performance Monitoring
+
+**Status:** [ ] Not Started  
+**Priority:** P3
+
+### Related File Paths
+- app/lib/performance-monitoring.ts (create)
+- docs/performance.md (create)
+- package.json
+- .env.example
+
+### Definition of Done
+- Real User Monitoring (RUM) implemented
+- Core Web Vitals monitoring active
+- Performance alerts configured
+- Performance dashboard created
+- Documentation updated
+
+### Out of Scope
+- Custom performance monitoring
+- APM (Application Performance Monitoring)
+- Infrastructure monitoring
+
+### Rules to Follow
+- Use established RUM tool
+- Monitor Core Web Vitals
+- Set up alerts for degradation
+- Create performance dashboard
+- Review performance weekly
+
+### Advanced Coding Pattern
+- RUM integration pattern
+- Performance data collection pattern
+
+### Anti-Patterns
+- Not monitoring real user performance
+- Ignoring performance alerts
+- Monitoring without action
+- Over-monitoring
+
+### Imports/Exports
+```typescript
+// Imports to add (Vercel Analytics example)
+import { Analytics } from '@vercel/analytics/react'
+```
+
+### Depends On
+- None
+
+### Blocks
+- None
+
+---
+
+### Subtasks
+
+#### P3-005-01: Select RUM Tool
+**Type:** HUMAN  
+**File:** N/A
+
+Select Real User Monitoring tool:
+- Evaluate Vercel Analytics vs Google Analytics vs SpeedCurve
+- Create account
+- Configure project
+- Add environment variables to .env.example
+
+---
+
+#### P3-005-02: Install RUM Dependencies
+**Type:** AGENT  
+**File:** package.json
+
+Install RUM dependencies:
+```bash
+# For Vercel Analytics
+npm install @vercel/analytics/react
+```
+
+Validate installation:
+```bash
+npm list @vercel/analytics/react
+```
+
+---
+
+#### P3-005-03: Integrate RUM
+**Type:** AGENT  
+**File:** app/lib/performance-monitoring.ts
+
+Create performance monitoring module:
+- Initialize RUM SDK
+- Configure Core Web Vitals tracking
+- Add custom metrics
+- Add error tracking
+
+Validate implementation:
+```bash
+npm run typecheck
+```
+
+---
+
+#### P3-005-04: Create Performance Dashboard
+**Type:** HUMAN  
+**File:** N/A
+
+Create performance dashboard:
+- Set up dashboard in RUM tool
+- Add Core Web Vitals widgets
+- Add custom metric widgets
+- Configure alerts
+- Share dashboard with team
+
+---
+
+#### P3-005-05: Create Performance Documentation
+**Type:** AGENT  
+**File:** docs/performance.md
+
+Create performance documentation including:
+- RUM configuration details
+- Performance targets
+- Alert configuration
+- Monitoring schedule
+- Optimization process
+
+---
+
+#### P3-005-06: Conduct First Performance Review
+**Type:** HUMAN  
+**File:** docs/performance.md
+
+Conduct first performance review:
+- Review RUM dashboard
+- Check Core Web Vitals
+- Identify performance issues
+- Document findings
+- Plan optimizations if needed

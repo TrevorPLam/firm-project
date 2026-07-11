@@ -1,15 +1,17 @@
 # Rate Limiting
 
-This document explains the current rate limiting implementation, its limitations, and recommended production alternatives.
+This document explains the production-ready rate limiting implementation using Upstash Redis.
 
 ## Current Implementation
 
-The application uses an in-memory rate limiter implemented in `app/lib/rate-limiter.ts`. This implementation:
+The application uses Upstash Redis for distributed, production-ready rate limiting implemented in `app/lib/rate-limiter.ts`. This implementation:
 
-- Uses a JavaScript `Map` to store rate limit entries per key
-- Implements a fixed window algorithm with automatic cleanup
-- Provides `checkRateLimit()`, `clearRateLimits()`, and `getRateLimitCount()` functions
-- Includes a periodic cleanup timer to prevent memory leaks
+- Uses Upstash Redis for distributed, persistent rate limiting
+- Compatible with serverless environments (Vercel, AWS Lambda, Cloudflare Workers)
+- Supports multi-instance deployments with shared state
+- Edge runtime compatible with HTTP-based Redis
+- Implements sliding window algorithm for smooth rate limiting
+- Graceful degradation if Redis is unavailable
 
 ### Usage Example
 
@@ -18,263 +20,217 @@ import { checkRateLimit } from '@/lib/rate-limiter';
 
 // Allow 10 requests per minute per IP
 const ip = req.headers.get('x-forwarded-for') ?? 'unknown';
-const allowed = checkRateLimit(ip, 10, 60 * 1000);
+const allowed = await checkRateLimit(ip, 10, 60 * 1000);
 
 if (!allowed) {
   return new Response('Too many requests', { status: 429 });
 }
 ```
 
-## Limitations
+### Usage with Metadata
 
-⚠️ **The current in-memory implementation is NOT suitable for production deployments** due to the following limitations:
-
-### Serverless Environments
-
-- **Problem**: Serverless functions (Vercel, AWS Lambda, Cloudflare Workers) spin up per request and have no persistent state
-- **Impact**: Each function invocation has its own `Map`, so counters reset unpredictably
-- **Result**: Rate limiting is effectively disabled - a determined client can send unlimited requests by hitting different cold starts
-
-### Multi-Instance Deployments
-
-- **Problem**: When running multiple containers/pods, each instance maintains its own counter
-- **Impact**: Horizontal scaling multiplies the effective limit (e.g., 10 instances = 10x the limit)
-- **Result**: Users can bypass limits by distributing requests across instances
-
-### Edge Runtime
-
-- **Problem**: Edge functions have strict execution time limits and no persistent storage
-- **Impact**: The cleanup timer may not run consistently, causing memory leaks
-- **Result**: Unpredictable behavior and potential memory exhaustion
-
-### Fixed Window Algorithm
-
-- **Problem**: Fixed windows allow boundary bursts (e.g., 10 requests at 59s + 10 requests at 1s = 20 requests in 2 seconds)
-- **Impact**: Users can exploit window boundaries to exceed intended limits
-- **Result**: Less effective protection against abuse
-
-## Production Recommendations
-
-For production deployments, use a shared state solution with a better algorithm:
-
-### Option 1: Upstash Redis (Recommended for Serverless/Edge)
-
-**Best for**: Vercel deployments, edge functions, serverless architectures
-
-**Pros**:
-- HTTP-based Redis, no TCP connection issues in serverless
-- Edge-compatible, low latency (5-15ms)
-- Built-in rate limiting SDK with sliding window algorithm
-- Automatic cleanup and TTL management
-
-**Implementation**:
-
-```bash
-npm install @upstash/ratelimit @upstash/redis
-```
+For API responses that include rate limit information:
 
 ```ts
-import { Ratelimit } from '@upstash/ratelimit';
-import { Redis } from '@upstash/redis';
+import { checkRateLimitWithMetadata } from '@/lib/rate-limiter';
 
-const ratelimit = new Ratelimit({
-  redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(10, '10 s'),
-  analytics: true,
-});
+const result = await checkRateLimitWithMetadata(ip, 10, 60 * 1000);
 
-// In your server action or API route
-const ip = req.headers.get('x-forwarded-for') ?? 'unknown';
-const { success, limit, remaining, reset } = await ratelimit.limit(ip);
-
-if (!success) {
-  return new Response('Too many requests', { 
+if (!result.success) {
+  return new Response('Too many requests', {
     status: 429,
     headers: {
-      'RateLimit-Limit': limit.toString(),
-      'RateLimit-Remaining': remaining.toString(),
-      'RateLimit-Reset': new Date(reset).toISOString(),
+      'RateLimit-Limit': result.limit.toString(),
+      'RateLimit-Remaining': result.remaining.toString(),
+      'RateLimit-Reset': new Date(result.reset).toISOString(),
     }
   });
 }
 ```
 
-**Environment Variables**:
+## Configuration
+
+### Environment Variables
+
+Add the following to your `.env.local` file:
+
 ```env
 UPSTASH_REDIS_REST_URL=https://your-redis-url.upstash.io
 UPSTASH_REDIS_REST_TOKEN=your-redis-token
 ```
 
-**Cost**: Free tier available (10,000 commands/day), paid plans start at ~$10/month
+### Getting Upstash Credentials
 
-### Option 2: Traditional Redis (Recommended for Multi-Instance)
+1. Go to [Upstash Console](https://console.upstash.com/)
+2. Create a new Redis database
+3. Copy the REST URL and token from the database details
+4. Add them to your environment variables
 
-**Best for**: Traditional deployments, Kubernetes, Docker Swarm, multi-instance servers
+### Graceful Degradation
 
-**Pros**:
-- Mature, battle-tested technology
-- Full Redis feature set
-- Can be self-hosted or use managed services (AWS ElastiCache, Google Cloud Memorystore)
+The implementation includes graceful degradation:
 
-**Implementation**:
+- If Upstash Redis is not configured, all requests are allowed
+- If Redis connection fails, requests are allowed with error logging
+- This ensures the application remains functional even if rate limiting fails
 
-```bash
-npm install ioredis
-```
+## Features
 
-```ts
-import Redis from 'ioredis';
+### Sliding Window Algorithm
 
-const redis = new Redis(process.env.REDIS_URL);
+The sliding window algorithm provides smooth rate limiting without boundary bursts:
 
-async function checkRateLimit(key: string, limit: number, windowMs: number) {
-  const now = Date.now();
-  const windowStart = now - windowMs;
-  
-  // Use Redis sorted set for sliding window
-  const multi = redis.multi();
-  multi.zremrangebyscore(key, 0, windowStart);
-  multi.zcard(key);
-  multi.zadd(key, now, `${now}-${Math.random()}`);
-  multi.expire(key, Math.ceil(windowMs / 1000));
-  
-  const results = await multi.exec();
-  const count = results[1][1] as number;
-  
-  if (count > limit) {
-    return { allowed: false, count, limit };
-  }
-  
-  return { allowed: true, count, limit };
-}
-```
+- More accurate than fixed window
+- Prevents users from exploiting window boundaries
+- Better user experience with consistent limits
 
-**Environment Variables**:
-```env
-REDIS_URL=redis://localhost:6379
-# or for AWS ElastiCache
-REDIS_URL=rediss://your-elasticache-endpoint:6379
-```
+### Async/Await Pattern
 
-### Option 3: Cloudflare Durable Objects (Alternative for Edge)
-
-**Best for**: Cloudflare Workers, edge-only deployments
-
-**Pros**:
-- Single-instance per key, no race conditions
-- Low latency at the edge (5-15ms)
-- Exact counting, suitable for paid tiers
-
-**Cons**:
-- Cloudflare-specific
-- Single-instance bottleneck for hot keys
-
-**Implementation**:
+All rate limiting functions are async:
 
 ```ts
-// rate-limiter.object.ts
-export class RateLimiterDurableObject {
-  constructor(state: DurableObjectState) {
-    this.state = state;
-    this.count = 0;
-    this.resetAt = Date.now() + 60000;
-  }
-
-  async fetch(request: Request) {
-    const now = Date.now();
-    
-    if (now >= this.resetAt) {
-      this.count = 0;
-      this.resetAt = now + 60000;
-    }
-    
-    if (this.count >= 10) {
-      return new Response('Too many requests', { status: 429 });
-    }
-    
-    this.count++;
-    return new Response('OK');
-  }
-}
+export async function checkRateLimit(key: string, limit: number, windowMs: number): Promise<boolean>
+export async function checkRateLimitWithMetadata(key: string, limit: number, windowMs: number): Promise<RateLimitResult>
+export async function clearRateLimits(): Promise<void>
+export async function getRateLimitCount(key: string): Promise<number>
 ```
 
-## Migration Guide
+### Logging
 
-### Step 1: Install Dependencies
-
-Choose your production solution and install the required packages:
-
-```bash
-# For Upstash (recommended for Vercel)
-npm install @upstash/ratelimit @upstash/redis
-
-# For traditional Redis
-npm install ioredis
-```
-
-### Step 2: Add Environment Variables
-
-Add the required environment variables to `.env.example` and your production environment:
-
-```env
-# Upstash
-UPSTASH_REDIS_REST_URL=
-UPSTASH_REDIS_REST_TOKEN=
-
-# Traditional Redis
-REDIS_URL=
-```
-
-### Step 3: Update Rate Limiter Module
-
-Replace `app/lib/rate-limiter.ts` with your chosen implementation. Keep the same function signatures to minimize code changes:
+Rate limit events are logged for monitoring:
 
 ```ts
-// New app/lib/rate-limiter.ts using Upstash
-import { Ratelimit } from '@upstash/ratelimit';
-import { Redis } from '@upstash/redis';
-
-const ratelimit = new Ratelimit({
-  redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(10, '10 s'),
+console.log('[rate-limiter] Rate limit exceeded', {
+  key,
+  limit: result.limit,
+  remaining: result.remaining,
+  reset: new Date(result.reset).toISOString(),
 });
-
-export async function checkRateLimit(key: string, limit: number, windowMs: number): Promise<boolean> {
-  const { success } = await ratelimit.limit(key);
-  return success;
-}
 ```
 
-### Step 4: Update Call Sites
+## Current Usage
 
-The function signatures remain the same, but `checkRateLimit` is now async:
+### Contact Form
+
+Location: `app/actions/contact.ts`
 
 ```ts
-// Before
-const allowed = checkRateLimit(ip, 10, 60 * 1000);
-
-// After
-const allowed = await checkRateLimit(ip, 10, 60 * 1000);
+const rateLimitKey = `contact:${ip}`;
+const isAllowed = await checkRateLimit(rateLimitKey, 5, 600000); // 5 requests per 10 minutes
 ```
 
-### Step 5: Update Tests
+### Newsletter Subscription
 
-Update test files to mock the external rate limiting service:
+Location: `app/actions/newsletter.ts`
+
+```ts
+const rateLimitKey = `newsletter:${ip}`;
+const isAllowed = await checkRateLimit(rateLimitKey, 3, 600000); // 3 subscriptions per 10 minutes
+```
+
+## Testing
+
+Tests mock the Upstash Redis service to avoid external dependencies:
 
 ```ts
 // app/__tests__/lib/rate-limiter.test.ts
-import { describe, it, expect, vi } from 'vitest';
-import { checkRateLimit } from '@/lib/rate-limiter';
-
 vi.mock('@upstash/ratelimit');
+vi.mock('@upstash/redis');
+```
 
-describe('rate-limiter', () => {
-  it('should allow requests under limit', async () => {
-    const allowed = await checkRateLimit('test-key', 10, 60000);
-    expect(allowed).toBe(true);
-  });
+Tests cover:
+- Graceful degradation when Upstash is not configured
+- Successful rate limit checks
+- Rate limit exceeded scenarios
+- Redis failure graceful degradation
+- Metadata return values
+
+## Monitoring
+
+### Upstash Analytics
+
+Upstash provides built-in analytics when enabled:
+
+```ts
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(10, '10 s'),
+  analytics: true, // Enable analytics
+  prefix: 'ratelimit',
 });
 ```
+
+View analytics in the Upstash Console.
+
+### Application Logs
+
+Rate limit events are logged with structured data:
+
+- Rate limit exceeded events
+- Redis connection errors
+- Configuration warnings
+
+## Troubleshooting
+
+### Rate Limiting Not Working
+
+**Symptom**: All requests are allowed even when limits should be exceeded.
+
+**Solutions**:
+1. Check that `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` are set
+2. Verify the credentials are correct in the Upstash Console
+3. Check application logs for configuration warnings
+
+### Redis Connection Errors
+
+**Symptom**: Logs show "Redis error, allowing request" messages.
+
+**Solutions**:
+1. Verify network connectivity to Upstash
+2. Check that the REST URL is accessible
+3. Verify the token has not expired
+4. Check Upstash service status
+
+### High Latency
+
+**Symptom**: Rate limiting adds significant latency to requests.
+
+**Solutions**:
+1. Choose the closest Upstash region
+2. Consider using edge functions with regional Redis
+3. Monitor Upstash console for performance metrics
+
+## Cost Considerations
+
+Upstash Redis pricing:
+
+- **Free tier**: 10,000 commands/day
+- **Paid plans**: Start at ~$10/month
+- **Pay per request**: No upfront costs
+
+For high-traffic applications, consider:
+- Caching rate limit results where appropriate
+- Using CDN-level rate limiting as a first layer
+- Monitoring usage to optimize limits
+
+## Migration from In-Memory Implementation
+
+The application was migrated from an in-memory implementation to Upstash Redis. The migration included:
+
+1. **Installed dependencies**: `@upstash/ratelimit` and `@upstash/redis`
+2. **Updated rate limiter module**: Replaced in-memory Map with Upstash Redis
+3. **Updated call sites**: Changed synchronous calls to async/await
+4. **Updated tests**: Added mocks for Upstash modules
+5. **Added environment variables**: Documented required credentials
+
+### Changes Made
+
+- `app/lib/rate-limiter.ts`: Complete rewrite using Upstash Redis
+- `app/actions/contact.ts`: Changed `checkRateLimit` to `await checkRateLimit`
+- `app/actions/newsletter.ts`: Changed `checkRateLimit` to `await checkRateLimit`
+- `app/__tests__/lib/rate-limiter.test.ts`: Updated to mock Upstash modules
+- `.env.example`: Added Upstash Redis environment variables
+- `docs/rate-limiting.md`: Updated documentation
 
 ## Algorithm Comparison
 
@@ -286,7 +242,7 @@ describe('rate-limiter', () => {
 | Token Bucket | 2 floats | Allows controlled bursts | Bursty real-world traffic (mobile apps) |
 | Leaky Bucket | 2 floats | No bursts, strict shaping | Outbound throttling, queues |
 
-**Recommendation**: Use sliding window counter or token bucket for most use cases.
+**Current Implementation**: Sliding window counter via Upstash SDK.
 
 ## Layered Rate Limiting
 
@@ -297,10 +253,10 @@ For comprehensive protection, implement rate limiting at multiple layers:
    - Catches DDoS and bot traffic
    - Free or near-free
 
-2. **Application Layer** (Your code)
+2. **Application Layer** (Your code - Current Implementation)
    - Precise per-user limits (e.g., 60 req/min per user)
    - Enforces business logic
-   - 1-3ms latency with Redis
+   - 1-3ms latency with Upstash Redis
 
 3. **Database Layer** (Postgres, downstream APIs)
    - Hard limits on expensive operations
@@ -310,6 +266,6 @@ For comprehensive protection, implement rate limiting at multiple layers:
 ## References
 
 - [Upstash Rate Limiting Documentation](https://upstash.com/docs/ratelimit/sdks/ts)
-- [Rate Limiting Your Next.js API with Redis](https://medium.com/better-dev-nextjs-react/rate-limiting-your-next-js-api-with-redis-b35a6622acba)
+- [Upstash Redis Documentation](https://upstash.com/docs/redis/sdks/ts/overview)
+- [Rate Limiting Your Next.js API with Redis](https://medium.com/better-dev-nextjs-react/rate-limiting-your-nextjs-api-with-redis-b35a6622acba)
 - [How to add rate limiting to your API](https://cadence.withremote.ai/blog/rate-limiting-api)
-- [Rate Limiting Without Redis: 3 Patterns for Serverless](https://dev.to/raxxostudios/rate-limiting-without-redis-3-patterns-i-use-in-serverless-4bjg)
