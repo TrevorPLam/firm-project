@@ -71,7 +71,7 @@ async function runContactFormSubmission(formData: FormData): Promise<FormResult>
     };
   }
 
-  const { name, email, company, service, budget, message } = validatedFields.data;
+  const { name: _name, email: _email, company: _company, service: _service, budget: _budget, message: _message } = validatedFields.data;
 
   try {
     // In a real application, you would:
