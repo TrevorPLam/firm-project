@@ -158,7 +158,7 @@ const blogPosts: Record<string, BlogPost> = {
       <p>Core Web Vitals consist of three specific metrics:</p>
       <ul>
         <li><strong>Largest Contentful Paint (LCP)</strong> - Measures loading performance</li>
-        <li><strong>First Input Delay (FID)</strong> - Measures interactivity</li>
+        <li><strong>Interaction to Next Paint (INP)</strong> - Measures interactivity</li>
         <li><strong>Cumulative Layout Shift (CLS)</strong> - Measures visual stability</li>
       </ul>
       
@@ -172,13 +172,14 @@ const blogPosts: Record<string, BlogPost> = {
         <li>Preload important resources</li>
       </ul>
       
-      <h2>First Input Delay (FID)</h2>
-      <p>FID measures the time from when a user first interacts with your page to when the browser responds. A good FID score is less than 100 milliseconds. To improve FID:</p>
+      <h2>Interaction to Next Paint (INP)</h2>
+      <p>INP measures the full interaction lifecycle from when a user interacts with your page to when the browser responds visually. It assesses the responsiveness of a page to all user interactions, not just the first one. A good INP score is 200 milliseconds or less. To improve INP:</p>
       <ul>
         <li>Minimize JavaScript execution time</li>
         <li>Break up long tasks</li>
         <li>Use web workers</li>
         <li>Reduce the impact of third-party code</li>
+        <li>Optimize event handlers and avoid complex work during interactions</li>
       </ul>
       
       <h2>Cumulative Layout Shift (CLS)</h2>

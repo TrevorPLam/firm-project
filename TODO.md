@@ -1544,11 +1544,11 @@ Error: Route "/portfolio/[slug]" used `new Date()` before accessing either uncac
 
 ---
 
-## [ ] L-T03 | STATUS: PENDING | PRIORITY: LOW
+## [x] L-T03 | STATUS: DONE | PRIORITY: LOW
 
 ### Update blog content: FID to INP reference
 
-**Files:** `app/blog/[slug]/page.tsx` (or `app/lib/blog-data.ts` if M-T06 done)
+**Files:** `app/lib/blog-data.ts`
 
 **Definition of done:**
 - Blog post "core-web-vitals" references INP instead of FID
@@ -1570,10 +1570,17 @@ Error: Route "/portfolio/[slug]" used `new Date()` before accessing either uncac
 
 **Depends on:** None | **Blocks:** None
 
+**Implementation notes:**
+- Updated Core Web Vitals metrics list to reference INP instead of FID
+- Updated INP section with accurate description: measures full interaction lifecycle (input delay + processing + presentation)
+- Updated good threshold from FID's 100ms to INP's 200ms
+- Added optimization tip for event handlers
+- Typecheck passes, lint passes, all 45 tests pass
+
 ### Subtasks
 
-- [ ] L-T03.1 [AGENT] Update Core Web Vitals blog content
-  - **File:** `app/blog/[slug]/page.tsx` (or `app/lib/blog-data.ts`)
+- [x] L-T03.1 [AGENT] Update Core Web Vitals blog content
+  - **File:** `app/lib/blog-data.ts`
   - **Action:** Find the "core-web-vitals" blog post content. Replace "First Input Delay (FID)" with "Interaction to Next Paint (INP)". Update description: INP measures full interaction lifecycle (input delay + processing + presentation). Good threshold: 200ms or less. Update the "How to improve" section accordingly.
   - **Validate:** `npx tsc --noEmit`
 
