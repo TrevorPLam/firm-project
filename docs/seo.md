@@ -9,6 +9,7 @@ This document covers SEO strategies, AI crawler permissions, and Generative Engi
 - [llms.txt File](#llms-txt-file)
 - [AI Crawler Testing](#ai-crawler-testing)
 - [GEO Monitoring](#geo-monitoring)
+- [AI Share of Voice Tracking](#ai-share-of-voice-tracking)
 - [Related Resources](#related-resources)
 
 ---
@@ -262,6 +263,215 @@ curl -A "PerplexityBot" https://elevatedigital.com/robots.txt
 3. **Optimize**: Improve content clarity and authority
 4. **Monitor**: Track citation changes over time
 5. **Iterate**: Continuously refine GEO strategy
+
+---
+
+## AI Share of Voice Tracking
+
+### What is AI Share of Voice?
+
+AI Share of Voice (AI SOV) measures how often your brand is mentioned or cited in AI-powered search engines like ChatGPT, Claude, Perplexity, Google AI Overviews, and other answer engines. Unlike traditional Share of Voice which measures visibility in search results, AI SOV tracks your brand's presence in AI-generated responses.
+
+### Why Track AI Share of Voice?
+
+As of 2026, AI search has become a critical discovery channel:
+
+- **94% of CMOs** plan to increase AI visibility spend (Conductor State of AEO/GEO 2026)
+- **12% of digital budgets** are now allocated to AI visibility by enterprises
+- **4-5x higher conversion rates** from AI search visitors vs traditional organic search
+- **72 billion messages/month** processed by ChatGPT alone
+- **$5 trillion projected** in agentic commerce by 2030 (McKinsey)
+
+Tracking AI SOV helps you:
+- Understand your brand's visibility in AI answers
+- Identify competitor AI citation strategies
+- Measure the impact of GEO optimization efforts
+- Justify AI visibility investments to stakeholders
+- Optimize content for AI citation patterns
+
+### AI Share of Voice Tracking Tools
+
+The AI visibility tools market raised $300M+ in funding between 2025-2026. Here are the leading platforms:
+
+#### Enterprise Platforms
+
+**Profound** (Category Leader)
+- Funding: $155M, $1B valuation (Series C, February 2026)
+- Customers: 10% of Fortune 500 (Target, Walmart, Ramp, MongoDB, Figma)
+- Features: Answer Engine Insights, Agent Analytics, Conversation Explorer, AI-optimized content generation
+- Pricing: Lite from $499/month, Enterprise $30K-$100K+ annually
+- Best for: Fortune 500 marketing teams with established budgets
+
+**Peec AI** (Fastest-Growing Challenger)
+- Funding: $29M, $4M+ ARR in 10 months
+- Customers: 1,300+ (Chanel, Axel Springer, ElevenLabs, Wix)
+- Features: Brand mention monitoring across ChatGPT, Perplexity, Claude, Gemini, AI Overviews
+- Pricing: Starter €75/month, Pro €169/month, Enterprise from €424/month
+- Best for: Mid-market B2B and consumer brands, GDPR-native data handling
+
+#### Mid-Market & SMB Platforms
+
+**Otterly.AI** (Most Accessible)
+- Founded: 2023, bootstrapped or small seed funding
+- Features: Brand mention tracking across ChatGPT, Gemini, Copilot, Perplexity
+- Pricing: From $29/month (lowest credible entry point)
+- Best for: Solo marketers, agencies, SMBs starting AI visibility monitoring
+
+**Semrush AI Visibility Toolkit** (Legacy SEO Platform)
+- Features: AI SOV tracking bolted onto existing Semrush platform
+- Pricing: $99/month (bundled with Semrush subscription)
+- Best for: Teams already using Semrush who want AI SOV data layered on existing reports
+
+**Ahrefs AI Visibility** (Legacy SEO Platform)
+- Features: AI citation tracking integrated with Ahrefs suite
+- Pricing: Starting at $29/month (Ahrefs Starter)
+- Best for: Teams already using Ahrefs for SEO
+
+#### Other Notable Platforms
+
+- **Bluefish**: Enterprise-focused, well-funded
+- **Scrunch AI**: Enterprise-focused, well-funded
+- **AthenaHQ**: $95/month first month, $295/month thereafter
+- **HubSpot AEO Grader**: Free grader + $50/month monitoring, bundled with HubSpot
+- **Rankscale, Rankshift**: Budget challengers with broadest engine coverage
+
+### Tool Selection Guide
+
+| Company Size | Recommended Tool | Rationale |
+|--------------|------------------|-----------|
+| Fortune 500 | Profound | Enterprise features, named customers, board-ready reporting |
+| Mid-Market B2B | Peec AI | Strong analytics without enterprise pricing, GDPR-native |
+| SMB / Solo | Otterly.AI | Lowest entry point ($29/month), monitoring-focused |
+| Existing Semrush Users | Semrush AI Toolkit | Bundled with existing contract, familiar interface |
+| Existing Ahrefs Users | Ahrefs AI Visibility | Bundled with existing contract, familiar interface |
+| HubSpot Users | HubSpot AEO Grader | Free grader + bundled monitoring |
+
+### AI Share of Voice Metrics to Track
+
+#### Primary Metrics
+- **Citation Frequency**: How often your brand appears in AI answers
+- **Citation Position**: Where your brand appears in AI responses (first mention, middle, end)
+- **Citation Context**: Quality of context around your brand mention
+- **Competitor Comparison**: Your AI SOV vs competitors in your category
+- **Platform Coverage**: Presence across different AI platforms (ChatGPT, Claude, Perplexity, etc.)
+
+#### Secondary Metrics
+- **Sentiment Analysis**: Positive vs negative brand mentions in AI answers
+- **Source Attribution**: Which of your pages are most frequently cited
+- **Prompt Coverage**: Which user prompts trigger your brand mentions
+- **Trend Analysis**: Changes in AI SOV over time
+
+#### Conversion Metrics
+- **Referral Traffic**: Visitors from AI platforms to your site
+- **Conversion Rate**: Conversion rate from AI-referred traffic
+- **Engagement Metrics**: Time on site, pages per session from AI traffic
+
+### Baseline Establishment Process
+
+Before optimizing AI SOV, establish a baseline:
+
+1. **Select Tracking Tool**: Choose platform based on company size and budget
+2. **Define Prompts**: Identify 20-50 key prompts relevant to your business
+3. **Identify Competitors**: List 5-10 primary competitors for comparison
+4. **Run Initial Report**: Generate baseline AI SOV report
+5. **Document Metrics**: Record baseline citation frequency, position, and sentiment
+6. **Save Report**: Export and save baseline report for future comparison
+
+### Monitoring Cadence
+
+Recommended monitoring frequency:
+
+- **Weekly**: Citation alerts and significant changes
+- **Monthly**: Full AI SOV report and trend analysis
+- **Quarterly**: Competitive analysis and strategy review
+- **Annually**: Tool evaluation and vendor selection review
+
+### Optimization Recommendations
+
+Based on AI SOV data, optimize for better visibility:
+
+#### Content Optimization
+- **Citation Gaps**: Identify topics where competitors are cited but you're not
+- **Content Clarity**: Improve content that's cited but with poor context
+- **Authority Signals**: Add authorship, dates, and credentials to cited content
+- **Structured Data**: Implement schema markup to help AI understand content
+
+#### Technical Optimization
+- **Page Speed**: Ensure cited pages load quickly (Core Web Vitals)
+- **Mobile Optimization**: Ensure cited pages work well on mobile
+- **Accessibility**: Make cited pages accessible to all users
+- **Canonical URLs**: Ensure proper canonicalization to avoid duplicate content issues
+
+#### Strategic Optimization
+- **Keyword-Intent Alignment**: Align content with actual user prompts
+- **Competitive Analysis**: Learn from competitors' citation patterns
+- **Platform-Specific**: Optimize for platforms where you have low visibility
+- **Content Expansion**: Create content for topics with high prompt volume but low citation
+
+### Reporting Template
+
+Monthly AI SOV Report should include:
+
+```
+## AI Share of Voice Report - [Month Year]
+
+### Executive Summary
+- Overall AI SOV: X% (up/down Y% from last month)
+- Citation frequency: X mentions (up/down Y%)
+- Top performing platform: [Platform]
+- Key insights: [2-3 bullet points]
+
+### Platform Breakdown
+- ChatGPT: X citations (Y% change)
+- Claude: X citations (Y% change)
+- Perplexity: X citations (Y% change)
+- Google AI Overviews: X citations (Y% change)
+
+### Competitive Analysis
+- Your brand: X% AI SOV
+- Competitor A: Y% AI SOV
+- Competitor B: Z% AI SOV
+
+### Top Cited Pages
+1. [Page URL] - X citations
+2. [Page URL] - Y citations
+3. [Page URL] - Z citations
+
+### Citation Gaps
+- [Topic]: Competitors cited, you are not
+- [Topic]: Competitors cited, you are not
+
+### Action Items
+- [ ] [Action item 1]
+- [ ] [Action item 2]
+- [ ] [Action item 3]
+```
+
+### Integration with Existing SEO
+
+AI SOV tracking should complement, not replace, traditional SEO:
+
+- **Unified Reporting**: Combine AI SOV metrics with traditional SEO metrics
+- **Shared KPIs**: Include AI SOV in overall marketing KPIs
+- **Cross-Functional**: Coordinate SEO, content, and marketing teams on AI optimization
+- **Budget Allocation**: Allocate budget based on combined SEO + AI SOV performance
+
+### Common Mistakes
+
+- **No Baseline**: Optimizing without establishing baseline metrics
+- **Wrong Tool**: Choosing enterprise tools for SMB needs (or vice versa)
+- **Ignoring Context**: Focusing on citation frequency without citation quality
+- **No Action**: Tracking metrics without acting on insights
+- **Platform Overload**: Trying to optimize for too many platforms at once
+- **Competitor Blindness**: Not tracking competitor AI SOV strategies
+
+### Related Tasks
+
+- P2-004-01: Select AI Tracking Tool (HUMAN)
+- P2-004-02: Establish AI Share of Voice Baseline (HUMAN)
+- P2-004-03: Update SEO Documentation (AGENT - completed)
+- P2-004-04: Set Up Monitoring Schedule (HUMAN)
+- P2-004-05: Conduct First Monthly Review (HUMAN)
 
 ---
 

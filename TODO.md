@@ -2129,16 +2129,21 @@ Establish baseline:
 
 ---
 
-#### P2-004-03: Update SEO Documentation
-**Type:** AGENT  
+#### P2-004-03: Update SEO Documentation ✅
+**Type:** AGENT
 **File:** docs/seo.md
 
-Update SEO documentation to include:
+Updated SEO documentation to include:
 - AI Share of Voice tracking process
 - Baseline metrics
 - Monitoring cadence
 - Optimization recommendations
 - Reporting template
+- Tool comparison (Profound, Peec AI, Otterly, Semrush, Ahrefs)
+- Tool selection guide by company size
+- Metrics to track (primary, secondary, conversion)
+- Integration with existing SEO
+- Common mistakes to avoid
 
 ---
 
