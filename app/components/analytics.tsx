@@ -20,7 +20,7 @@ declare global {
   }
 }
 
-export function Analytics() {
+export function Analytics({ nonce }: { nonce?: string }) {
   const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
   const GA_CONVERSION_ID = process.env.NEXT_PUBLIC_GA_CONVERSION_ID;
   const searchParams = useSearchParams();
@@ -57,8 +57,9 @@ export function Analytics() {
       <Script
         src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
         strategy="afterInteractive"
+        nonce={nonce}
       />
-      <Script id="google-analytics" strategy="afterInteractive">
+      <Script id="google-analytics" strategy="afterInteractive" nonce={nonce}>
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}

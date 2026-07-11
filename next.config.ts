@@ -42,20 +42,6 @@ const nextConfig: NextConfig = {
             key: "Strict-Transport-Security",
             value: "max-age=31536000; includeSubDomains; preload",
           },
-          {
-            key: "Content-Security-Policy-Report-Only",
-            value:
-              "default-src 'self'; " +
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com; " +
-              "style-src 'self' 'unsafe-inline'; " +
-              "img-src 'self' data: blob: https://www.google-analytics.com; " +
-              "font-src 'self'; " +
-              "connect-src 'self' https://www.google-analytics.com; " +
-              "frame-ancestors 'none'; " +
-              "base-uri 'self'; " +
-              "form-action 'self'; " +
-              "report-uri /csp-violation-report-endpoint",
-          },
         ],
       },
     ];

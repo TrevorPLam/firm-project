@@ -19,6 +19,7 @@ import {
   generateBreadcrumbSchema,
 } from "../lib/schema";
 import { Suspense } from "react";
+import { getNonce } from "../lib/nonce";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -104,6 +105,9 @@ export default async function LocaleLayout({ children, params }: Props) {
   // side is the easiest way to get started
   const messages = await getMessages();
 
+  // Get nonce for CSP from proxy.ts
+  const nonce = await getNonce();
+
   return (
     <html
       lang={locale}
@@ -112,18 +116,21 @@ export default async function LocaleLayout({ children, params }: Props) {
       <head>
         <script
           type="application/ld+json"
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: generateSchemaJsonLd(organizationSchema),
           }}
         />
         <script
           type="application/ld+json"
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: generateSchemaJsonLd(faqSchema),
           }}
         />
         <script
           type="application/ld+json"
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: generateSchemaJsonLd(
               generateBreadcrumbSchema([
@@ -142,7 +149,7 @@ export default async function LocaleLayout({ children, params }: Props) {
         </a>
         <NextIntlClientProvider messages={messages}>
           <Suspense fallback={null}>
-            <Analytics />
+            <Analytics nonce={nonce} />
           </Suspense>
           <ErrorBoundary>
             <Suspense fallback={<Loading />}>
