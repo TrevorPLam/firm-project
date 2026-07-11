@@ -3,6 +3,9 @@
 Create a `.env.local` file in the root directory with the following variables:
 
 ```bash
+# Site URL (for metadataBase)
+NEXT_PUBLIC_SITE_URL=https://elevatedigital.com
+
 # Google Analytics 4
 NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 
@@ -14,6 +17,14 @@ NEXT_PUBLIC_GA_CONVERSION_LABEL=conversion_label
 # NEXT_PUBLIC_HOTJAR_ID=XXXXXX
 # NEXT_PUBLIC_SENTRY_DSN=your_sentry_dsn
 ```
+
+## Site URL Configuration
+
+The `NEXT_PUBLIC_SITE_URL` is used for the `metadataBase` in the root layout. This ensures that all relative metadata URLs (like Open Graph images, canonical URLs, etc.) resolve to the correct absolute URL.
+
+- **Production:** Set to your production domain (e.g., `https://elevatedigital.com`)
+- **Staging/Preview:** Set to your staging domain (e.g., `https://staging.elevatedigital.com`)
+- **Local Development:** Can be omitted; defaults to `https://elevatedigital.com`
 
 ## Getting Your GA4 Measurement ID
 

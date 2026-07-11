@@ -169,7 +169,7 @@
 
 ---
 
-## [ ] H-T01 | STATUS: PENDING | PRIORITY: HIGH
+## [x] H-T01 | STATUS: DONE | PRIORITY: HIGH
 
 ### Set metadataBase in root layout
 
@@ -194,14 +194,20 @@
 
 **Depends on:** None | **Blocks:** M-T04, M-T05
 
+**Implementation notes:**
+- Added metadataBase as first property in metadata export
+- Documented NEXT_PUBLIC_SITE_URL in ENV_SETUP.md with staging/preview instructions
+- Typecheck and lint pass for modified files
+- Pre-existing lint errors found in contact test/action files (no-explicit-any, unused vars) - these are covered by H-T06
+
 ### Subtasks
 
-- [ ] H-T01.1 [AGENT] Add metadataBase to root layout
+- [x] H-T01.1 [AGENT] Add metadataBase to root layout
   - **File:** `app/layout.tsx`
   - **Action:** Add `metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://elevatedigital.com")` as first property in `metadata` export.
   - **Validate:** `npx tsc --noEmit && npx eslint app/layout.tsx`
 
-- [ ] H-T01.2 [AGENT] Update ENV_SETUP.md
+- [x] H-T01.2 [AGENT] Update ENV_SETUP.md
   - **File:** `ENV_SETUP.md`
   - **Action:** Add section for `NEXT_PUBLIC_SITE_URL` with default `https://elevatedigital.com` and instructions for staging.
   - **Validate:** Manual review
