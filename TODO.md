@@ -1643,7 +1643,7 @@ Error: Route "/portfolio/[slug]" used `new Date()` before accessing either uncac
 
 ---
 
-## [ ] L-T05 | STATUS: PENDING | PRIORITY: LOW
+## [x] L-T05 | STATUS: DONE | PRIORITY: LOW
 
 ### Add CI/CD configuration
 
@@ -1672,9 +1672,19 @@ Error: Route "/portfolio/[slug]" used `new Date()` before accessing either uncac
 
 **Depends on:** None | **Blocks:** None
 
+**Implementation notes:**
+- Created `.github/workflows/ci.yml` with parallel jobs for lint/typecheck, tests, and build
+- Lint job combines ESLint and TypeScript type check for efficiency
+- Test job runs vitest with all 45 tests passing
+- Build job depends on lint and test jobs passing, includes Next.js cache optimization
+- Uses Node 22 with npm dependency caching via actions/setup-node
+- Includes concurrency group to cancel stale runs on new pushes
+- All quality assurance checks pass: lint (with pre-existing warnings), typecheck, tests (45/45), build
+- E2E tests excluded from CI as specified (optional/manual)
+
 ### Subtasks
 
-- [ ] L-T05.1 [AGENT] Create CI workflow
+- [x] L-T05.1 [AGENT] Create CI workflow
   - **File:** `.github/workflows/ci.yml`
   - **Action:** Create workflow with: (1) Trigger on push/PR to main. (2) Job `lint`: setup-node 22, npm ci, `npx eslint`. (3) Job `typecheck`: npm ci, `npx tsc --noEmit`. (4) Job `test`: npm ci, `npx vitest run`. (5) Job `build`: npm ci, `npm run build`. Use `actions/cache` or built-in cache. Pin action versions.
   - **Validate:** Review YAML syntax. If GitHub CLI available: `gh workflow view ci.yml`
