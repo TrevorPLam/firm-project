@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ScrollReveal } from "../components/scroll-reveal";
 
 export const metadata: Metadata = {
@@ -192,12 +193,12 @@ export default function AboutPage() {
             <p className="text-xl text-foreground/70 mb-8">
               Ready to transform your digital presence? We'd love to hear about your project.
             </p>
-            <a
+            <Link
               href="/contact"
               className="inline-block px-8 py-4 bg-primary text-white rounded-full font-semibold text-lg hover:bg-primary-dark transition-all hover:scale-105"
             >
               Get in Touch
-            </a>
+            </Link>
           </ScrollReveal>
         </div>
       </section>

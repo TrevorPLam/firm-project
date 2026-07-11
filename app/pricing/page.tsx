@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ScrollReveal } from "../components/scroll-reveal";
 
 export const metadata: Metadata = {
@@ -176,7 +177,7 @@ export default function PricingPage() {
                         </li>
                       ))}
                     </ul>
-                    <a
+                    <Link
                       href="/contact"
                       className={`block w-full py-3 text-center rounded-lg font-medium transition-colors ${
                         pkg.popular
@@ -185,7 +186,7 @@ export default function PricingPage() {
                       }`}
                     >
                       Get Started
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </ScrollReveal>
@@ -279,12 +280,12 @@ export default function PricingPage() {
             <p className="text-xl text-foreground/70 mb-8">
               Let's discuss your specific needs and create a custom solution that fits your budget and goals.
             </p>
-            <a
+            <Link
               href="/contact"
               className="inline-block px-8 py-4 bg-primary text-white rounded-full font-semibold text-lg hover:bg-primary-dark transition-all hover:scale-105"
             >
               Schedule a Consultation
-            </a>
+            </Link>
           </ScrollReveal>
         </div>
       </section>

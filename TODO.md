@@ -214,7 +214,7 @@
 
 ---
 
-## [ ] H-T02 | STATUS: PENDING | PRIORITY: HIGH
+## [x] H-T02 | STATUS: DONE | PRIORITY: HIGH
 
 ### Replace anchor tags with Link on CTA buttons
 
@@ -241,20 +241,26 @@
 
 ### Subtasks
 
-- [ ] H-T02.1 [AGENT] Fix about, services, team pages
+- [x] H-T02.1 [AGENT] Fix about, services, team pages
   - **Files:** `app/about/page.tsx`, `app/services/page.tsx`, `app/team/page.tsx`
   - **Action:** Find all `<a href="/contact"` or `<a href="/services"`. Replace with `<Link href="...">`, change `</a>` to `</Link>`. Add `import Link from "next/link"` if missing. Preserve className.
   - **Validate:** `npx eslint app/about/page.tsx app/services/page.tsx app/team/page.tsx && npx tsc --noEmit`
 
-- [ ] H-T02.2 [AGENT] Fix faq, portfolio, pricing pages
+- [x] H-T02.2 [AGENT] Fix faq, portfolio, pricing pages
   - **Files:** `app/faq/page.tsx`, `app/portfolio/page.tsx`, `app/pricing/page.tsx`
   - **Action:** Same as H-T02.1 for these files.
   - **Validate:** `npx eslint app/faq/page.tsx app/portfolio/page.tsx app/pricing/page.tsx && npx tsc --noEmit`
 
-- [ ] H-T02.3 [AGENT] Verify no internal anchor tags remain
+- [x] H-T02.3 [AGENT] Verify no internal anchor tags remain
   - **File:** All files under `app/`
   - **Action:** `grep -rn '<a href="/' app/ --include="*.tsx"`. All results should be Link components or external.
   - **Validate:** Review grep output
+
+**Implementation notes:**
+- Replaced 6 internal anchor tags with Link components across 5 files
+- services/page.tsx already had Link imported and in use
+- All typecheck and lint checks pass
+- No internal anchor tags remain in the codebase
 
 ---
 
