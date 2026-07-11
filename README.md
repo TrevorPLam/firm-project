@@ -1,36 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Elevate Digital
+
+A modern Next.js website for Elevate Digital, built with Next.js 16, React 19, TypeScript, and Tailwind CSS 4.
+
+## Features
+
+- **Modern Stack**: Next.js 16 with App Router, React 19, TypeScript, and Tailwind CSS 4
+- **Performance**: Optimized fonts, static generation, and server components
+- **Security**: Content Security Policy, rate limiting, and input sanitization
+- **Forms**: Contact form and newsletter subscription with Resend integration
+- **Testing**: Vitest for unit tests, Playwright for E2E tests
+- **Analytics**: Google Analytics 4 integration ready
+- **SEO**: Dynamic sitemap, Open Graph metadata, and structured data
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+ 
+- npm, yarn, pnpm, or bun
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+# or
+bun install
+```
+
+### Environment Setup
+
+Copy the example environment file and configure your variables:
+
+```bash
+cp .env.example .env.local
+```
+
+Edit `.env.local` with your actual values. See [ENV_SETUP.md](ENV_SETUP.md) for detailed instructions on:
+- Site URL configuration
+- Google Analytics 4 setup
+- Email service (Resend) configuration
+- Newsletter audience setup
+
+### Development
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Development Workflow
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Available Scripts
 
-## Learn More
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint with strict warnings
+- `npm run typecheck` - Run TypeScript type checking
+- `npm run test` - Run Vitest in watch mode
+- `npm run test:run` - Run Vitest once
+- `npm run test:ui` - Run Vitest with UI
+- `npm run test:e2e` - Run Playwright E2E tests
+- `npm run test:e2e:ui` - Run Playwright with UI
 
-To learn more about Next.js, take a look at the following resources:
+### Code Quality
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Before committing, ensure all checks pass:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run typecheck
+npm run lint
+npm run test:run
+npm run build
+```
 
-## Deploy on Vercel
+### Testing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Unit Tests**: Vitest with React Testing Library for component and action testing
+- **E2E Tests**: Playwright for full user flow testing
+- Test files are located in `app/__tests__/`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project Structure
+
+```
+app/
+├── __tests__/          # Test files
+├── actions/            # Server Actions (contact, newsletter)
+├── components/         # React components
+├── lib/                # Utility functions and helpers
+├── about/              # About page
+├── blog/               # Blog pages
+└── layout.tsx          # Root layout
+```
+
+## Deployment
+
+The easiest way to deploy is using [Vercel](https://vercel.com/new):
+
+1. Push your code to GitHub
+2. Import your repository on Vercel
+3. Add environment variables in Vercel dashboard
+4. Deploy
+
+For other platforms, ensure you set the appropriate environment variables for your hosting provider.
+
+## Documentation
+
+- [ENV_SETUP.md](ENV_SETUP.md) - Detailed environment variable setup
+- [docs/rate-limiting.md](docs/rate-limiting.md) - Rate limiting implementation and production recommendations
+- [TODO.md](TODO.md) - Development task tracking
+
+## License
+
+Private project - All rights reserved
