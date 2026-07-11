@@ -1,10 +1,12 @@
+import { siteUrl, absoluteUrl, siteName } from './site-config';
+
 export const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Elevate Digital",
+  name: siteName(),
   description: "Transform your digital presence with expert web design, SEO, and analytics services. We create experiences that convert visitors into customers.",
-  url: "https://elevatedigital.com",
-  logo: "https://elevatedigital.com/logo.png",
+  url: siteUrl(),
+  logo: absoluteUrl('/logo.png'),
   contactPoint: {
     "@type": "ContactPoint",
     telephone: "+1-234-567-890",
@@ -27,7 +29,7 @@ export const webDesignServiceSchema = {
   description: "Custom, responsive websites built with modern frameworks. Fast, accessible, and conversion-optimized designs that represent your brand perfectly.",
   provider: {
     "@type": "Organization",
-    name: "Elevate Digital",
+    name: siteName(),
   },
   serviceType: "Web Design",
   offers: {
@@ -45,7 +47,7 @@ export const seoServiceSchema = {
   description: "Data-driven search engine optimization to improve your visibility and drive organic traffic. We help you rank higher and reach more customers.",
   provider: {
     "@type": "Organization",
-    name: "Elevate Digital",
+    name: siteName(),
   },
   serviceType: "SEO Services",
   offers: {
@@ -63,7 +65,7 @@ export const analyticsServiceSchema = {
   description: "Comprehensive analytics setup and reporting to track performance, understand user behavior, and make data-driven decisions for growth.",
   provider: {
     "@type": "Organization",
-    name: "Elevate Digital",
+    name: siteName(),
   },
   serviceType: "Analytics Services",
   offers: {
@@ -154,10 +156,10 @@ export function generateArticleSchema({
     url: url,
     publisher: {
       "@type": "Organization",
-      name: "Elevate Digital",
+      name: siteName(),
       logo: {
         "@type": "ImageObject",
-        url: "https://elevatedigital.com/logo.png",
+        url: absoluteUrl('/logo.png'),
       },
     },
   };
@@ -194,7 +196,7 @@ export function generateServiceSchema({
     description: description,
     provider: {
       "@type": "Organization",
-      name: "Elevate Digital",
+      name: siteName(),
     },
     offers: {
       "@type": "Offer",

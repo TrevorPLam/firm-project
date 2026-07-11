@@ -1733,7 +1733,7 @@ Read `c:\Users\Trevor\Documents\firm\next.config.ts`. Confirm `reactCompiler: fa
 
 ## Task T015: Fix Hardcoded Domains in Schema and Sitemap
 
-**Status:** `[ ]` PENDING
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -1807,12 +1807,56 @@ Read `c:\Users\Trevor\Documents\firm\app\lib\schema.ts` and `c:\Users\Trevor\Doc
   - `npm run build -- --webpack`
   - Inspect generated `.next/server/app/sitemap.xml` or `/sitemap.xml` route output.
 
-#### T015.4 [AGENT] Use siteUrl in blog post social share
+#### T015.4 [AGENT] Use siteUrl in blog post social share ✅
 
 - **Targeted file path:** `c:\Users\Trevor\Documents\firm\app\[locale\]\blog\[slug\]\page.tsx`
 - **Description:** Pass an absolute URL to `SocialShare` built with `siteUrl()`.
 - **Commands:**
   - `npm run build -- --webpack`
+
+### Implementation Notes
+
+**Status:** Completed successfully. Created site-config deep module and replaced all hardcoded domains with centralized configuration.
+
+**Changes Made:**
+- Created `app/lib/site-config.ts` deep module with:
+  - `siteUrl()` - Returns `NEXT_PUBLIC_SITE_URL` or fallback to `https://elevatedigital.com`
+  - `siteName()` - Returns "Elevate Digital"
+  - `defaultLocale()` - Returns "en"
+  - `supportedLocales()` - Returns `['en', 'es']`
+  - `absoluteUrl(path)` - Constructs absolute URLs safely using `new URL()`
+- Updated `app/lib/schema.ts`:
+  - Imported `siteUrl`, `absoluteUrl`, `siteName` from site-config
+  - Replaced hardcoded `https://elevatedigital.com` with `siteUrl()` in organizationSchema
+  - Replaced hardcoded logo URL with `absoluteUrl('/logo.png')`
+  - Replaced all hardcoded "Elevate Digital" provider names with `siteName()` in service schemas
+  - Updated `generateArticleSchema` to use `siteName()` and `absoluteUrl()` for publisher
+  - Updated `generateServiceSchema` to use `siteName()` for provider
+- Updated `app/sitemap.ts`:
+  - Imported `siteUrl` and `supportedLocales` from site-config
+  - Replaced hardcoded `baseUrl` with `siteUrl()`
+  - Replaced hardcoded `locales` array with `supportedLocales()`
+- Updated `app/[locale]/blog/[slug]/page.tsx`:
+  - Imported `absoluteUrl` from site-config
+  - Replaced hardcoded URL construction in SocialShare with `absoluteUrl(\`/\${locale}/blog/\${slug}\`)`
+- Created comprehensive unit tests in `app/__tests__/lib/site-config.test.ts`:
+  - Tests for `siteUrl()` with env var set, unset, and empty
+  - Tests for `siteName()`, `defaultLocale()`, `supportedLocales()`
+  - Tests for `absoluteUrl()` with various path scenarios
+
+**Benefits:**
+- Single source of truth for site configuration
+- Easy to change domain via environment variable
+- No hardcoded domains scattered across codebase
+- Safe URL construction using `new URL()` API
+- Deep module pattern with small public API surface
+- Follows DDD principles with bounded context for site configuration
+
+**Verification:**
+- Type checking passes with no errors
+- Linting passes with no errors
+- All 81 tests pass (11 new site-config tests + 70 existing tests)
+- Build completes successfully
 
 ---
 

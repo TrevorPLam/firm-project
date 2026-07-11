@@ -1,9 +1,10 @@
 import type { MetadataRoute } from 'next';
 import { getAllPosts } from '@/lib/blog-data';
 import { getAllSlugs as getAllPortfolioSlugs } from '@/lib/portfolio-data';
+import { siteUrl, supportedLocales } from '@/lib/site-config';
 
-const locales = ['en', 'es'];
-const baseUrl = 'https://elevatedigital.com';
+const locales = supportedLocales();
+const baseUrl = siteUrl();
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // Static routes with fixed lastModified date
