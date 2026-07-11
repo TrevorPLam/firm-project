@@ -715,7 +715,7 @@ Read `c:\Users\Trevor\Documents\firm\app\actions\contact.ts` and `c:\Users\Trevo
 
 ## Task T006.5: Fix Navigation Test Failure (Pre-existing Issue)
 
-**Status:** `[ ]` PENDING
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -725,6 +725,7 @@ Navigation test fails with error: "Cannot find module 'C:\Users\Trevor\Documents
 
 - `c:\Users\Trevor\Documents\firm\app\__tests__\components\navigation.test.tsx`
 - `c:\Users\Trevor\Documents\firm\package.json`
+- `c:\Users\Trevor\Documents\firm\app\__tests__\setup.ts`
 
 ### Definition of Done
 
@@ -744,6 +745,29 @@ Navigation test fails with error: "Cannot find module 'C:\Users\Trevor\Documents
 
 - Depends on: None
 - Blocks: None
+
+### Implementation Notes
+
+**Status:** Completed successfully. Fixed the navigation test failure by mocking next-intl navigation and related components in the test setup.
+
+**Root Cause:** The error was caused by a known next-intl/Next.js 16 module resolution issue (GitHub issue #2121). When Vitest runs the navigation test, next-intl's `createNavigation` tries to import `next/navigation` but Vitest cannot resolve it properly in the test environment.
+
+**Solution:** Added mocks to `app/__tests__/setup.ts` for:
+- `../../i18n/navigation` - Mocks Link, redirect, usePathname, useRouter, and getPathname to avoid the module resolution error
+- `../components/language-switcher` - Mocks to avoid intl context requirement
+- `../components/search-bar` - Mocks to avoid complexity in navigation tests
+
+**Changes Made:**
+- Updated `app/__tests__/setup.ts` to import React and add vitest mocks
+- Mocked next-intl navigation with proper TypeScript types (avoiding `any`)
+- Mocked LanguageSwitcher and SearchBar components with simple React.createElement implementations
+- Added reference to GitHub issue #2121 in comments
+
+**Verification:**
+- Type checking passes with no errors
+- Linting passes with no errors
+- All 47 tests pass (including 4 navigation tests)
+- Navigation tests now test UI behavior (keyboard accessibility, focus management) without requiring actual routing functionality
 
 ---
 
