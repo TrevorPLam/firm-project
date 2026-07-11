@@ -264,7 +264,7 @@
 
 ---
 
-## [ ] H-T03 | STATUS: PENDING | PRIORITY: HIGH
+## [x] H-T03 | STATUS: DONE | PRIORITY: HIGH
 
 ### Add progressive enhancement and reduced-motion to ScrollReveal
 
@@ -288,25 +288,34 @@
 
 **Advanced coding pattern:** CSS-first progressive enhancement. Default visible. Component adds `js-enabled` class on mount to enable hidden initial state.
 
-**Anti-patterns:** Starting with `opacity-0` (breaks no-JS/SSR), checking reduced-motion without CSS fallback
+**Anti-patterns:** Starting with `opacity-0` (breaks no-Js/SSR), checking reduced-motion without CSS fallback
 
 **Imports/exports:** No new imports; Export `ScrollReveal` (unchanged interface)
 
 **Depends on:** None | **Blocks:** None
 
+**Implementation notes:**
+- Added `isEnhanced` state to track JS enhancement status
+- Content defaults to visible (`opacity-100`) on initial render
+- Uses `requestAnimationFrame` to ensure initial render completes before hiding content
+- Checks `prefers-reduced-motion` media query and skips animation if set
+- Falls back to visible if IntersectionObserver unavailable
+- Added CSS fallback with 0.01ms animation/transition duration for reduced-motion (preserves event listeners)
+- All 4 tests passing: progressive enhancement, scroll reveal, reduced-motion, no-IO fallback
+
 ### Subtasks
 
-- [ ] H-T03.1 [AGENT] Update ScrollReveal tests
+- [x] H-T03.1 [AGENT] Update ScrollReveal tests
   - **File:** `app/__tests__/components/scroll-reveal.test.tsx`
   - **Action:** Tests: (1) Content visible by default before JS. (2) After mount with IntersectionObserver, hides then reveals. (3) With `prefers-reduced-motion: reduce`, content always visible. Tests fail against current impl.
   - **Validate:** `npx vitest run app/__tests__/components/scroll-reveal.test.tsx` (expect failure)
 
-- [ ] H-T03.2 [AGENT] Implement progressive enhancement
+- [x] H-T03.2 [AGENT] Implement progressive enhancement
   - **File:** `app/components/scroll-reveal.tsx`
   - **Action:** (1) Initial render: content visible. (2) On mount: check `matchMedia("(prefers-reduced-motion: reduce)")`. If reduced, do nothing. (3) If motion allowed, add hiding class and set up IntersectionObserver. (4) If IO unavailable, keep visible.
   - **Validate:** `npx vitest run app/__tests__/components/scroll-reveal.test.tsx` (expect pass)
 
-- [ ] H-T03.3 [AGENT] Add CSS reduced-motion fallback
+- [x] H-T03.3 [AGENT] Add CSS reduced-motion fallback
   - **File:** `app/globals.css`
   - **Action:** Add `@media (prefers-reduced-motion: reduce)` block forcing `opacity: 1 !important; transform: none !important;` on `[data-scroll-reveal]` or relevant class.
   - **Validate:** `npx vitest run app/__tests__/components/scroll-reveal.test.tsx && npx eslint app/globals.css`
