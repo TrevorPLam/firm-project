@@ -664,11 +664,11 @@ Lines 74-102 have unused variables (name, email, company, service, budget, messa
 
 ---
 
-## [ ] M-T02-ISSUE-001 | STATUS: PENDING | PRIORITY: HIGH
+## [x] M-T02-ISSUE-001 | STATUS: DONE | PRIORITY: HIGH
 
 ### Fix DOMPurify prerender error in blog detail page
 
-**Files:** `app/lib/sanitize.ts`, `app/blog/[slug]/page.tsx`
+**Files:** `app/lib/sanitize.ts`, `app/blog/[slug]/page.tsx`, `app/components/sanitized-content.tsx` (new), `app/__tests__/components/sanitized-content.test.tsx` (new)
 
 **Description:**
 Next.js 16 build fails with error: "Route '/blog/[slug]' used `new Date()` before accessing either uncached data or Request data". This is caused by DOMPurify internally using `new Date()` in its configuration object, which violates Next.js 16's prerender requirements.
@@ -682,8 +682,15 @@ Next.js 16 build fails with error: "Route '/blog/[slug]' used `new Date()` befor
 Error: Route "/blog/[slug]" used `new Date()` before accessing either uncached data (e.g. `fetch()`) or Request data (e.g. `cookies()`, `headers()`, `connection()`, and `searchParams`). Accessing the current time in a Server Component requires reading one of these data sources first.
 ```
 
-**Proposed solution:**
-Move the DOMPurify configuration into a separate Cache Component or Client Component to avoid the prerender restriction, or use a different sanitization approach that doesn't trigger the time-based restriction.
+**Implementation notes:**
+- Created new Client Component `SanitizedContent` at `app/components/sanitized-content.tsx` to handle DOMPurify sanitization on the client side
+- This avoids Next.js 16's prerender restriction around `new Date()` usage in DOMPurify's internal configuration
+- Updated `app/blog/[slug]/page.tsx` to use `SanitizedContent` instead of server-side `sanitizeHtml` function
+- Maintained the same DOMPurify configuration (allowlist: p, h2, h3, ul, li, strong, em, a, br; attributes: href)
+- Created comprehensive tests for the new component covering all sanitization scenarios
+- All 41 tests passing (6 test files)
+- Typecheck passes, lint passes (pre-existing unused var warnings in contact.ts remain from H-T04-ISSUE-002)
+- Build succeeds with all pages prerendered correctly
 
 ---
 

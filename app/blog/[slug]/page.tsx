@@ -3,7 +3,7 @@ import { ScrollReveal } from "../../components/scroll-reveal";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { sanitizeHtml } from "@/lib/sanitize";
+import { SanitizedContent } from "../../components/sanitized-content";
 
 const blogPosts = {
   "web-design-trends-2025": {
@@ -416,10 +416,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       <article className="py-20 px-6 bg-foreground/5">
         <div className="max-w-4xl mx-auto">
           <ScrollReveal>
-            <div
-              className="prose prose-lg max-w-none"
-              dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
-            />
+            <SanitizedContent html={post.content} />
           </ScrollReveal>
         </div>
       </article>
