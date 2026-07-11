@@ -1,3 +1,6 @@
+"use cache";
+
+import { cacheLife } from "next/cache";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ScrollReveal } from "../components/scroll-reveal";
@@ -70,7 +73,8 @@ const caseStudies = [
   },
 ];
 
-export default function PortfolioPage() {
+export default async function PortfolioPage() {
+  cacheLife("days");
   return (
     <div className="flex flex-col">
       {/* Hero Section */}

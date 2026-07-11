@@ -1,3 +1,6 @@
+"use cache";
+
+import { cacheLife } from "next/cache";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
@@ -77,7 +80,8 @@ const teamMembers = [
   },
 ];
 
-export default function TeamPage() {
+export default async function TeamPage() {
+  cacheLife("days");
   return (
     <div className="flex flex-col">
       {/* Hero Section */}

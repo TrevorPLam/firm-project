@@ -1,3 +1,6 @@
+"use cache";
+
+import { cacheLife } from "next/cache";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ScrollReveal } from "../components/scroll-reveal";
@@ -13,7 +16,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  cacheLife("days");
   return (
     <div className="flex flex-col">
       {/* Hero Section */}

@@ -1,3 +1,6 @@
+"use cache";
+
+import { cacheLife } from "next/cache";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ScrollReveal } from "../components/scroll-reveal";
@@ -95,7 +98,8 @@ const addOns = [
   },
 ];
 
-export default function PricingPage() {
+export default async function PricingPage() {
+  cacheLife("days");
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
