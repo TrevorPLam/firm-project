@@ -1204,7 +1204,7 @@ Error: Route "/blog/[slug]" used `new Date()` before accessing either uncached d
 
 ---
 
-## [ ] M-T14 | STATUS: PENDING | PRIORITY: MEDIUM
+## [x] M-T14 | STATUS: DONE | PRIORITY: MEDIUM
 
 ### Add keyboard accessibility to mobile menu
 
@@ -1232,17 +1232,51 @@ Error: Route "/blog/[slug]" used `new Date()` before accessing either uncached d
 
 **Depends on:** H-T07 | **Blocks:** None
 
+**Implementation notes:**
+- Added `toggleButtonRef` and `menuRef` refs for focus management
+- Implemented Escape key handler to close menu and return focus to toggle button
+- Implemented focus trap using Tab/Shift+Tab to cycle focus within menu elements
+- Focus automatically moves to first menu item when menu opens
+- All 4 keyboard accessibility tests passing: Escape close, focus on open, Tab cycle, Shift+Tab cycle
+- Follows WCAG 2.2 SC 2.1.2 (No Keyboard Trap) and SC 2.4.3 (Focus Order)
+- Lint passes for modified files
+- Pre-existing typecheck error affects all test files (vitest globals not recognized by TypeScript) - this is infrastructure issue outside scope of M-T14
+
 ### Subtasks
 
-- [ ] M-T14.1 [AGENT] Create navigation keyboard test (TDD red)
+- [x] M-T14.1 [AGENT] Create navigation keyboard test (TDD red)
   - **File:** `app/__tests__/components/navigation.test.tsx`
   - **Action:** Test: (1) Render nav, click menu toggle, verify menu open. (2) Press Escape, verify menu closed. (3) Verify focus on toggle button. Tests fail since not implemented.
   - **Validate:** `npx vitest run app/__tests__/components/navigation.test.tsx` (expect failure)
 
-- [ ] M-T14.2 [AGENT] Implement keyboard accessibility
+- [x] M-T14.2 [AGENT] Implement keyboard accessibility
   - **File:** `app/components/navigation.tsx`
   - **Action:** Add `useEffect` with keydown listener for Escape when menu open. On Escape: close menu, focus toggle button via ref. Add focus trap: when menu open, Tab cycles within menu elements.
   - **Validate:** `npx vitest run app/__tests__/components/navigation.test.tsx` (expect pass)
+
+---
+
+## [ ] M-T14-ISSUE-001 | STATUS: PENDING | PRIORITY: LOW
+
+### Fix TypeScript typecheck for vitest test files
+
+**Files:** `tsconfig.json`, `vitest.config.ts`
+
+**Description:**
+TypeScript does not recognize vitest globals (`describe`, `it`, `expect`) even though vitest.config.ts has `globals: true`. This causes typecheck errors for all test files when running `npx tsc --noEmit`.
+
+**Discovered during:** M-T14 quality assurance
+
+**Related task:** All test files in `app/__tests__/`
+
+**Error message:**
+```
+error TS2593: Cannot find name 'describe'. Do you need to install type definitions for a test runner?
+error TS2304: Cannot find name 'expect'.
+```
+
+**Suggested fix:**
+Add vitest types to tsconfig.json types array or install @types/vitest
 
 ---
 

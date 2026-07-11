@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const toggleButtonRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,6 +16,70 @@ export function Navigation() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Handle Escape key to close menu and return focus to toggle button
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsMobileMenuOpen(false);
+        toggleButtonRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [isMobileMenuOpen]);
+
+  // Move focus into menu when opened
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+
+    // Small delay to ensure menu is rendered
+    const timer = setTimeout(() => {
+      const firstLink = menuRef.current?.querySelector("a");
+      firstLink?.focus();
+    }, 0);
+
+    return () => clearTimeout(timer);
+  }, [isMobileMenuOpen]);
+
+  // Focus trap within menu when open
+  useEffect(() => {
+    if (!isMobileMenuOpen || !menuRef.current) return;
+
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+
+      const focusableElements = menuRef.current?.querySelectorAll(
+        'a[href], button:not([disabled])'
+      );
+      if (!focusableElements || focusableElements.length === 0) return;
+
+      const firstElement = focusableElements[0] as HTMLElement;
+      const lastElement = focusableElements[
+        focusableElements.length - 1
+      ] as HTMLElement;
+
+      if (e.shiftKey) {
+        // Shift+Tab: if on first element, move to last
+        if (document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement.focus();
+        }
+      } else {
+        // Tab: if on last element, move to first
+        if (document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement.focus();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleTab);
+    return () => document.removeEventListener("keydown", handleTab);
+  }, [isMobileMenuOpen]);
 
   return (
     <nav
@@ -79,6 +145,7 @@ export function Navigation() {
 
         {/* Mobile Menu Button */}
         <button
+          ref={toggleButtonRef}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           className="md:hidden p-2"
           aria-label="Toggle menu"
@@ -110,7 +177,7 @@ export function Navigation() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-background border-b border-foreground/10 py-4 px-6">
+        <div ref={menuRef} className="md:hidden absolute top-full left-0 right-0 bg-background border-b border-foreground/10 py-4 px-6">
           <div className="flex flex-col gap-4">
             <Link
               href="/services"
