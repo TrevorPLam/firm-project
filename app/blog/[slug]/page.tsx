@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { SanitizedContent } from "../../components/sanitized-content";
+import { NewsletterForm } from "../../components/newsletter-form";
 import { getPostBySlug, getAllSlugs, getAllPosts } from "@/lib/blog-data";
 
 export async function generateStaticParams() {
@@ -216,20 +217,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               <p className="text-xl text-foreground/70 mb-8">
                 Subscribe to our newsletter for the latest insights on digital marketing, web design, and SEO.
               </p>
-              <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="flex-1 px-4 py-3 rounded-lg border border-foreground/20 bg-background focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors"
-                >
-                  Subscribe
-                </button>
-              </form>
+              <NewsletterForm />
             </div>
           </ScrollReveal>
         </div>
