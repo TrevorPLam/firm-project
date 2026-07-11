@@ -71,7 +71,7 @@
 
 ---
 
-## [ ] C-T02 | STATUS: PENDING | PRIORITY: CRITICAL
+## [x] C-T02 | STATUS: DONE | PRIORITY: CRITICAL
 
 ### Remove PII logging from contact form server action
 
@@ -100,17 +100,17 @@
 
 ### Subtasks
 
-- [ ] C-T02.1 [AGENT] Create server action test (TDD red)
+- [x] C-T02.1 [AGENT] Create server action test (TDD red)
   - **File:** `app/__tests__/actions/contact.test.ts`
   - **Action:** Import `submitContactFormAction` from `@/actions/contact`. Spy on `console.log`. Call with valid data (name, email, message). Assert console output does not contain name, email, or message. Test fails because current code logs full data.
   - **Validate:** `npx vitest run app/__tests__/actions/contact.test.ts` (expect failure)
 
-- [ ] C-T02.2 [AGENT] Remove PII from console.log
+- [x] C-T02.2 [AGENT] Remove PII from console.log
   - **File:** `app/actions/contact.ts`
   - **Action:** Replace `console.log("Contact form submission:", data)` with `console.log("[contact] Submission received", { success: true, timestamp: new Date().toISOString() })`. For errors, log field names only, not values.
   - **Validate:** `npx vitest run app/__tests__/actions/contact.test.ts` (expect pass)
 
-- [ ] C-T02.3 [AGENT] Verify no other PII logging exists
+- [x] C-T02.3 [AGENT] Verify no other PII logging exists
   - **File:** All files under `app/`
   - **Action:** Search for `console.log` across codebase. Verify none log user data.
   - **Validate:** `grep -rn "console.log" app/ --include="*.ts" --include="*.tsx"` and review

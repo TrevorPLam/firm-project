@@ -62,14 +62,9 @@ async function runContactFormSubmission(formData: FormData): Promise<FormResult>
     // 2. Store the submission in a database
     // 3. Integrate with a CRM like HubSpot or Salesforce
 
-    // For now, we'll log the submission and simulate a successful response
-    console.log("Contact form submission:", {
-      name,
-      email,
-      company,
-      service,
-      budget,
-      message,
+    // Log submission metadata without PII
+    console.log("[contact] Submission received", {
+      success: true,
       timestamp: new Date().toISOString(),
     });
 
@@ -88,7 +83,10 @@ async function runContactFormSubmission(formData: FormData): Promise<FormResult>
       message: "Thank you for your message! We'll get back to you soon.",
     };
   } catch (error) {
-    console.error("Contact form submission error:", error);
+    console.error("[contact] Submission error", {
+      success: false,
+      timestamp: new Date().toISOString(),
+    });
     return {
       success: false,
       message: "Something went wrong. Please try again later.",
