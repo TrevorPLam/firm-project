@@ -1,0 +1,89 @@
+{
+  "HomePage": {
+    "hero": {
+      "title": "Transforma Tu",
+      "titleHighlight": "Presencia Digital",
+      "description": "Creamos sitios web impresionantes y estrategias de marketing basadas en datos que convierten visitantes en clientes. Experimenta el poder del marketing digital moderno.",
+      "startProject": "Inicia Tu Proyecto",
+      "exploreServices": "Explorar Servicios"
+    },
+    "services": {
+      "title": "Nuestros Servicios",
+      "description": "Soluciones digitales integrales adaptadas a los objetivos de tu negocio",
+      "webDesign": {
+        "title": "Diseño y Desarrollo Web",
+        "description": "Sitios web personalizados y responsivos construidos con frameworks modernos. Diseños rápidos, accesibles y optimizados para conversiones que representan perfectamente tu marca.",
+        "feature1": "Diseño UI/UX Personalizado",
+        "feature2": "Desarrollo Responsivo",
+        "feature3": "Optimización de Rendimiento"
+      },
+      "seo": {
+        "title": "Optimización SEO",
+        "description": "Optimización de motores de búsqueda basada en datos para mejorar tu visibilidad y generar tráfico orgánico. Te ayudamos a clasificar más alto y llegar a más clientes.",
+        "feature1": "Investigación de Palabras Clave",
+        "feature2": "Optimización On-Page",
+        "feature3": "Auditorías SEO Técnicas"
+      },
+      "analytics": {
+        "title": "Analítica e Insights",
+        "description": "Configuración integral de analítica y reportes para rastrear el rendimiento, entender el comportamiento del usuario y tomar decisiones basadas en datos para el crecimiento.",
+        "feature1": "GA4 y Tag Manager",
+        "feature2": "Tableros Personalizados",
+        "feature3": "Seguimiento de Conversiones"
+      }
+    },
+    "testimonials": {
+      "title": "Lo Que Dicen Nuestros Clientes",
+      "description": "No solo tomes nuestra palabra por ello. Esto es lo que nuestros clientes tienen que decir sobre trabajar con nosotros."
+    },
+    "about": {
+      "title": "¿Por Qué Elegirnos?",
+      "description": "Combinamos creatividad con estrategias basadas en datos para entregar resultados que importan. Nuestro equipo está dedicado a ayudar a tu negocio a tener éxito en el panorama digital.",
+      "resultDriven": {
+        "title": "Enfoque Orientado a Resultados",
+        "description": "Cada decisión está respaldada por datos y enfocada en los objetivos de tu negocio."
+      },
+      "modernTech": {
+        "title": "Tecnología Moderna",
+        "description": "Utilizamos los últimos frameworks y mejores prácticas para un rendimiento óptimo."
+      },
+      "dedicatedPartnership": {
+        "title": "Asociación Dedicada",
+        "description": "Trabajamos como una extensión de tu equipo, comprometidos con tu éxito."
+      },
+      "projectsDelivered": "Proyectos Entregados",
+      "clientSatisfaction": "Satisfacción del Cliente",
+      "yearsExperience": "Años de Experiencia",
+      "supportAvailable": "Soporte Disponible"
+    },
+    "contact": {
+      "title": "Trabajemos Juntos",
+      "description": "¿Listo para transformar tu presencia digital? Ponte en contacto con nosotros hoy."
+    }
+  },
+  "Navigation": {
+    "home": "Inicio",
+    "services": "Servicios",
+    "about": "Nosotros",
+    "portfolio": "Portafolio",
+    "pricing": "Precios",
+    "blog": "Blog",
+    "contact": "Contacto",
+    "faq": "Preguntas Frecuentes"
+  },
+  "Footer": {
+    "tagline": "Transforma tu presencia digital con servicios expertos de diseño web, SEO y analítica.",
+    "quickLinks": "Enlaces Rápidos",
+    "services": "Servicios",
+    "legal": "Legal",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Servicio",
+    "copyright": "© 2025 Elevate Digital. Todos los derechos reservados."
+  },
+  "Common": {
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "notFound": "Página no encontrada",
+    "backToHome": "Volver al Inicio"
+  }
+}

@@ -2,8 +2,8 @@
 
 import { cacheLife } from "next/cache";
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ScrollReveal } from "../components/scroll-reveal";
+import { Link } from '../../../i18n/navigation';
+import { ScrollReveal } from "../../components/scroll-reveal";
 
 export const metadata: Metadata = {
   alternates: {

@@ -2,10 +2,10 @@
 
 import { cacheLife } from "next/cache";
 import type { Metadata } from "next";
-import { ScrollReveal } from "../components/scroll-reveal";
-import Link from "next/link";
-import { getAllPosts } from "@/lib/blog-data";
-import { NewsletterForm } from "../components/newsletter-form";
+import { ScrollReveal } from "../../components/scroll-reveal";
+import { Link } from '../../../i18n/navigation';
+import { getAllPosts } from "../../lib/blog-data";
+import { NewsletterForm } from "../../components/newsletter-form";
 
 export const metadata: Metadata = {
   alternates: {

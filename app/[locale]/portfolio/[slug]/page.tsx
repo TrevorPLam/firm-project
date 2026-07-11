@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Link } from '../../../../i18n/navigation';
 import Image from "next/image";
-import { ScrollReveal } from "../../components/scroll-reveal";
+import { ScrollReveal } from "../../../components/scroll-reveal";
 import { notFound } from "next/navigation";
-import { getCaseStudyBySlug, getAllSlugs } from "../../lib/portfolio-data";
+import { getCaseStudyBySlug, getAllSlugs } from "../../../lib/portfolio-data";
 
 export async function generateStaticParams() {
   const slugs = getAllSlugs();

@@ -1,0 +1,89 @@
+{
+  "HomePage": {
+    "hero": {
+      "title": "Transform Your",
+      "titleHighlight": "Digital Presence",
+      "description": "We craft stunning websites and data-driven marketing strategies that convert visitors into customers. Experience the power of modern digital marketing.",
+      "startProject": "Start Your Project",
+      "exploreServices": "Explore Services"
+    },
+    "services": {
+      "title": "Our Services",
+      "description": "Comprehensive digital solutions tailored to your business goals",
+      "webDesign": {
+        "title": "Web Design & Development",
+        "description": "Custom, responsive websites built with modern frameworks. Fast, accessible, and conversion-optimized designs that represent your brand perfectly.",
+        "feature1": "Custom UI/UX Design",
+        "feature2": "Responsive Development",
+        "feature3": "Performance Optimization"
+      },
+      "seo": {
+        "title": "SEO Optimization",
+        "description": "Data-driven search engine optimization to improve your visibility and drive organic traffic. We help you rank higher and reach more customers.",
+        "feature1": "Keyword Research",
+        "feature2": "On-Page Optimization",
+        "feature3": "Technical SEO Audits"
+      },
+      "analytics": {
+        "title": "Analytics & Insights",
+        "description": "Comprehensive analytics setup and reporting to track performance, understand user behavior, and make data-driven decisions for growth.",
+        "feature1": "GA4 & Tag Manager",
+        "feature2": "Custom Dashboards",
+        "feature3": "Conversion Tracking"
+      }
+    },
+    "testimonials": {
+      "title": "What Our Clients Say",
+      "description": "Don't just take our word for it. Here's what our clients have to say about working with us."
+    },
+    "about": {
+      "title": "Why Choose Us?",
+      "description": "We combine creativity with data-driven strategies to deliver results that matter. Our team is dedicated to helping your business succeed in the digital landscape.",
+      "resultDriven": {
+        "title": "Results-Driven Approach",
+        "description": "Every decision is backed by data and focused on your business goals."
+      },
+      "modernTech": {
+        "title": "Modern Technology",
+        "description": "We use the latest frameworks and best practices for optimal performance."
+      },
+      "dedicatedPartnership": {
+        "title": "Dedicated Partnership",
+        "description": "We work as an extension of your team, committed to your success."
+      },
+      "projectsDelivered": "Projects Delivered",
+      "clientSatisfaction": "Client Satisfaction",
+      "yearsExperience": "Years Experience",
+      "supportAvailable": "Support Available"
+    },
+    "contact": {
+      "title": "Let's Work Together",
+      "description": "Ready to transform your digital presence? Get in touch with us today."
+    }
+  },
+  "Navigation": {
+    "home": "Home",
+    "services": "Services",
+    "about": "About",
+    "portfolio": "Portfolio",
+    "pricing": "Pricing",
+    "blog": "Blog",
+    "contact": "Contact",
+    "faq": "FAQ"
+  },
+  "Footer": {
+    "tagline": "Transform your digital presence with expert web design, SEO, and analytics services.",
+    "quickLinks": "Quick Links",
+    "services": "Services",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "copyright": "© 2025 Elevate Digital. All rights reserved."
+  },
+  "Common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "notFound": "Page not found",
+    "backToHome": "Back to Home"
+  }
+}

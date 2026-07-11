@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { ScrollReveal } from "./components/scroll-reveal";
-import { ContactForm } from "./components/contact-form";
+import { Link } from '../../i18n/navigation';
+import { ScrollReveal } from "../components/scroll-reveal";
+import { ContactForm } from "../components/contact-form";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

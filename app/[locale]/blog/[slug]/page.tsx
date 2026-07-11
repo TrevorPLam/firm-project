@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { ScrollReveal } from "../../components/scroll-reveal";
+import { ScrollReveal } from "../../../components/scroll-reveal";
 import { notFound } from "next/navigation";
-import Link from "next/link";
+import { Link } from '../../../../i18n/navigation';
 import Image from "next/image";
-import { SanitizedContent } from "../../components/sanitized-content";
-import { NewsletterForm } from "../../components/newsletter-form";
-import { getPostBySlug, getAllPosts } from "@/lib/blog-data";
+import { SanitizedContent } from "../../../components/sanitized-content";
+import { NewsletterForm } from "../../../components/newsletter-form";
+import { getPostBySlug, getAllPosts } from "../../../lib/blog-data";
 
 // Temporarily disabled due to Windows build worker issue
 // export async function generateStaticParams() {

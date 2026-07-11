@@ -1,8 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
+import { Link } from '../../i18n/navigation';
 import { SearchBar } from "./search-bar";
+import { LanguageSwitcher } from "./language-switcher";
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -134,6 +135,7 @@ export function Navigation() {
             Contact
           </Link>
           <SearchBar />
+          <LanguageSwitcher />
         </div>
 
         <div className="hidden md:block">
@@ -228,6 +230,7 @@ export function Navigation() {
             </Link>
             <div className="flex items-center gap-2 py-2">
               <SearchBar onClose={() => setIsMobileMenuOpen(false)} />
+              <LanguageSwitcher />
             </div>
             <Link
               href="/contact"

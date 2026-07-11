@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { ScrollReveal } from "../components/scroll-reveal";
-import { ContactForm } from "../components/contact-form";
+import { ScrollReveal } from "../../components/scroll-reveal";
+import { ContactForm } from "../../components/contact-form";
 
 export const metadata: Metadata = {
   alternates: {
