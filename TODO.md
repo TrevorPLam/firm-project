@@ -1114,7 +1114,7 @@ Error: Route "/blog/[slug]" used `new Date()` before accessing either uncached d
 
 ---
 
-## [ ] M-T12 | STATUS: PENDING | PRIORITY: MEDIUM
+## [x] M-T12 | STATUS: DONE | PRIORITY: MEDIUM
 
 ### Remove dead code in lib/data.ts
 
@@ -1140,13 +1140,20 @@ Error: Route "/blog/[slug]" used `new Date()` before accessing either uncached d
 
 **Depends on:** None | **Blocks:** None
 
+**Implementation notes:**
+- Verified no imports of `@/lib/data` exist in codebase via grep search
+- Deleted `app/lib/data.ts` file
+- Typecheck passes with no errors
+- All 41 tests pass across 6 test files
+- File contained outdated Next.js 15 patterns superseded by `"use cache"` directive
+
 ### Subtasks
 
-- [ ] M-T12.1 [AGENT] Verify no imports exist
+- [x] M-T12.1 [AGENT] Verify no imports exist
   - **Action:** `grep -rn "lib/data" app/ --include="*.ts" --include="*.tsx"`. Remove any imports found.
   - **Validate:** grep returns no results
 
-- [ ] M-T12.2 [AGENT] Delete file
+- [x] M-T12.2 [AGENT] Delete file
   - **File:** `app/lib/data.ts`
   - **Action:** Delete the file.
   - **Validate:** `npx tsc --noEmit && npx vitest run`
