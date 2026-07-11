@@ -16,6 +16,7 @@ import {
   organizationSchema,
   faqSchema,
   generateSchemaJsonLd,
+  generateBreadcrumbSchema,
 } from "../lib/schema";
 import { Suspense } from "react";
 
@@ -116,6 +117,16 @@ export default async function LocaleLayout({ children, params }: Props) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: generateSchemaJsonLd(faqSchema),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: generateSchemaJsonLd(
+              generateBreadcrumbSchema([
+                { name: "Home", url: `/${locale}` },
+              ])
+            ),
           }}
         />
       </head>

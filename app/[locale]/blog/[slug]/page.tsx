@@ -6,6 +6,7 @@ import Image from "next/image";
 import { SanitizedContent } from "../../../components/sanitized-content";
 import { NewsletterForm } from "../../../components/newsletter-form";
 import { getPostBySlug, getAllPosts } from "../../../lib/blog-data";
+import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../../lib/schema";
 
 // Temporarily disabled due to Windows build worker issue
 // export async function generateStaticParams() {
@@ -47,17 +48,29 @@ export async function generateMetadata({
 export default async function BlogPostPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; locale: string }>;
 }) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const post = getPostBySlug(slug);
 
   if (!post) {
     notFound();
   }
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: `/${locale}` },
+    { name: "Blog", url: `/${locale}/blog` },
+    { name: post.title, url: `/${locale}/blog/${slug}` },
+  ]);
+
   return (
     <div className="flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: generateSchemaJsonLd(breadcrumbSchema),
+        }}
+      />
       {/* Article Header */}
       <article className="px-6 pt-32 pb-20">
         <div className="mx-auto max-w-4xl">

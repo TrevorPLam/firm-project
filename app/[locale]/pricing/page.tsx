@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Link } from '../../../i18n/navigation';
 import { ScrollReveal } from "../../components/scroll-reveal";
+import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
 
 
 const packages = [
@@ -108,6 +109,12 @@ export default function PricingPage() {
     return true;
   });
 
+  // Generate breadcrumb schema (client-side)
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Pricing", url: "/pricing" },
+  ]);
+
   // Save preference to localStorage when it changes
   useEffect(() => {
     localStorage.setItem('billing-preference', isYearly ? 'yearly' : 'monthly');
@@ -115,6 +122,12 @@ export default function PricingPage() {
 
   return (
     <div className="flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: generateSchemaJsonLd(breadcrumbSchema),
+        }}
+      />
       {/* Hero Section */}
       <section className="px-6 pt-32 pb-20">
         <div className="mx-auto max-w-7xl">

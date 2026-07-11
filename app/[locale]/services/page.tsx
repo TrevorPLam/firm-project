@@ -4,6 +4,7 @@ import { cacheLife } from "next/cache";
 import type { Metadata } from "next";
 import { Link } from '../../../i18n/navigation';
 import { ScrollReveal } from "../../components/scroll-reveal";
+import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
 
 export const metadata: Metadata = {
   alternates: {
@@ -27,10 +28,27 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function ServicesPage() {
+export default async function ServicesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
   cacheLife("days");
+  const { locale } = await params;
+
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: `/${locale}` },
+    { name: "Services", url: `/${locale}/services` },
+  ]);
+
   return (
     <div className="flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: generateSchemaJsonLd(breadcrumbSchema),
+        }}
+      />
       {/* Hero Section */}
       <section className="px-6 pt-32 pb-20">
         <div className="mx-auto max-w-7xl">

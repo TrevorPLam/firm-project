@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ScrollReveal } from "../../components/scroll-reveal";
 import { ContactForm } from "../../components/contact-form";
+import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
 
 export const metadata: Metadata = {
   alternates: {
@@ -23,9 +24,26 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ContactPage() {
+export default async function ContactPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: `/${locale}` },
+    { name: "Contact", url: `/${locale}/contact` },
+  ]);
+
   return (
     <div className="flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: generateSchemaJsonLd(breadcrumbSchema),
+        }}
+      />
       {/* Hero Section */}
       <section className="px-6 pt-32 pb-20">
         <div className="mx-auto max-w-7xl">

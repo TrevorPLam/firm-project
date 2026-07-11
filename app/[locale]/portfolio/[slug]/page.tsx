@@ -4,6 +4,7 @@ import Image from "next/image";
 import { ScrollReveal } from "../../../components/scroll-reveal";
 import { notFound } from "next/navigation";
 import { getCaseStudyBySlug, getAllSlugs } from "../../../lib/portfolio-data";
+import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../../lib/schema";
 
 export async function generateStaticParams() {
   const slugs = getAllSlugs();
@@ -43,17 +44,29 @@ export async function generateMetadata({
 export default async function CaseStudyPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; locale: string }>;
 }) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const study = getCaseStudyBySlug(slug);
 
   if (!study) {
     notFound();
   }
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: `/${locale}` },
+    { name: "Portfolio", url: `/${locale}/portfolio` },
+    { name: study.title, url: `/${locale}/portfolio/${slug}` },
+  ]);
+
   return (
     <div className="flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: generateSchemaJsonLd(breadcrumbSchema),
+        }}
+      />
       {/* Hero Section */}
       <section className="px-6 pt-32 pb-20">
         <div className="mx-auto max-w-7xl">

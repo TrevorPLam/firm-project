@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { Link } from '../../../i18n/navigation';
 import { ScrollReveal } from "../../components/scroll-reveal";
 import { getAllCaseStudies } from "../../lib/portfolio-data";
+import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
 
 export const metadata: Metadata = {
   alternates: {
@@ -28,11 +29,28 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function PortfolioPage() {
+export default async function PortfolioPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
   cacheLife("days");
+  const { locale } = await params;
   const caseStudies = getAllCaseStudies();
+
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: `/${locale}` },
+    { name: "Portfolio", url: `/${locale}/portfolio` },
+  ]);
+
   return (
     <div className="flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: generateSchemaJsonLd(breadcrumbSchema),
+        }}
+      />
       {/* Hero Section */}
       <section className="px-6 pt-32 pb-20">
         <div className="mx-auto max-w-7xl">

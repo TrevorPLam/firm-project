@@ -204,3 +204,66 @@ export function generateServiceSchema({
     },
   };
 }
+
+export function generateHowToSchema({
+  name,
+  description,
+  steps,
+  estimatedCost,
+  estimatedTime,
+  tool,
+  supply,
+}: {
+  name: string;
+  description: string;
+  steps: Array<{
+    name: string;
+    text: string;
+    url?: string;
+    image?: string;
+  }>;
+  estimatedCost?: {
+    currency: string;
+    value: string;
+  };
+  estimatedTime?: string;
+  tool?: string;
+  supply?: string;
+}) {
+  const schema: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: name,
+    description: description,
+    step: steps.map((step, index) => ({
+      "@type": "HowToStep",
+      position: index + 1,
+      name: step.name,
+      text: step.text,
+      url: step.url,
+      image: step.image,
+    })),
+  };
+
+  if (estimatedCost) {
+    schema.estimatedCost = {
+      "@type": "MonetaryAmount",
+      currency: estimatedCost.currency,
+      value: estimatedCost.value,
+    };
+  }
+
+  if (estimatedTime) {
+    schema.estimatedTime = estimatedTime;
+  }
+
+  if (tool) {
+    schema.tool = tool;
+  }
+
+  if (supply) {
+    schema.supply = supply;
+  }
+
+  return schema;
+}
