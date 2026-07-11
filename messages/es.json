@@ -34,7 +34,22 @@
     },
     "testimonials": {
       "title": "Lo Que Dicen Nuestros Clientes",
-      "description": "No solo tomes nuestra palabra por ello. Esto es lo que nuestros clientes tienen que decir sobre trabajar con nosotros."
+      "description": "No solo tomes nuestra palabra por ello. Esto es lo que nuestros clientes tienen que decir sobre trabajar con nosotros.",
+      "sarah": {
+        "name": "Sarah Johnson",
+        "role": "CEO, TechStyle Boutique",
+        "content": "Elevate Digital transformó nuestra presencia en línea completamente. Nuestra tasa de conversión aumentó un 150% en tres meses. Su equipo es profesional, receptivo y realmente entiende nuestras necesidades comerciales."
+      },
+      "michael": {
+        "name": "Michael Chen",
+        "role": "Director de Marketing, Metro Dental Group",
+        "content": "Los resultados de SEO han sido fenomenales. Pasamos de la página 5 a los primeros 3 lugares en los rankings para nuestras palabras clave principales. El enfoque basado en datos del equipo y los informes regulares nos mantienen informados en cada paso."
+      },
+      "emily": {
+        "name": "Emily Rodriguez",
+        "role": "Fundadora, GreenHome Products",
+        "content": "Trabajar con Elevate Digital ha sido un cambio radical para nuestra estrategia de contenido. El tráfico de nuestro blog aumentó un 250% y ahora somos reconocidos como líderes de pensamiento en nuestra industria."
+      }
     },
     "about": {
       "title": "¿Por Qué Elegirnos?",

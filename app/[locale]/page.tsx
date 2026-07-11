@@ -3,7 +3,7 @@ import { ScrollReveal } from "../components/scroll-reveal";
 import { ContactForm } from "../components/contact-form";
 import type { Metadata } from "next";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../lib/schema";
-import { setRequestLocale } from 'next-intl/server';
+import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { routing } from '../../i18n/routing';
 import { hasLocale } from 'next-intl';
 
@@ -26,8 +26,10 @@ export default async function Home({
   }
   setRequestLocale(locale);
 
+  const t = await getTranslations('HomePage');
+
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: "Home", url: `/${locale}` },
+    { name: t('hero.titleHighlight'), url: `/${locale}` },
   ]);
 
   return (
@@ -44,26 +46,24 @@ export default async function Home({
           <ScrollReveal>
             <div className="max-w-3xl">
               <h1 className="mb-6 text-5xl leading-tight font-bold tracking-tight md:text-7xl">
-                Transform Your
-                <span className="text-primary"> Digital Presence</span>
+                {t('hero.title')}
+                <span className="text-primary"> {t('hero.titleHighlight')}</span>
               </h1>
               <p className="text-foreground/70 mb-8 text-xl leading-relaxed md:text-2xl">
-                We craft stunning websites and data-driven marketing strategies
-                that convert visitors into customers. Experience the power of
-                modern digital marketing.
+                {t('hero.description')}
               </p>
               <div className="flex flex-col gap-4 sm:flex-row">
                 <Link
                   href="/contact"
                   className="bg-primary hover:bg-primary-dark rounded-full px-8 py-4 text-center text-lg font-semibold text-white transition-all hover:scale-105"
                 >
-                  Start Your Project
+                  {t('hero.startProject')}
                 </Link>
                 <Link
                   href="/services"
                   className="border-foreground/20 hover:border-primary hover:text-primary rounded-full border-2 px-8 py-4 text-center text-lg font-semibold transition-all"
                 >
-                  Explore Services
+                  {t('hero.exploreServices')}
                 </Link>
               </div>
             </div>
@@ -77,10 +77,10 @@ export default async function Home({
           <ScrollReveal>
             <div className="mb-16 text-center">
               <h2 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">
-                Our Services
+                {t('services.title')}
               </h2>
               <p className="text-foreground/70 mx-auto max-w-2xl text-xl">
-                Comprehensive digital solutions tailored to your business goals
+                {t('services.description')}
               </p>
             </div>
           </ScrollReveal>
@@ -105,25 +105,23 @@ export default async function Home({
                   </svg>
                 </div>
                 <h3 className="mb-3 text-2xl font-bold">
-                  Web Design & Development
+                  {t('services.webDesign.title')}
                 </h3>
                 <p className="text-foreground/70 mb-4">
-                  Custom, responsive websites built with modern frameworks.
-                  Fast, accessible, and conversion-optimized designs that
-                  represent your brand perfectly.
+                  {t('services.webDesign.description')}
                 </p>
                 <ul className="text-foreground/60 space-y-2">
                   <li className="flex items-center gap-2">
                     <span className="bg-primary h-1.5 w-1.5 rounded-full"></span>
-                    Custom UI/UX Design
+                    {t('services.webDesign.feature1')}
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="bg-primary h-1.5 w-1.5 rounded-full"></span>
-                    Responsive Development
+                    {t('services.webDesign.feature2')}
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="bg-primary h-1.5 w-1.5 rounded-full"></span>
-                    Performance Optimization
+                    {t('services.webDesign.feature3')}
                   </li>
                 </ul>
               </div>
@@ -147,24 +145,22 @@ export default async function Home({
                     />
                   </svg>
                 </div>
-                <h3 className="mb-3 text-2xl font-bold">SEO Optimization</h3>
+                <h3 className="mb-3 text-2xl font-bold">{t('services.seo.title')}</h3>
                 <p className="text-foreground/70 mb-4">
-                  Data-driven search engine optimization to improve your
-                  visibility and drive organic traffic. We help you rank higher
-                  and reach more customers.
+                  {t('services.seo.description')}
                 </p>
                 <ul className="text-foreground/60 space-y-2">
                   <li className="flex items-center gap-2">
                     <span className="bg-primary h-1.5 w-1.5 rounded-full"></span>
-                    Keyword Research
+                    {t('services.seo.feature1')}
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="bg-primary h-1.5 w-1.5 rounded-full"></span>
-                    On-Page Optimization
+                    {t('services.seo.feature2')}
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="bg-primary h-1.5 w-1.5 rounded-full"></span>
-                    Technical SEO Audits
+                    {t('services.seo.feature3')}
                   </li>
                 </ul>
               </div>
@@ -189,25 +185,23 @@ export default async function Home({
                   </svg>
                 </div>
                 <h3 className="mb-3 text-2xl font-bold">
-                  Analytics & Insights
+                  {t('services.analytics.title')}
                 </h3>
                 <p className="text-foreground/70 mb-4">
-                  Comprehensive analytics setup and reporting to track
-                  performance, understand user behavior, and make data-driven
-                  decisions for growth.
+                  {t('services.analytics.description')}
                 </p>
                 <ul className="text-foreground/60 space-y-2">
                   <li className="flex items-center gap-2">
                     <span className="bg-primary h-1.5 w-1.5 rounded-full"></span>
-                    GA4 & Tag Manager
+                    {t('services.analytics.feature1')}
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="bg-primary h-1.5 w-1.5 rounded-full"></span>
-                    Custom Dashboards
+                    {t('services.analytics.feature2')}
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="bg-primary h-1.5 w-1.5 rounded-full"></span>
-                    Conversion Tracking
+                    {t('services.analytics.feature3')}
                   </li>
                 </ul>
               </div>
@@ -222,11 +216,10 @@ export default async function Home({
           <ScrollReveal>
             <div className="mb-16 text-center">
               <h2 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">
-                What Our Clients Say
+                {t('testimonials.title')}
               </h2>
               <p className="text-foreground/70 mx-auto max-w-2xl text-xl">
-                Don't just take our word for it. Here's what our clients have to
-                say about working with us.
+                {t('testimonials.description')}
               </p>
             </div>
           </ScrollReveal>
@@ -234,22 +227,19 @@ export default async function Home({
           <div className="grid gap-8 md:grid-cols-3">
             {[
               {
-                name: "Sarah Johnson",
-                role: "CEO, TechStyle Boutique",
-                content:
-                  "Elevate Digital transformed our online presence completely. Our conversion rate increased by 150% within three months. Their team is professional, responsive, and truly understands our business needs.",
+                name: t('testimonials.sarah.name'),
+                role: t('testimonials.sarah.role'),
+                content: t('testimonials.sarah.content'),
               },
               {
-                name: "Michael Chen",
-                role: "Marketing Director, Metro Dental Group",
-                content:
-                  "The SEO results have been phenomenal. We went from page 5 to top 3 rankings for our main keywords. The team's data-driven approach and regular reporting keep us informed every step of the way.",
+                name: t('testimonials.michael.name'),
+                role: t('testimonials.michael.role'),
+                content: t('testimonials.michael.content'),
               },
               {
-                name: "Emily Rodriguez",
-                role: "Founder, GreenHome Products",
-                content:
-                  "Working with Elevate Digital has been a game-changer for our content strategy. Our blog traffic increased by 250% and we're now recognized as thought leaders in our industry.",
+                name: t('testimonials.emily.name'),
+                role: t('testimonials.emily.role'),
+                content: t('testimonials.emily.content'),
               },
             ].map((testimonial, index) => (
               <ScrollReveal key={testimonial.name} delay={index * 100}>
@@ -289,12 +279,10 @@ export default async function Home({
             <div className="grid items-center gap-12 md:grid-cols-2">
               <div>
                 <h2 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl">
-                  Why Choose Us?
+                  {t('about.title')}
                 </h2>
                 <p className="text-foreground/70 mb-8 text-xl leading-relaxed">
-                  We combine creativity with data-driven strategies to deliver
-                  results that matter. Our team is dedicated to helping your
-                  business succeed in the digital landscape.
+                  {t('about.description')}
                 </p>
                 <div className="space-y-4">
                   <div className="flex items-start gap-4">
@@ -315,11 +303,10 @@ export default async function Home({
                     </div>
                     <div>
                       <h4 className="mb-1 font-semibold">
-                        Results-Driven Approach
+                        {t('about.resultDriven.title')}
                       </h4>
                       <p className="text-foreground/60">
-                        Every decision is backed by data and focused on your
-                        business goals.
+                        {t('about.resultDriven.description')}
                       </p>
                     </div>
                   </div>
@@ -340,10 +327,9 @@ export default async function Home({
                       </svg>
                     </div>
                     <div>
-                      <h4 className="mb-1 font-semibold">Modern Technology</h4>
+                      <h4 className="mb-1 font-semibold">{t('about.modernTech.title')}</h4>
                       <p className="text-foreground/60">
-                        We use the latest frameworks and best practices for
-                        optimal performance.
+                        {t('about.modernTech.description')}
                       </p>
                     </div>
                   </div>
@@ -365,11 +351,10 @@ export default async function Home({
                     </div>
                     <div>
                       <h4 className="mb-1 font-semibold">
-                        Dedicated Partnership
+                        {t('about.dedicatedPartnership.title')}
                       </h4>
                       <p className="text-foreground/60">
-                        We work as an extension of your team, committed to your
-                        success.
+                        {t('about.dedicatedPartnership.description')}
                       </p>
                     </div>
                   </div>
@@ -381,27 +366,27 @@ export default async function Home({
                     <div className="text-primary mb-2 text-4xl font-bold">
                       150+
                     </div>
-                    <div className="text-foreground/60">Projects Delivered</div>
+                    <div className="text-foreground/60">{t('about.projectsDelivered')}</div>
                   </div>
                   <div className="text-center">
                     <div className="text-primary mb-2 text-4xl font-bold">
                       98%
                     </div>
                     <div className="text-foreground/60">
-                      Client Satisfaction
+                      {t('about.clientSatisfaction')}
                     </div>
                   </div>
                   <div className="text-center">
                     <div className="text-primary mb-2 text-4xl font-bold">
                       5+
                     </div>
-                    <div className="text-foreground/60">Years Experience</div>
+                    <div className="text-foreground/60">{t('about.yearsExperience')}</div>
                   </div>
                   <div className="text-center">
                     <div className="text-primary mb-2 text-4xl font-bold">
                       24/7
                     </div>
-                    <div className="text-foreground/60">Support Available</div>
+                    <div className="text-foreground/60">{t('about.supportAvailable')}</div>
                   </div>
                 </div>
               </div>
@@ -416,11 +401,10 @@ export default async function Home({
           <ScrollReveal>
             <div className="mb-12 text-center">
               <h2 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">
-                Let's Work Together
+                {t('contact.title')}
               </h2>
               <p className="text-foreground/70 text-xl">
-                Ready to transform your digital presence? Get in touch with us
-                today.
+                {t('contact.description')}
               </p>
             </div>
 
