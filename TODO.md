@@ -831,7 +831,7 @@ Error: Route "/blog/[slug]" used `new Date()` before accessing either uncached d
 
 ---
 
-## [ ] M-T06 | STATUS: PENDING | PRIORITY: MEDIUM
+## [x] M-T06 | STATUS: DONE | PRIORITY: MEDIUM
 
 ### Consolidate duplicated blog data into shared module
 
@@ -858,19 +858,30 @@ Error: Route "/blog/[slug]" used `new Date()` before accessing either uncached d
 
 **Depends on:** C-T01 | **Blocks:** M-T09
 
+**Implementation notes:**
+- Created `app/lib/blog-data.ts` with `BlogPost` and `BlogPostSummary` types
+- Moved all blog post data into private `blogPosts` constant (not exported)
+- Exported three functions: `getAllPosts()`, `getPostBySlug()`, `getAllSlugs()`
+- Updated `app/blog/page.tsx` to import and use `getAllPosts()` instead of inline data
+- Updated `app/blog/[slug]/page.tsx` to use `getPostBySlug()` and `getAllSlugs()` for all data access
+- Updated related posts section to use `getAllPosts()` for filtering
+- All typecheck, lint, and tests pass (31 tests passing)
+- Follows DDD principles: blog content is a bounded context defined once in domain module
+- Follows deep module pattern: exports typed functions with simple interfaces, internal data hidden
+
 ### Subtasks
 
-- [ ] M-T06.1 [AGENT] Create shared blog data module
+- [x] M-T06.1 [AGENT] Create shared blog data module
   - **File:** `app/lib/blog-data.ts`
   - **Action:** Define `BlogPost` and `BlogPostSummary` types. Move all post data into private `const blogPosts`. Export `getAllPosts()`, `getPostBySlug()`, `getAllSlugs()`.
   - **Validate:** `npx tsc --noEmit && npx eslint app/lib/blog-data.ts`
 
-- [ ] M-T06.2 [AGENT] Update blog list page
+- [x] M-T06.2 [AGENT] Update blog list page
   - **File:** `app/blog/page.tsx`
   - **Action:** Remove inline `posts` array. Import `getAllPosts` from `@/lib/blog-data`. Use it to render list.
   - **Validate:** `npx tsc --noEmit && npx eslint app/blog/page.tsx`
 
-- [ ] M-T06.3 [AGENT] Update blog detail page
+- [x] M-T06.3 [AGENT] Update blog detail page
   - **File:** `app/blog/[slug]/page.tsx`
   - **Action:** Remove inline `blogPosts`. Import `getPostBySlug`, `getAllSlugs`. Update `generateStaticParams`, `generateMetadata`, component. Keep `sanitizeHtml` from C-T01.
   - **Validate:** `npx tsc --noEmit && npx eslint app/blog/[slug]/page.tsx`

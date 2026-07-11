@@ -4,6 +4,7 @@ import { cacheLife } from "next/cache";
 import type { Metadata } from "next";
 import { ScrollReveal } from "../components/scroll-reveal";
 import Link from "next/link";
+import { getAllPosts } from "@/lib/blog-data";
 
 export const metadata: Metadata = {
   alternates: {
@@ -19,71 +20,9 @@ export const metadata: Metadata = {
   },
 };
 
-const blogPosts = [
-  {
-    id: 1,
-    slug: "web-design-trends-2025",
-    title: "10 Web Design Trends to Watch in 2025",
-    excerpt: "Explore the latest web design trends that will shape the digital landscape in 2025, from minimalism to advanced interactivity.",
-    category: "Web Design",
-    date: "January 15, 2025",
-    readTime: "5 min read",
-    topicCluster: "web-design",
-  },
-  {
-    id: 2,
-    slug: "local-seo-guide",
-    title: "The Complete Guide to SEO for Local Businesses",
-    excerpt: "Learn how to optimize your online presence for local search and attract more customers in your area with proven SEO strategies.",
-    category: "SEO",
-    date: "January 10, 2025",
-    readTime: "8 min read",
-    topicCluster: "seo",
-  },
-  {
-    id: 3,
-    slug: "core-web-vitals",
-    title: "Understanding Core Web Vitals and Their Impact",
-    excerpt: "Discover why Core Web Vitals matter for SEO and user experience, and how to optimize your website for better performance.",
-    category: "Analytics",
-    date: "January 5, 2025",
-    readTime: "6 min read",
-    topicCluster: "analytics",
-  },
-  {
-    id: 4,
-    slug: "conversion-landing-pages",
-    title: "How to Build a Conversion-Optimized Landing Page",
-    excerpt: "Master the art of creating landing pages that convert with our comprehensive guide covering design, copy, and optimization.",
-    category: "Web Design",
-    date: "December 28, 2024",
-    readTime: "7 min read",
-    topicCluster: "web-design",
-  },
-  {
-    id: 5,
-    slug: "ai-digital-marketing",
-    title: "The Future of AI in Digital Marketing",
-    excerpt: "Explore how artificial intelligence is transforming digital marketing and what it means for businesses in the coming years.",
-    category: "Digital Marketing",
-    date: "December 20, 2024",
-    readTime: "6 min read",
-    topicCluster: "digital-marketing",
-  },
-  {
-    id: 6,
-    slug: "content-strategy-2025",
-    title: "Content Strategy: Quality vs Quantity in 2025",
-    excerpt: "Learn why creating high-quality, valuable content is more important than ever for SEO and audience engagement.",
-    category: "Content Strategy",
-    date: "December 15, 2024",
-    readTime: "5 min read",
-    topicCluster: "content-strategy",
-  },
-];
-
 export default async function BlogPage() {
   cacheLife("days");
+  const posts = getAllPosts();
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -106,7 +45,7 @@ export default async function BlogPage() {
       <section className="py-20 px-6 bg-foreground/5">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blogPosts.map((post, index) => (
+            {posts.map((post, index) => (
               <ScrollReveal key={post.id} delay={index * 100}>
                 <Link href={`/blog/${post.slug}`} className="group">
                   <article className="bg-background rounded-2xl border border-foreground/10 group-hover:border-primary/50 transition-all group-hover:shadow-xl overflow-hidden">
