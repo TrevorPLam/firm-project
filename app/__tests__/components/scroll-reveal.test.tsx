@@ -72,7 +72,7 @@ describe('ScrollReveal', () => {
   });
 
   it('should keep content visible when IntersectionObserver is unavailable', () => {
-    window.IntersectionObserver = undefined as any;
+    window.IntersectionObserver = undefined as unknown as typeof IntersectionObserver;
 
     render(<ScrollReveal>Test content</ScrollReveal>);
 

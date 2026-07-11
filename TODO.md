@@ -379,18 +379,23 @@
 
 ---
 
-## [ ] H-T04-ISSUE-001 | STATUS: PENDING | PRIORITY: LOW
+## [x] H-T04-ISSUE-001 | STATUS: DONE | PRIORITY: LOW
 
 ### Fix eslint no-explicit-any in scroll-reveal test
 
 **Files:** `app/__tests__/components/scroll-reveal.test.tsx`
 
-**Description:** 
+**Description:**
 Line 75 has `@typescript-eslint/no-explicit-any` error that needs to be fixed with proper type assertion.
 
 **Discovered during:** H-T04 quality assurance
 
 **Related task:** H-T03 (ScrollReveal component)
+
+**Implementation notes:**
+- Changed `window.IntersectionObserver = undefined as any` to `window.IntersectionObserver = undefined as unknown as typeof IntersectionObserver`
+- Used double type assertion through unknown as standard pattern for intentionally setting property to incompatible type in test scenarios
+- Typecheck passes, lint passes for this file, all 4 tests pass
 
 ---
 
