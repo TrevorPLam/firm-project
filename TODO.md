@@ -2439,7 +2439,7 @@ Test social sharing:
 
 ## P3-003: Implement Chatbot
 
-**Status:** [ ] Not Started  
+**Status:** [!] Blocked  
 **Priority:** P3
 
 ### Related File Paths
@@ -2484,6 +2484,14 @@ No new imports/exports required (uses third-party widget).
 
 ### Blocks
 - None
+
+### Blocking Notes
+- Task requires HUMAN setup of chatbot platform (P3-003-01: Select Chatbot Platform)
+- AGENT subtask P3-003-02 (Integrate Chatbot Widget) cannot proceed until platform is selected and credentials provided
+- Research conducted on 2026 chatbot best practices: SSR/hydration compatibility, bundle size impact, script tag vs React component, AI capabilities, customization
+- Top platforms for React/Next.js in 2026: Oscar Chat (AI-first, lightweight), Intercom (feature-rich but expensive), Crisp (middle-ground with React SDK), Tidio (ecommerce-focused)
+- Recommended integration method for Next.js: Script tag with next/script strategy="afterInteractive" or dynamic import with ssr: false
+- Marked as blocked on 2026-07-11 by /todo workflow
 
 ---
 
@@ -2547,7 +2555,7 @@ Test chatbot functionality:
 
 ## P3-004: Add Additional Content
 
-**Status:** [ ] Not Started  
+**Status:** [!] Blocked  
 **Priority:** P3
 
 ### Related File Paths
@@ -2591,6 +2599,12 @@ No new imports/exports required.
 
 ### Blocks
 - None
+
+### Blocking Notes
+- All subtasks (P3-004-01, P3-004-02, P3-004-03, P3-004-04) are HUMAN tasks requiring content creation
+- No AGENT subtasks to execute
+- Task requires human content writers to create blog posts, case studies, content calendar, and promotion plan
+- Marked as blocked on 2026-07-11 by /todo workflow
 
 ---
 
@@ -2650,7 +2664,7 @@ Create content promotion plan:
 
 ## P3-005: Implement Performance Monitoring
 
-**Status:** [ ] Not Started  
+**Status:** [!] Blocked  
 **Priority:** P3
 
 ### Related File Paths
@@ -2699,6 +2713,12 @@ import { Analytics } from '@vercel/analytics/react'
 
 ### Blocks
 - None
+
+### Blocking Notes
+- Task requires HUMAN setup of RUM tool (P3-005-01: Select RUM Tool)
+- AGENT subtasks (P3-005-02, P3-005-03, P3-005-05) cannot proceed until platform is selected and credentials provided
+- HUMAN subtasks (P3-005-04, P3-005-06) require dashboard setup and performance review
+- Marked as blocked on 2026-07-11 by /todo workflow
 
 ---
 
