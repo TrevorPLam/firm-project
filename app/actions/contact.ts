@@ -2,6 +2,8 @@
 
 import * as z from "zod";
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
+import { checkRateLimit } from "@/lib/rate-limiter";
 
 const contactFormSchema = z.object({
   name: z.string().trim().min(2, "Name must be at least 2 characters"),
@@ -33,6 +35,21 @@ export async function submitContactFormAction(
 }
 
 async function runContactFormSubmission(formData: FormData): Promise<FormResult> {
+  // Rate limiting check
+  const headerList = await headers();
+  const forwardedFor = headerList.get("x-forwarded-for") ?? "anonymous";
+  const ip = forwardedFor.split(",")[0]?.trim() ?? "anonymous";
+  
+  const rateLimitKey = `contact:${ip}`;
+  const isAllowed = checkRateLimit(rateLimitKey, 5, 600000); // 5 requests per 10 minutes
+  
+  if (!isAllowed) {
+    return {
+      success: false,
+      message: "Too many submissions. Please try again later.",
+    };
+  }
+
   // Extract form data from FormData
   const rawData = {
     name: formData.get("name") as string,

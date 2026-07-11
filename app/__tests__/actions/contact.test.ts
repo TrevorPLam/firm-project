@@ -1,15 +1,23 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { submitContactFormAction } from "@/actions/contact";
-import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
+import { clearRateLimits } from "@/lib/rate-limiter";
 
-vi.mock("next/cache", () => ({
-  revalidatePath: vi.fn(),
+vi.mock("next/headers", () => ({
+  headers: vi.fn(),
 }));
 
 describe("submitContactFormAction", () => {
   beforeEach(() => {
     vi.spyOn(console, "log");
     vi.spyOn(console, "error");
+    clearRateLimits();
+    (headers as unknown as ReturnType<typeof vi.fn>).mockResolvedValue({
+      get: vi.fn((header: string) => {
+        if (header === "x-forwarded-for") return "127.0.0.1";
+        return null;
+      }),
+    });
   });
 
   afterEach(() => {
@@ -27,7 +35,7 @@ describe("submitContactFormAction", () => {
 
     await submitContactFormAction(null, formData);
 
-    const logCalls = (console.log as any).mock.calls;
+    const logCalls = (console.log as unknown as { mock: { calls: unknown[] } }).mock.calls;
     const logOutput = JSON.stringify(logCalls);
 
     // Assert that PII fields are not present in console output
@@ -45,8 +53,8 @@ describe("submitContactFormAction", () => {
 
     await submitContactFormAction(null, formData);
 
-    const logCalls = (console.log as any).mock.calls;
-    const errorCalls = (console.error as any).mock.calls;
+    const logCalls = (console.log as unknown as { mock: { calls: unknown[] } }).mock.calls;
+    const errorCalls = (console.error as unknown as { mock: { calls: unknown[] } }).mock.calls;
     const allCalls = [...logCalls, ...errorCalls];
     
     // If any logging occurred, verify it doesn't contain PII
@@ -67,7 +75,7 @@ describe("submitContactFormAction", () => {
 
     await submitContactFormAction(null, formData);
 
-    const logCalls = (console.log as any).mock.calls;
+    const logCalls = (console.log as unknown as { mock: { calls: unknown[] } }).mock.calls;
     const logOutput = JSON.stringify(logCalls);
 
     // Even on errors, PII should not be logged
