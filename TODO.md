@@ -1285,7 +1285,7 @@ The portfolio route `/[locale]/portfolio/[slug]` fails during build with error: 
 
 ## Task T011: Type the CMS Boundary with Zod Validation
 
-**Status:** `[ ]` PENDING
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -1336,14 +1336,14 @@ Read `c:\Users\Trevor\Documents\firm\app\lib\cms-client.ts` and `c:\Users\Trevor
 
 ### Subtasks
 
-#### T011.1 [AGENT] Define Zod schemas for CMS types
+#### T011.1 [AGENT] Define Zod schemas for CMS types ✅
 
 - **Targeted file path:** `c:\Users\Trevor\Documents\firm\app\lib\content-types.ts`
 - **Description:** Add Zod schemas that mirror the existing TypeScript interfaces.
 - **Commands:**
   - `npx tsc --noEmit`
 
-#### T011.2 [AGENT] Apply schemas in cms-client
+#### T011.2 [AGENT] Apply schemas in cms-client ✅
 
 - **Targeted file path:** `c:\Users\Trevor\Documents\firm\app\lib\cms-client.ts`
 - **Description:** Replace `unknown` and `unknown[]` return types with typed arrays/objects and parse Sanity results.
@@ -1351,12 +1351,48 @@ Read `c:\Users\Trevor\Documents\firm\app\lib\cms-client.ts` and `c:\Users\Trevor
 - **Commands:**
   - `npm run test:run -- app/__tests__/lib/cms-client.test.ts` (create if missing)
 
-#### T011.3 [AGENT] Update error handling
+#### T011.3 [AGENT] Update error handling ✅
 
 - **Targeted file path:** `c:\Users\Trevor\Documents\firm\app\lib\cms-client.ts`
 - **Description:** Ensure `handleCMSError` is invoked when Zod parsing fails.
 - **Commands:**
   - `npm run test:run -- app/__tests__/lib/cms-client.test.ts`
+
+### Implementation Notes
+
+**Status:** Completed successfully. Implemented Zod runtime validation for all CMS boundary functions.
+
+**Changes Made:**
+- Added Zod v4 schemas to `app/lib/content-types.ts`:
+  - `SanityBlogAuthorSchema` - Blog author validation
+  - `SanityBlogPostSchema` - Full blog post validation
+  - `SanityBlogPostSummarySchema` - Blog post summary validation
+  - `SanityCaseStudyResultSchema` - Case study result validation
+  - `SanityCaseStudyTestimonialSchema` - Case study testimonial validation
+  - `SanityCaseStudySchema` - Full case study validation
+  - `SanityCaseStudySummarySchema` - Case study summary validation
+  - `SanityPageSchema` - Page content validation
+  - `SanityServiceSchema` - Service validation
+- Updated `app/lib/cms-client.ts` to import and use Zod schemas
+- Replaced all `unknown` and `unknown[]` return types with inferred types from Zod schemas
+- Added try-catch blocks to all CMS fetch functions to parse data with Zod
+- Integrated `handleCMSError` for Zod parse failures
+- Used namespace import (`import * as z from 'zod'`) per eslint-plugin-zod rules
+- Added `.trim()` to all string schemas per eslint-plugin-zod best practices
+- Fixed `z.record()` signature for Zod v4 (requires key and value schemas)
+
+**Benefits:**
+- Runtime type safety at CMS boundary prevents data corruption
+- Clear error messages when Sanity payloads don't match expected shapes
+- Deep module pattern: `unknown` never leaks past `cms-client.ts`
+- Follows Zod v4 best practices with proper string trimming
+- Local data modules (`blog-data.ts`, `portfolio-data.ts`) remain unaffected
+
+**Verification:**
+- Type checking passes with no errors
+- Linting passes with no errors (all Zod rules satisfied)
+- All 59 tests pass
+- CMS functions now return properly typed data instead of `unknown`
 
 ---
 

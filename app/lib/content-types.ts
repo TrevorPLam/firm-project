@@ -2,6 +2,8 @@
 // DDD: Content types are bounded contexts; defined once in domain module
 // Deep module: exports typed interfaces, internal logic is private
 
+import * as z from 'zod';
+
 // ============================================
 // Blog Content Types
 // ============================================
@@ -148,6 +150,141 @@ export interface SanityService {
   category: string;
   publishedAt?: string;
 }
+
+// ============================================
+// Zod Schemas for Runtime Validation
+// ============================================
+
+export const SanityBlogAuthorSchema = z.object({
+  _type: z.literal('blogAuthor'),
+  name: z.string().trim(),
+  role: z.string().trim(),
+  image: z.object({
+    asset: z.object({
+      _ref: z.string().trim(),
+      _type: z.literal('reference'),
+    }),
+  }).optional(),
+});
+
+export const SanityBlogPostSchema = z.object({
+  _type: z.literal('blogPost'),
+  _id: z.string().trim(),
+  _createdAt: z.string().trim(),
+  _updatedAt: z.string().trim(),
+  title: z.string().trim(),
+  slug: z.object({
+    current: z.string().trim(),
+    _type: z.literal('slug'),
+  }),
+  excerpt: z.string().trim(),
+  category: z.string().trim(),
+  date: z.string().trim(),
+  readTime: z.string().trim(),
+  author: SanityBlogAuthorSchema,
+  content: z.record(z.string(), z.unknown()), // Portable Text
+  tags: z.array(z.string().trim()),
+  publishedAt: z.string().trim().optional(),
+});
+
+export const SanityBlogPostSummarySchema = z.object({
+  _id: z.string().trim(),
+  title: z.string().trim(),
+  slug: z.object({
+    current: z.string().trim(),
+  }),
+  excerpt: z.string().trim(),
+  category: z.string().trim(),
+  date: z.string().trim(),
+  readTime: z.string().trim(),
+  publishedAt: z.string().trim().optional(),
+});
+
+export const SanityCaseStudyResultSchema = z.object({
+  metric: z.string().trim(),
+  label: z.string().trim(),
+});
+
+export const SanityCaseStudyTestimonialSchema = z.object({
+  quote: z.string().trim(),
+  author: z.string().trim(),
+  role: z.string().trim(),
+});
+
+export const SanityCaseStudySchema = z.object({
+  _type: z.literal('caseStudy'),
+  _id: z.string().trim(),
+  _createdAt: z.string().trim(),
+  _updatedAt: z.string().trim(),
+  title: z.string().trim(),
+  slug: z.object({
+    current: z.string().trim(),
+    _type: z.literal('slug'),
+  }),
+  category: z.string().trim(),
+  client: z.string().trim(),
+  clientLogo: z.object({
+    asset: z.object({
+      _ref: z.string().trim(),
+      _type: z.literal('reference'),
+    }),
+  }).optional(),
+  description: z.string().trim(),
+  overview: z.string().trim(),
+  challenge: z.string().trim(),
+  solution: z.string().trim(),
+  results: z.array(SanityCaseStudyResultSchema),
+  testimonial: SanityCaseStudyTestimonialSchema,
+  tags: z.array(z.string().trim()),
+  timeline: z.string().trim(),
+  technologies: z.array(z.string().trim()),
+  publishedAt: z.string().trim().optional(),
+});
+
+export const SanityCaseStudySummarySchema = z.object({
+  _id: z.string().trim(),
+  title: z.string().trim(),
+  slug: z.object({
+    current: z.string().trim(),
+  }),
+  category: z.string().trim(),
+  client: z.string().trim(),
+  description: z.string().trim(),
+  results: z.array(SanityCaseStudyResultSchema),
+  tags: z.array(z.string().trim()),
+});
+
+export const SanityPageSchema = z.object({
+  _type: z.literal('page'),
+  _id: z.string().trim(),
+  _createdAt: z.string().trim(),
+  _updatedAt: z.string().trim(),
+  title: z.string().trim(),
+  slug: z.object({
+    current: z.string().trim(),
+    _type: z.literal('slug'),
+  }),
+  content: z.record(z.string(), z.unknown()), // Portable Text
+  seoTitle: z.string().trim().optional(),
+  seoDescription: z.string().trim().optional(),
+  publishedAt: z.string().trim().optional(),
+});
+
+export const SanityServiceSchema = z.object({
+  _type: z.literal('service'),
+  _id: z.string().trim(),
+  _createdAt: z.string().trim(),
+  _updatedAt: z.string().trim(),
+  name: z.string().trim(),
+  slug: z.object({
+    current: z.string().trim(),
+    _type: z.literal('slug'),
+  }),
+  description: z.string().trim(),
+  benefits: z.array(z.string().trim()),
+  category: z.string().trim(),
+  publishedAt: z.string().trim().optional(),
+});
 
 // ============================================
 // Type Guards

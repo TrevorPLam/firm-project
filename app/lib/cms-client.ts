@@ -4,6 +4,14 @@
 
 import { createClient } from 'next-sanity';
 import type { SanityClient } from 'next-sanity';
+import {
+  SanityBlogPostSchema,
+  SanityBlogPostSummarySchema,
+  SanityCaseStudySchema,
+  SanityCaseStudySummarySchema,
+  SanityPageSchema,
+  SanityServiceSchema,
+} from './content-types';
 
 // ============================================
 // Client Configuration
@@ -52,7 +60,7 @@ export function getClient(preview?: boolean): SanityClient {
 /**
  * Fetch all blog posts (summary view)
  */
-export async function getAllBlogPosts(preview?: boolean): Promise<unknown[]> {
+export async function getAllBlogPosts(preview?: boolean) {
   const query = `
     *[_type == "blogPost" && defined(slug.current)] | order(publishedAt desc) {
       _id,
@@ -65,13 +73,18 @@ export async function getAllBlogPosts(preview?: boolean): Promise<unknown[]> {
       publishedAt
     }
   `;
-  return getClient(preview).fetch(query);
+  const data = await getClient(preview).fetch(query);
+  try {
+    return SanityBlogPostSummarySchema.array().parse(data);
+  } catch (error) {
+    handleCMSError(error, 'getAllBlogPosts');
+  }
 }
 
 /**
  * Fetch a single blog post by slug
  */
-export async function getBlogPostBySlug(slug: string, preview?: boolean): Promise<unknown> {
+export async function getBlogPostBySlug(slug: string, preview?: boolean) {
   const query = `
     *[_type == "blogPost" && slug.current == $slug][0] {
       _id,
@@ -89,7 +102,12 @@ export async function getBlogPostBySlug(slug: string, preview?: boolean): Promis
       publishedAt
     }
   `;
-  return getClient(preview).fetch(query, { slug });
+  const data = await getClient(preview).fetch(query, { slug });
+  try {
+    return SanityBlogPostSchema.parse(data);
+  } catch (error) {
+    handleCMSError(error, 'getBlogPostBySlug');
+  }
 }
 
 /**
@@ -105,7 +123,7 @@ export async function getAllBlogPostSlugs(): Promise<string[]> {
 /**
  * Fetch all case studies (summary view)
  */
-export async function getAllCaseStudies(preview?: boolean): Promise<unknown[]> {
+export async function getAllCaseStudies(preview?: boolean) {
   const query = `
     *[_type == "caseStudy" && defined(slug.current)] | order(publishedAt desc) {
       _id,
@@ -118,13 +136,18 @@ export async function getAllCaseStudies(preview?: boolean): Promise<unknown[]> {
       tags
     }
   `;
-  return getClient(preview).fetch(query);
+  const data = await getClient(preview).fetch(query);
+  try {
+    return SanityCaseStudySummarySchema.array().parse(data);
+  } catch (error) {
+    handleCMSError(error, 'getAllCaseStudies');
+  }
 }
 
 /**
  * Fetch a single case study by slug
  */
-export async function getCaseStudyBySlug(slug: string, preview?: boolean): Promise<unknown> {
+export async function getCaseStudyBySlug(slug: string, preview?: boolean) {
   const query = `
     *[_type == "caseStudy" && slug.current == $slug][0] {
       _id,
@@ -147,7 +170,12 @@ export async function getCaseStudyBySlug(slug: string, preview?: boolean): Promi
       publishedAt
     }
   `;
-  return getClient(preview).fetch(query, { slug });
+  const data = await getClient(preview).fetch(query, { slug });
+  try {
+    return SanityCaseStudySchema.parse(data);
+  } catch (error) {
+    handleCMSError(error, 'getCaseStudyBySlug');
+  }
 }
 
 /**
@@ -163,7 +191,7 @@ export async function getAllCaseStudySlugs(): Promise<string[]> {
 /**
  * Fetch a page by slug
  */
-export async function getPageBySlug(slug: string, preview?: boolean): Promise<unknown> {
+export async function getPageBySlug(slug: string, preview?: boolean) {
   const query = `
     *[_type == "page" && slug.current == $slug][0] {
       _id,
@@ -177,13 +205,18 @@ export async function getPageBySlug(slug: string, preview?: boolean): Promise<un
       publishedAt
     }
   `;
-  return getClient(preview).fetch(query, { slug });
+  const data = await getClient(preview).fetch(query, { slug });
+  try {
+    return SanityPageSchema.parse(data);
+  } catch (error) {
+    handleCMSError(error, 'getPageBySlug');
+  }
 }
 
 /**
  * Fetch all services
  */
-export async function getAllServices(preview?: boolean): Promise<unknown[]> {
+export async function getAllServices(preview?: boolean) {
   const query = `
     *[_type == "service" && defined(slug.current)] | order(publishedAt desc) {
       _id,
@@ -195,13 +228,18 @@ export async function getAllServices(preview?: boolean): Promise<unknown[]> {
       publishedAt
     }
   `;
-  return getClient(preview).fetch(query);
+  const data = await getClient(preview).fetch(query);
+  try {
+    return SanityServiceSchema.array().parse(data);
+  } catch (error) {
+    handleCMSError(error, 'getAllServices');
+  }
 }
 
 /**
  * Fetch a service by slug
  */
-export async function getServiceBySlug(slug: string, preview?: boolean): Promise<unknown> {
+export async function getServiceBySlug(slug: string, preview?: boolean) {
   const query = `
     *[_type == "service" && slug.current == $slug][0] {
       _id,
@@ -215,7 +253,12 @@ export async function getServiceBySlug(slug: string, preview?: boolean): Promise
       publishedAt
     }
   `;
-  return getClient(preview).fetch(query, { slug });
+  const data = await getClient(preview).fetch(query, { slug });
+  try {
+    return SanityServiceSchema.parse(data);
+  } catch (error) {
+    handleCMSError(error, 'getServiceBySlug');
+  }
 }
 
 // ============================================
