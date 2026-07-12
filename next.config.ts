@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
     localPatterns: [],
   },
   // Next.js 16: opt-in component/function-level caching with "use cache".
-  // Temporarily disabled due to params access issues with Cache Components
+  // Temporarily disabled due to about route params access issue (separate from T027)
   cacheComponents: false,
   // Stable in Next.js 16; auto-memoizes components and reduces manual memo.
   // Environment-aware toggle: set ENABLE_REACT_COMPILER=true to enable.
