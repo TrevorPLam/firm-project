@@ -85,7 +85,7 @@ Read `c:\Users\Trevor\Documents\firm\app\actions\contact.ts` and `c:\Users\Trevo
 
 ## Task T020: Re-enable generateStaticParams for Blog Slug Route
 
-**Status:** `[ ]` PENDING
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -132,7 +132,7 @@ Read `c:\Users\Trevor\Documents\firm\app\[locale\]\blog\[slug\]\page.tsx` and `c
 
 ### Subtasks
 
-#### T020.1 [AGENT] Uncomment generateStaticParams
+#### T020.1 [AGENT] Uncomment generateStaticParams ✅
 
 - **Targeted file path:** `c:\Users\Trevor\Documents\firm\app\[locale\]\blog\[slug\]\page.tsx`
 - **Description:** Restore `generateStaticParams` using `getAllSlugs()`.
@@ -141,13 +141,22 @@ Read `c:\Users\Trevor\Documents\firm\app\[locale\]\blog\[slug\]\page.tsx` and `c
   - `npm run build -- --webpack`
   - `ls .next/server/app/en/blog/` (or `dir` on Windows)
 
-#### T020.2 [AGENT] Investigate Windows worker issue fallback
+#### T020.2 [AGENT] Investigate Windows worker issue fallback ✅
 
 - **Targeted file path:** `c:\Users\Trevor\Documents\firm\package.json`
 - **Description:** If the build still fails with `--webpack`, try without the flag or with `NODE_OPTIONS=--max-old-space-size=...`. Document the workaround.
 - **Commands:**
   - `npm run build` (Turbopack)
   - `npm run build -- --webpack`
+
+### Implementation Notes
+
+- Successfully uncommented `generateStaticParams` in `app/[locale]/blog/[slug]/page.tsx`
+- Added `getAllSlugs` import from `blog-data.ts`
+- Build succeeds with `--webpack` flag (already configured in package.json)
+- Windows build worker issue resolved by using webpack instead of Turbopack
+- Routes remain marked as dynamic (ƒ) due to `headers()` usage in locale layout via `getNonce()`, which forces dynamic rendering - this is a broader architectural concern beyond this task's scope
+- The primary goal of re-enabling `generateStaticParams` and resolving the Windows build issue is complete
 
 ---
 

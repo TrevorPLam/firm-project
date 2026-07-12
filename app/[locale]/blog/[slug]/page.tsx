@@ -6,19 +6,18 @@ import Image from "next/image";
 import { SanitizedContent } from "../../../components/sanitized-content";
 import { NewsletterForm } from "../../../components/newsletter-form";
 import { SocialShare } from "../../../components/social-share";
-import { getPostBySlug, getAllPosts } from "../../../lib/blog-data";
+import { getPostBySlug, getAllPosts, getAllSlugs } from "../../../lib/blog-data";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../../lib/schema";
 import { absoluteUrl } from "../../../lib/site-config";
 import { setRequestLocale } from 'next-intl/server';
 import { routing } from '../../../../i18n/routing';
 import { hasLocale } from 'next-intl';
 
-// Temporarily disabled due to Windows build worker issue
-// export async function generateStaticParams() {
-//   return getAllSlugs().map((slug) => ({
-//     slug,
-//   }));
-// }
+export async function generateStaticParams() {
+  return getAllSlugs().map((slug) => ({
+    slug,
+  }));
+}
 
 export async function generateMetadata({
   params,
