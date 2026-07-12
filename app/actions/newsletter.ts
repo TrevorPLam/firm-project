@@ -80,17 +80,10 @@ async function runNewsletterSubscription(formData: FormData): Promise<FormResult
     const audienceId = process.env.RESEND_AUDIENCE_ID;
 
     if (!resendApiKey || !audienceId) {
-      // Graceful fallback when API keys are not configured
-      console.warn("[newsletter] Resend API key or audience ID not configured", {
-        success: true,
-        timestamp: new Date().toISOString(),
-      });
-
-      revalidatePath("/blog");
-
+      console.warn("[newsletter] Resend API key or audience ID not configured, email service unavailable");
       return {
-        success: true,
-        message: "Thanks for subscribing! Check your inbox for confirmation.",
+        success: false,
+        message: "Email service is not configured. Please try again later.",
       };
     }
 

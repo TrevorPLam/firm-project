@@ -88,12 +88,10 @@ async function runContactFormSubmission(formData: FormData): Promise<FormResult>
   try {
     // Check if email service is configured
     if (!process.env.RESEND_API_KEY) {
-      console.warn("[contact] RESEND_API_KEY not configured, skipping email send");
-      // Revalidate the contact page to show any updated UI
-      revalidatePath("/contact");
+      console.warn("[contact] RESEND_API_KEY not configured, email service unavailable");
       return {
-        success: true,
-        message: "Thank you for your message! We'll get back to you soon.",
+        success: false,
+        message: "Email service is not configured. Please contact us directly.",
       };
     }
 

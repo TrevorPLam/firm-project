@@ -97,7 +97,7 @@ describe("submitContactFormAction", () => {
     expect(logOutput).not.toContain("invalid-email");
   });
 
-  it("should return success for valid submission", async () => {
+  it("should return success: false when email service is not configured", async () => {
     clearRateLimits(); // Clear rate limits before this test
     const formData = new FormData();
     formData.append("name", "John Doe");
@@ -109,8 +109,8 @@ describe("submitContactFormAction", () => {
 
     const result = await submitContactFormAction(null, formData);
 
-    expect(result.success).toBe(true);
-    expect(result.message).toContain("Thank you");
+    expect(result.success).toBe(false);
+    expect(result.message).toContain("Email service is not configured");
     expect(result.errors).toBeUndefined();
   });
 

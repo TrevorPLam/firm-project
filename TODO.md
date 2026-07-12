@@ -19,7 +19,7 @@ This document drives the repository from its current state to production-ready u
 
 ## Task T019: Fix Server Actions Returning Success When Email Is Not Sent
 
-**Status:** `[ ]` PENDING
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -66,7 +66,7 @@ Read `c:\Users\Trevor\Documents\firm\app\actions\contact.ts` and `c:\Users\Trevo
 
 ### Subtasks
 
-#### T019.1 [AGENT] Update contact action failure semantics
+#### T019.1 [AGENT] Update contact action failure semantics ✅
 
 - **Targeted file path:** `c:\Users\Trevor\Documents\firm\app\actions\contact.ts`
 - **Description:** When `RESEND_API_KEY` is missing, return `success: false` with a message like "Email service is not configured." Update tests accordingly.
@@ -74,7 +74,7 @@ Read `c:\Users\Trevor\Documents\firm\app\actions\contact.ts` and `c:\Users\Trevo
 - **Commands:**
   - `npm run test:run -- app/__tests__/actions/contact.test.ts`
 
-#### T019.2 [AGENT] Update newsletter action failure semantics
+#### T019.2 [AGENT] Update newsletter action failure semantics ✅
 
 - **Targeted file path:** `c:\Users\Trevor\Documents\firm\app\actions\newsletter.ts`
 - **Description:** Apply the same change for missing `RESEND_API_KEY` or `RESEND_AUDIENCE_ID`.
