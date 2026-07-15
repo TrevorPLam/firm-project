@@ -657,7 +657,7 @@ Read `app/actions/contact.ts` email HTML construction. Confirm user-controlled f
 
 ## Task T019: Gate Indexing on Real Production Environment
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -707,19 +707,41 @@ Read `app/robots.ts`. Confirm `NODE_ENV === 'production'` allows full indexing. 
 
 ### Subtasks
 
-#### T019.1 [AGENT] Extract and TDD robots gate helper
+#### T019.1 [AGENT] Extract and TDD robots gate helper ✅
 
 - **Targeted file path:** `app/lib/robots-policy.ts`, `app/__tests__/lib/robots-policy.test.ts`
 - **Description:** Write tests for production vs preview vs explicit allow/deny. Implement helper. Keep AI crawler rules moved carefully without drive-by policy changes.
 - **Commands:**
   - `npm run test:run -- app/__tests__/lib/robots-policy.test.ts`
 
-#### T019.2 [AGENT] Wire robots.ts and document env
+#### T019.2 [AGENT] Wire robots.ts and document env ✅
 
 - **Targeted file path:** `app/robots.ts`, `.env.example`, `ENV_SETUP.md`, `docs/seo.md`
 - **Description:** Use helper; document vars. Typecheck.
 - **Commands:**
   - `npm run typecheck`
+
+### Implementation Notes
+
+**Changes Made:**
+1. Created `app/lib/robots-policy.ts` with pure `shouldAllowIndexing()` function
+2. Added 8 comprehensive unit tests in `app/__tests__/lib/robots-policy.test.ts`
+3. Updated `app/robots.ts` to use the new helper instead of direct NODE_ENV check
+4. Documented `ALLOW_INDEXING` environment variable in `.env.example`
+5. Updated `ENV_SETUP.md` with indexing control documentation
+
+**Rationale:**
+- Pure function deep module pattern for environment detection
+- On Vercel: Only allows indexing when `VERCEL_ENV=production` (not preview)
+- On other platforms: Falls back to `NODE_ENV=production`
+- Explicit `ALLOW_INDEXING=true/false` flags override environment detection
+- Fail-closed default: denies indexing when environment is ambiguous
+- Prevents Vercel preview deployments from being indexed (common issue with NODE_ENV-only checks)
+
+**No Issues Discovered:**
+- All 8 tests passing
+- No typecheck or lint errors
+- No changes to AI crawler policy content (only the production gate)
 
 ---
 
