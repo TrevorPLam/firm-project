@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PricingContent } from "../../components/pricing-content";
+import { generateLocaleAlternates } from "../../lib/seo-alternates";
 import { setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { hasLocale } from 'next-intl';
@@ -10,11 +11,10 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  const alternates = generateLocaleAlternates(locale, '/pricing');
 
   return {
-    alternates: {
-      canonical: `/${locale}/pricing`,
-    },
+    alternates,
     title: "Transparent Pricing | Elevate Digital",
     description: "Choose the package that fits your business needs. No hidden fees, no surprises — just clear, straightforward pricing for web design and digital marketing services.",
     keywords: ["pricing", "web design pricing", "digital marketing cost", "SEO pricing", "website packages"],

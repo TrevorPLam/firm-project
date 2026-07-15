@@ -2,30 +2,38 @@ import type { Metadata } from "next";
 import { Link } from '@/i18n/navigation';
 import { ScrollReveal } from "../../components/scroll-reveal";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
+import { generateLocaleAlternates } from "../../lib/seo-alternates";
 import { setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { hasLocale } from 'next-intl';
 
-export const metadata: Metadata = {
-  alternates: {
-    canonical: "/about",
-  },
-  title: "About Us",
-  description:
-    "Learn about Elevate Digital's mission, values, and team. We're passionate about helping businesses succeed in the digital landscape.",
-  keywords: [
-    "about us",
-    "our team",
-    "company story",
-    "digital agency",
-    "our mission",
-  ],
-  openGraph: {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const alternates = generateLocaleAlternates(locale, '/about');
+
+  return {
+    alternates,
     title: "About Us",
-    description: "Learn about Elevate Digital's mission, values, and team.",
-    type: "website",
-  },
-};
+    description:
+      "Learn about Elevate Digital's mission, values, and team. We're passionate about helping businesses succeed in the digital landscape.",
+    keywords: [
+      "about us",
+      "our team",
+      "company story",
+      "digital agency",
+      "our mission",
+    ],
+    openGraph: {
+      title: "About Us",
+      description: "Learn about Elevate Digital's mission, values, and team.",
+      type: "website",
+    },
+  };
+}
 
 export default async function AboutPage({
   params,

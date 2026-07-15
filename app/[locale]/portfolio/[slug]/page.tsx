@@ -6,6 +6,7 @@ import { SocialShare } from "../../../components/social-share";
 import { notFound } from "next/navigation";
 import { createLocalPortfolioAdapter } from "../../../lib/content/local-portfolio-adapter";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../../lib/schema";
+import { generateLocaleAlternates } from "../../../lib/seo-alternates";
 import { setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { hasLocale } from 'next-intl';
@@ -37,10 +38,10 @@ export async function generateMetadata({
     };
   }
 
+  const alternates = generateLocaleAlternates(locale, `/portfolio/${slug}`);
+
   return {
-    alternates: {
-      canonical: `/${locale}/portfolio/${slug}`,
-    },
+    alternates,
     title: study.title,
     description: study.description,
     keywords: [...study.tags, "portfolio", "case study", study.category],

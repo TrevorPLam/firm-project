@@ -2,30 +2,38 @@ import type { Metadata } from "next";
 import { Link } from '@/i18n/navigation';
 import { ScrollReveal } from "../../components/scroll-reveal";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
+import { generateLocaleAlternates } from "../../lib/seo-alternates";
 import { setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { hasLocale } from 'next-intl';
 
-export const metadata: Metadata = {
-  alternates: {
-    canonical: "/faq",
-  },
-  title: "FAQ",
-  description:
-    "Find answers to common questions about our web design, SEO, and analytics services. Get the information you need to make informed decisions.",
-  keywords: [
-    "FAQ",
-    "frequently asked questions",
-    "web design questions",
-    "SEO questions",
-    "analytics questions",
-  ],
-  openGraph: {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const alternates = generateLocaleAlternates(locale, '/faq');
+
+  return {
+    alternates,
     title: "FAQ",
-    description: "Find answers to common questions about our services.",
-    type: "website",
-  },
-};
+    description:
+      "Find answers to common questions about our web design, SEO, and analytics services. Get the information you need to make informed decisions.",
+    keywords: [
+      "FAQ",
+      "frequently asked questions",
+      "web design questions",
+      "SEO questions",
+      "analytics questions",
+    ],
+    openGraph: {
+      title: "FAQ",
+      description: "Find answers to common questions about our services.",
+      type: "website",
+    },
+  };
+}
 
 const faqCategories = [
   {

@@ -3,31 +3,39 @@ import { Link } from '@/i18n/navigation';
 import { ScrollReveal } from "../../components/scroll-reveal";
 import { createLocalPortfolioAdapter } from "../../lib/content/local-portfolio-adapter";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
+import { generateLocaleAlternates } from "../../lib/seo-alternates";
 import { setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { hasLocale } from 'next-intl';
 
-export const metadata: Metadata = {
-  alternates: {
-    canonical: "/portfolio",
-  },
-  title: "Portfolio",
-  description:
-    "Explore our portfolio of successful projects. See how we've helped businesses transform their digital presence with web design, SEO, and analytics.",
-  keywords: [
-    "portfolio",
-    "case studies",
-    "our work",
-    "web design projects",
-    "SEO success stories",
-  ],
-  openGraph: {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const alternates = generateLocaleAlternates(locale, '/portfolio');
+
+  return {
+    alternates,
     title: "Portfolio",
     description:
-      "Explore our portfolio of successful projects and case studies.",
-    type: "website",
-  },
-};
+      "Explore our portfolio of successful projects. See how we've helped businesses transform their digital presence with web design, SEO, and analytics.",
+    keywords: [
+      "portfolio",
+      "case studies",
+      "our work",
+      "web design projects",
+      "SEO success stories",
+    ],
+    openGraph: {
+      title: "Portfolio",
+      description:
+        "Explore our portfolio of successful projects and case studies.",
+      type: "website",
+    },
+  };
+}
 
 export default async function PortfolioPage({
   params,

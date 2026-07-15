@@ -2,31 +2,39 @@ import type { Metadata } from "next";
 import { Link } from '@/i18n/navigation';
 import { ScrollReveal } from "../../components/scroll-reveal";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
+import { generateLocaleAlternates } from "../../lib/seo-alternates";
 import { setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { hasLocale } from 'next-intl';
 
-export const metadata: Metadata = {
-  alternates: {
-    canonical: "/services",
-  },
-  title: "Services",
-  description:
-    "Comprehensive digital services including web design, SEO optimization, and analytics. Transform your digital presence with data-driven strategies.",
-  keywords: [
-    "web design services",
-    "SEO services",
-    "analytics services",
-    "digital marketing",
-    "website development",
-  ],
-  openGraph: {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const alternates = generateLocaleAlternates(locale, '/services');
+
+  return {
+    alternates,
     title: "Services",
     description:
-      "Comprehensive digital services including web design, SEO optimization, and analytics.",
-    type: "website",
-  },
-};
+      "Comprehensive digital services including web design, SEO optimization, and analytics. Transform your digital presence with data-driven strategies.",
+    keywords: [
+      "web design services",
+      "SEO services",
+      "analytics services",
+      "digital marketing",
+      "website development",
+    ],
+    openGraph: {
+      title: "Services",
+      description:
+        "Comprehensive digital services including web design, SEO optimization, and analytics.",
+      type: "website",
+    },
+  };
+}
 
 export default async function ServicesPage({
   params,

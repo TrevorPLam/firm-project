@@ -1,21 +1,44 @@
 import type { Metadata } from "next";
 import { ScrollReveal } from "../../../components/scroll-reveal";
+import { generateLocaleAlternates } from "../../../lib/seo-alternates";
+import { setRequestLocale } from 'next-intl/server';
+import { routing } from '@/i18n/routing';
+import { hasLocale } from 'next-intl';
 
-export const metadata: Metadata = {
-  alternates: {
-    canonical: "/legal/privacy",
-  },
-  title: "Privacy Policy",
-  description:
-    "Learn about Elevate Digital's privacy policy and how we protect your personal information.",
-  openGraph: {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const alternates = generateLocaleAlternates(locale, '/legal/privacy');
+
+  return {
+    alternates,
     title: "Privacy Policy",
-    description: "Learn about Elevate Digital's privacy policy.",
-    type: "website",
-  },
-};
+    description:
+      "Learn about Elevate Digital's privacy policy and how we protect your personal information.",
+    openGraph: {
+      title: "Privacy Policy",
+      description: "Learn about Elevate Digital's privacy policy.",
+      type: "website",
+    },
+  };
+}
 
-export default async function PrivacyPolicyPage() {
+export default async function PrivacyPolicyPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+
+  // Enable static rendering
+  if (!hasLocale(routing.locales, locale)) {
+    return null;
+  }
+  setRequestLocale(locale);
+
   return (
     <div className="flex flex-col">
       <section className="px-6 pt-32 pb-20">

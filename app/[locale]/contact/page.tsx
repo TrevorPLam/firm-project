@@ -2,30 +2,38 @@ import type { Metadata } from "next";
 import { ScrollReveal } from "../../components/scroll-reveal";
 import { ContactForm } from "../../components/contact-form";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
+import { generateLocaleAlternates } from "../../lib/seo-alternates";
 import { setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { hasLocale } from 'next-intl';
 
-export const metadata: Metadata = {
-  alternates: {
-    canonical: "/contact",
-  },
-  title: "Contact",
-  description:
-    "Get in touch with Elevate Digital. We'd love to discuss your project and how we can help transform your digital presence.",
-  keywords: [
-    "contact",
-    "get in touch",
-    "start project",
-    "consultation",
-    "digital marketing services",
-  ],
-  openGraph: {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const alternates = generateLocaleAlternates(locale, '/contact');
+
+  return {
+    alternates,
     title: "Contact",
-    description: "Get in touch with Elevate Digital to discuss your project.",
-    type: "website",
-  },
-};
+    description:
+      "Get in touch with Elevate Digital. We'd love to discuss your project and how we can help transform your digital presence.",
+    keywords: [
+      "contact",
+      "get in touch",
+      "start project",
+      "consultation",
+      "digital marketing services",
+    ],
+    openGraph: {
+      title: "Contact",
+      description: "Get in touch with Elevate Digital to discuss your project.",
+      type: "website",
+    },
+  };
+}
 
 export default async function ContactPage({
   params,

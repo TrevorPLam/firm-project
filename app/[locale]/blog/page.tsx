@@ -4,31 +4,39 @@ import { Link } from '@/i18n/navigation';
 import { createLocalBlogAdapter } from "../../lib/content/local-blog-adapter";
 import { NewsletterForm } from "../../components/newsletter-form";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
+import { generateLocaleAlternates } from "../../lib/seo-alternates";
 import { setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { hasLocale } from 'next-intl';
 
-export const metadata: Metadata = {
-  alternates: {
-    canonical: "/blog",
-  },
-  title: "Blog",
-  description:
-    "Expert insights on web design, SEO, analytics, and digital marketing strategies. Stay updated with the latest trends and best practices.",
-  keywords: [
-    "digital marketing blog",
-    "SEO tips",
-    "web design insights",
-    "analytics guides",
-    "marketing strategies",
-  ],
-  openGraph: {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const alternates = generateLocaleAlternates(locale, '/blog');
+
+  return {
+    alternates,
     title: "Blog",
     description:
-      "Expert insights on web design, SEO, analytics, and digital marketing strategies.",
-    type: "website",
-  },
-};
+      "Expert insights on web design, SEO, analytics, and digital marketing strategies. Stay updated with the latest trends and best practices.",
+    keywords: [
+      "digital marketing blog",
+      "SEO tips",
+      "web design insights",
+      "analytics guides",
+      "marketing strategies",
+    ],
+    openGraph: {
+      title: "Blog",
+      description:
+        "Expert insights on web design, SEO, analytics, and digital marketing strategies.",
+      type: "website",
+    },
+  };
+}
 
 export default async function BlogPage({
   params,

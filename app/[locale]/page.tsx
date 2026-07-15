@@ -3,15 +3,23 @@ import { ScrollReveal } from "../components/scroll-reveal";
 import { ContactForm } from "../components/contact-form";
 import type { Metadata } from "next";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../lib/schema";
+import { generateLocaleAlternates } from "../lib/seo-alternates";
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { hasLocale } from 'next-intl';
 
-export const metadata: Metadata = {
-  alternates: {
-    canonical: "/",
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const alternates = generateLocaleAlternates(locale, '');
+
+  return {
+    alternates,
+  };
+}
 
 export default async function Home({
   params,
