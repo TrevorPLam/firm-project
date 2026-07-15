@@ -383,7 +383,7 @@ Always decorate request headers before middleware composition. The correct order
 
 ## Task T016: Move zod to Production Dependencies
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -434,20 +434,38 @@ Confirm `zod` is listed under `devDependencies` in `package.json` while producti
 
 ### Subtasks
 
-#### T016.1 [AGENT] Confirm runtime import graph
+#### T016.1 [AGENT] Confirm runtime import graph ✅
 
 - **Targeted file path:** `package.json`
 - **Description:** Grep for `from "zod"` / `from 'zod'` under `app/` and list files. Confirm current package.json section.
 - **Commands:**
   - `Select-String -Path app -Pattern "from ['\\\"]zod['\\\"]" -Recurse -Include *.ts,*.tsx`
 
-#### T016.2 [AGENT] Move zod to dependencies and reinstall
+#### T016.2 [AGENT] Move zod to dependencies and reinstall ✅
 
 - **Targeted file path:** `package.json`, `package-lock.json`
 - **Description:** Move `zod` to `dependencies` with npm (`npm install zod` or manual move + `npm install`). Verify placement with node.
 - **Commands:**
   - `node -e "const p=require('./package.json'); console.log('deps',!!p.dependencies.zod,'dev',!!p.devDependencies?.zod)"`
   - `npm run test:run -- app/__tests__/actions/contact.test.ts`
+
+### Implementation Notes
+
+**Changes Made:**
+1. Moved `zod` from `devDependencies` to `dependencies` in `package.json`
+2. Ran `npm install` to update `package-lock.json`
+3. Verified placement: zod now in dependencies, not in devDependencies
+4. All QA checks passed: typecheck, lint, and contact action tests (11 tests passing)
+
+**Rationale:**
+- zod is imported at runtime in Server Actions (`contact.ts`, `newsletter.ts`) and CMS schemas (`content-types.ts`)
+- Production installs that prune devDependencies would break runtime validation
+- Aligns with best practice: runtime schema libraries belong in dependencies
+
+**No Issues Discovered:**
+- All tests passing
+- No typecheck or lint errors
+- No behavior change to schemas
 
 ---
 
