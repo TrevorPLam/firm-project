@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import Link from "next/link";
 import { liteClient as algoliasearch } from "algoliasearch/lite";
 import { InstantSearch, SearchBox, Hits, Highlight } from "react-instantsearch";
+import type { Hit } from "instantsearch.js";
+import type { SearchHit } from "@/lib/search-data";
+import { Link } from "@/i18n/navigation";
 
 const searchClient =
   process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID &&
@@ -15,8 +17,7 @@ const searchClient =
     : null;
 
 interface HitProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  hit: any;
+  hit: Hit<SearchHit>;
 }
 
 function Hit({ hit }: HitProps) {
