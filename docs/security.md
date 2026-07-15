@@ -45,6 +45,46 @@ The application implements the following security headers:
 - **Permissions-Policy**: Restricts browser features (camera, microphone, geolocation)
 - **Content-Security-Policy-Report-Only**: CSP in report-only mode for monitoring
 
+### Next.js Image Remote Patterns
+
+The Next.js Image component uses `remotePatterns` in `next.config.ts` to control which external domains can be optimized through `/_next/image`. This prevents Server-Side Request Forgery (SSRF) attacks by only allowing explicit, trusted hostnames.
+
+#### Current Allowlist
+
+- **cdn.sanity.io**: Sanity CMS CDN for image optimization (required for CMS-backed content)
+
+#### Security Policy
+
+- **Least Privilege**: Only explicit hostnames are allowed; no wildcards or open patterns
+- **SSRF Protection**: The empty default was intentional to prevent abuse via `/_next/image`
+- **Future Additions**: Any new CDN hostname must be added via a dedicated task with security review
+- **No Wildcards**: Patterns like `hostname: '**'` or `hostname: '*.sanity.io'` are prohibited
+
+#### Adding New Image Domains
+
+To add a new image CDN hostname:
+
+1. Create a task in TODO.md to document the change
+2. Add the specific hostname (not wildcard) to `remotePatterns` in `next.config.ts`
+3. Update this security.md section with the new hostname and rationale
+4. Include SSRF protection comments in the config
+5. Run typecheck and tests to ensure no regressions
+
+**Example for a new CDN:**
+```typescript
+remotePatterns: [
+  {
+    protocol: 'https',
+    hostname: 'cdn.sanity.io',
+  },
+  // New CDN added per TASK-XXX
+  {
+    protocol: 'https',
+    hostname: 'images.example.com',
+  },
+],
+```
+
 ### SSL/TLS Requirements
 
 For HSTS to function correctly:

@@ -6,9 +6,14 @@ const withNextIntl = createNextIntlPlugin('./app/i18n/request.ts');
 const nextConfig: NextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
-    // Remote patterns are intentionally empty. Only allow explicit, trusted
-    // hostnames (e.g. your CDN) to avoid SSRF abuse via /_next/image.
-    remotePatterns: [],
+    // Only allow explicit, trusted hostnames to avoid SSRF abuse via /_next/image.
+    // Sanity CDN is explicitly allowed for CMS image optimization.
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
+      },
+    ],
     // Block optimization of local files by default; opt-in when assets are ready.
     localPatterns: [],
   },

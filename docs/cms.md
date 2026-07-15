@@ -43,6 +43,55 @@ Two clients are configured:
 1. **Main Client** (`client`): For published content, uses CDN for performance
 2. **Preview Client** (`previewClient`): For draft content, bypasses CDN with API token
 
+## Next.js Image Configuration
+
+The Next.js Image component is configured to optimize images from Sanity's CDN. The `remotePatterns` in `next.config.ts` explicitly allow `cdn.sanity.io` for image optimization while maintaining SSRF security.
+
+### Configuration
+
+The current configuration in `next.config.ts`:
+
+```typescript
+images: {
+  formats: ['image/avif', 'image/webp'],
+  remotePatterns: [
+    {
+      protocol: 'https',
+      hostname: 'cdn.sanity.io',
+    },
+  ],
+  localPatterns: [],
+}
+```
+
+This configuration:
+- Allows Next.js to optimize images from Sanity's CDN
+- Uses AVIF and WebP formats for modern browsers
+- Maintains SSRF protection by only allowing explicit hostnames
+- Blocks local file optimization by default
+
+### Using Images with Next.js Image Component
+
+When using Sanity images with the Next.js Image component:
+
+```typescript
+import Image from 'next/image';
+import { urlFor } from '@/app/lib/cms-client';
+
+<Image
+  src={urlFor(post.mainImage).width(800).height(600).url()}
+  alt={post.mainImage.alt || ''}
+  width={800}
+  height={600}
+/>
+```
+
+The `@sanity/image-url` package provides the `urlFor` helper to build optimized image URLs with transformations.
+
+### Security Note
+
+The `remotePatterns` configuration is security-critical. Only explicit hostnames are allowed to prevent SSRF attacks. Any new image CDN must be added via a dedicated task with security review. See `docs/security.md` for the full policy.
+
 ## Setup
 
 ### 1. Create Sanity Project

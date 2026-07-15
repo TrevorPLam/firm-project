@@ -925,6 +925,7 @@ Read `.github/workflows/ci.yml`. Confirm jobs are lint, test, build with no audi
 - CI job uses npm ci, Node 22, installs chromium with --with-deps, and runs smoke tests with CI=true
 - Added E2E testing documentation to ENV_SETUP.md explaining CI vs local testing approach
 - All QA checks passed: typecheck, lint, 60 unit tests
+- Committed locally (push failed due to missing remote configuration - pre-existing issue)
 
 ### Initial Analysis & Research
 
@@ -1002,7 +1003,16 @@ Read `playwright.config.ts` and `.github/workflows/ci.yml`. E2E exists locally a
 
 ## Task T012: Define Next Image Remote Allowlist for Sanity CDN
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
+
+### Implementation Notes
+
+- Added explicit remotePattern for `cdn.sanity.io` in next.config.ts
+- Updated security.md with comprehensive Next.js Image remotePatterns security policy
+- Updated cms.md with Next.js Image configuration section documenting Sanity CDN setup
+- All QA checks passed: typecheck, lint, 11 unit tests
+- Configuration maintains SSRF protection with least-privilege hostname allowlist
+- No wildcards or open patterns used; only explicit cdn.sanity.io allowed
 
 ### Initial Analysis & Research
 
@@ -1053,21 +1063,21 @@ Read `next.config.ts` image config: `remotePatterns: []` intentionally for SSRF 
 
 ### Subtasks
 
-#### T012.1 [AGENT] Research required Sanity image hostnames
+#### T012.1 [AGENT] Research required Sanity image hostnames ✅
 
 - **Targeted file path:** `docs/cms.md`
 - **Description:** Confirm hostname(s)/pathname patterns needed for `@sanity/image-url` / Next Image. Note project-id path shapes if relevant. No secrets required.
 - **Commands:**
   - None (docs + Next config research). Optional: inspect `@sanity/image-url` usage in repo.
 
-#### T012.2 [AGENT] Implement explicit remotePatterns for Sanity CDN
+#### T012.2 [AGENT] Implement explicit remotePatterns for Sanity CDN ✅
 
 - **Targeted file path:** `next.config.ts`
 - **Description:** Add minimal `remotePatterns` for Sanity CDN HTTPS hosts. Keep comments about SSRF. Do not open general `*.sanity.io` unless required and documented.
 - **Commands:**
   - `npm run typecheck`
 
-#### T012.3 [AGENT] Update security and CMS docs
+#### T012.3 [AGENT] Update security and CMS docs ✅
 
 - **Targeted file path:** `docs/security.md`, `docs/cms.md`, `.env.example` if new toggles exist
 - **Description:** Document how to add another CDN hostname safely. State that agents must not broaden allowlists without a task.
