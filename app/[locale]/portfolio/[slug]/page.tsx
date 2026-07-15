@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Link } from '@/i18n/navigation';
 import Image from "next/image";
 import { ScrollReveal } from "../../../components/scroll-reveal";
@@ -19,6 +20,36 @@ export async function generateStaticParams() {
       slug,
     }))
   );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string; locale: string }>;
+}): Promise<Metadata> {
+  const { slug, locale } = await params;
+  const portfolioAdapter = createLocalPortfolioAdapter();
+  const study = await portfolioAdapter.getBySlug(slug);
+
+  if (!study) {
+    return {
+      title: "Case Study Not Found",
+    };
+  }
+
+  return {
+    alternates: {
+      canonical: `/${locale}/portfolio/${slug}`,
+    },
+    title: study.title,
+    description: study.description,
+    keywords: [...study.tags, "portfolio", "case study", study.category],
+    openGraph: {
+      title: study.title,
+      description: study.description,
+      type: "website",
+    },
+  };
 }
 
 export default async function CaseStudyPage({
