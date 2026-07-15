@@ -4,6 +4,8 @@
 
 This project uses **npm** as the package manager. All installation and dependency management should be done using npm commands.
 
+**Important:** Use only npm with this repository. Do not use pnpm or yarn, as the lockfile is npm-specific and hybrid installs will cause dependency drift.
+
 ```bash
 npm install
 npm ci  # For CI/CD environments
