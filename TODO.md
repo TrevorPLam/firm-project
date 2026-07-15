@@ -840,7 +840,7 @@ Confirm there is no `app/[locale]/error.tsx` or `app/global-error.tsx`. Only cla
 
 ## Task T021: Add Portfolio Case Study generateMetadata
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -888,19 +888,44 @@ Read `app/[locale]/portfolio/[slug]/page.tsx`. Confirm `generateStaticParams` ex
 
 ### Subtasks
 
-#### T021.1 [AGENT] Mirror blog metadata pattern for portfolio
+#### T021.1 [AGENT] Mirror blog metadata pattern for portfolio ✅
 
 - **Targeted file path:** `app/[locale]/portfolio/[slug]/page.tsx`
 - **Description:** Implement `generateMetadata` using the same structure as blog slug metadata, reading from portfolio port/data.
 - **Commands:**
   - `npm run typecheck`
 
-#### T021.2 [AGENT] Spot-check build metadata for one slug
+#### T021.2 [AGENT] Spot-check build metadata for one slug ✅
 
 - **Targeted file path:** `app/[locale]/portfolio/[slug]/page.tsx`
 - **Description:** Run build or a lightweight assertion that metadata function returns expected title for a known slug (unit test exporting helper optional).
 - **Commands:**
   - `npm run build` only if cheaper checks are insufficient; prefer a tiny unit test of a pure metadata builder if extracted
+
+### Implementation Notes
+
+**Changes Made:**
+1. Added `import type { Metadata } from "next"` to portfolio slug page
+2. Implemented `generateMetadata` function following blog slug pattern
+3. Metadata includes: title, description, alternates (canonical), keywords, and openGraph
+4. Canonical URL includes locale prefix: `/${locale}/portfolio/${slug}`
+5. Keywords include case study tags plus generic terms: "portfolio", "case study", category
+6. OpenGraph type set to "website" (not "article" since case studies are not blog posts)
+7. Fallback title for unknown slug: "Case Study Not Found"
+
+**Rationale:**
+- Mirrors existing blog slug metadata pattern for consistency
+- Provides unique SEO metadata per case study (title, description, keywords)
+- Locale-aware canonical URLs prevent duplicate content issues
+- Keywords help with discoverability for relevant search terms
+- OpenGraph metadata improves social media sharing previews
+- No visual redesign required; metadata-only change
+
+**No Issues Discovered:**
+- Typecheck passed
+- Lint passed
+- Metadata reads from portfolio adapter (consistent with page component)
+- No build errors; metadata function properly handles unknown slugs
 
 ---
 
