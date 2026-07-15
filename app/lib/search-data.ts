@@ -3,13 +3,14 @@
 // Deep module: exports typed functions, internal data is private
 
 // SYNC/ASYNC BOUNDARY NOTE:
-// Current sources (blog-data, portfolio-data) are synchronous local modules.
+// This module now uses content ports which are async-first interfaces.
 // When CMS sources are introduced (cms-client), they will be async and require await.
 // This module is designed to handle both sync and async sources uniformly.
 // Future adapters should implement async-first interfaces to support network backends.
 
-import { getAllPosts } from './blog-data';
-import { getAllCaseStudies } from './portfolio-data';
+import { createLocalBlogAdapter } from './content/local-blog-adapter';
+import { createLocalPortfolioAdapter } from './content/local-portfolio-adapter';
+import type { BlogContentPort, PortfolioContentPort } from './content-port';
 
 export interface SearchHit {
   objectID: string;
@@ -35,8 +36,12 @@ export interface SearchHit {
 export async function getAllSearchableContent(): Promise<SearchHit[]> {
   const searchHits: SearchHit[] = [];
 
+  // Create content port adapters
+  const blogPort: BlogContentPort = createLocalBlogAdapter();
+  const portfolioPort: PortfolioContentPort = createLocalPortfolioAdapter();
+
   // Add blog posts (await for async-ready design)
-  const blogPosts = await Promise.resolve(getAllPosts());
+  const blogPosts = await blogPort.getAllSummaries();
   for (const post of blogPosts) {
     searchHits.push({
       objectID: `blog-${post.id}`,
@@ -53,7 +58,7 @@ export async function getAllSearchableContent(): Promise<SearchHit[]> {
   }
 
   // Add portfolio case studies (await for async-ready design)
-  const caseStudies = await Promise.resolve(getAllCaseStudies());
+  const caseStudies = await portfolioPort.getAllSummaries();
   for (const study of caseStudies) {
     searchHits.push({
       objectID: `portfolio-${study.id}`,

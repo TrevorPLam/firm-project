@@ -1,12 +1,12 @@
 import type { MetadataRoute } from 'next';
-import { getAllPosts } from '@/lib/blog-data';
-import { getAllSlugs as getAllPortfolioSlugs } from '@/lib/portfolio-data';
+import { createLocalBlogAdapter } from '@/lib/content/local-blog-adapter';
+import { createLocalPortfolioAdapter } from '@/lib/content/local-portfolio-adapter';
 import { siteUrl, supportedLocales } from '@/lib/site-config';
 
 const locales = supportedLocales();
 const baseUrl = siteUrl();
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Static routes with fixed lastModified date
   const staticRoutes = [
     '',
@@ -40,8 +40,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   }
 
+  // Create content port adapters
+  const blogPort = createLocalBlogAdapter();
+  const portfolioPort = createLocalPortfolioAdapter();
+
   // Blog routes with actual content dates
-  const blogPosts = getAllPosts();
+  const blogPosts = await blogPort.getAllSummaries();
   const blogSitemapEntries: MetadataRoute.Sitemap = [];
 
   for (const locale of locales) {
@@ -61,7 +65,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }
 
   // Portfolio routes with fixed date
-  const portfolioSlugs = getAllPortfolioSlugs();
+  const portfolioSlugs = await portfolioPort.getAllSlugs();
   const portfolioSitemapEntries: MetadataRoute.Sitemap = [];
 
   for (const locale of locales) {

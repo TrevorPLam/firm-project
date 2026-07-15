@@ -3,14 +3,15 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getAllSearchableContent, getSearchByType, type SearchHit } from '../../lib/search-data';
+import type { BlogContentPort, PortfolioContentPort, BlogPostSummary, CaseStudySummary } from '../../lib/content-port';
 
-// Mock the data source modules
-vi.mock('../../lib/blog-data', () => ({
-  getAllPosts: vi.fn(),
+// Mock the content port adapters
+vi.mock('../../lib/content/local-blog-adapter', () => ({
+  createLocalBlogAdapter: vi.fn(),
 }));
 
-vi.mock('../../lib/portfolio-data', () => ({
-  getAllCaseStudies: vi.fn(),
+vi.mock('../../lib/content/local-portfolio-adapter', () => ({
+  createLocalPortfolioAdapter: vi.fn(),
 }));
 
 describe('search-data module', () => {
@@ -20,34 +21,45 @@ describe('search-data module', () => {
 
   describe('getAllSearchableContent', () => {
     it('should return typed SearchHit array', async () => {
-      const { getAllPosts } = await import('../../lib/blog-data');
-      const { getAllCaseStudies } = await import('../../lib/portfolio-data');
+      const { createLocalBlogAdapter } = await import('../../lib/content/local-blog-adapter');
+      const { createLocalPortfolioAdapter } = await import('../../lib/content/local-portfolio-adapter');
 
-      vi.mocked(getAllPosts).mockReturnValue([
-        {
-          id: 1,
-          slug: 'test-post',
-          title: 'Test Post',
-          excerpt: 'Test excerpt',
-          category: 'Test',
-          date: '2026-01-01',
-          readTime: '5 min',
-          topicCluster: 'test',
-        },
-      ]);
+      const mockBlogPort: BlogContentPort = {
+        getAllSummaries: async () => [
+          {
+            id: 1,
+            slug: 'test-post',
+            title: 'Test Post',
+            excerpt: 'Test excerpt',
+            category: 'Test',
+            date: '2026-01-01',
+            readTime: '5 min',
+            topicCluster: 'test',
+          },
+        ],
+        getBySlug: async () => undefined,
+        getAllSlugs: async () => ['test-post'],
+      };
 
-      vi.mocked(getAllCaseStudies).mockReturnValue([
-        {
-          id: 1,
-          slug: 'test-study',
-          title: 'Test Study',
-          category: 'Portfolio',
-          client: 'Test Client',
-          description: 'Test description',
-          results: ['100% improvement'],
-          tags: ['tag1'],
-        },
-      ]);
+      const mockPortfolioPort: PortfolioContentPort = {
+        getAllSummaries: async () => [
+          {
+            id: 1,
+            slug: 'test-study',
+            title: 'Test Study',
+            category: 'Portfolio',
+            client: 'Test Client',
+            description: 'Test description',
+            results: ['100% improvement'],
+            tags: ['tag1'],
+          },
+        ],
+        getBySlug: async () => undefined,
+        getAllSlugs: async () => ['test-study'],
+      };
+
+      vi.mocked(createLocalBlogAdapter).mockReturnValue(mockBlogPort);
+      vi.mocked(createLocalPortfolioAdapter).mockReturnValue(mockPortfolioPort);
 
       const hits = await getAllSearchableContent();
 
@@ -64,23 +76,34 @@ describe('search-data module', () => {
     });
 
     it('should include blog posts with correct type', async () => {
-      const { getAllPosts } = await import('../../lib/blog-data');
-      const { getAllCaseStudies } = await import('../../lib/portfolio-data');
+      const { createLocalBlogAdapter } = await import('../../lib/content/local-blog-adapter');
+      const { createLocalPortfolioAdapter } = await import('../../lib/content/local-portfolio-adapter');
 
-      vi.mocked(getAllPosts).mockReturnValue([
-        {
-          id: 1,
-          slug: 'test-post',
-          title: 'Test Post',
-          excerpt: 'Test excerpt',
-          category: 'Test',
-          date: '2026-01-01',
-          readTime: '5 min',
-          topicCluster: 'test',
-        },
-      ]);
+      const mockBlogPort: BlogContentPort = {
+        getAllSummaries: async () => [
+          {
+            id: 1,
+            slug: 'test-post',
+            title: 'Test Post',
+            excerpt: 'Test excerpt',
+            category: 'Test',
+            date: '2026-01-01',
+            readTime: '5 min',
+            topicCluster: 'test',
+          },
+        ],
+        getBySlug: async () => undefined,
+        getAllSlugs: async () => ['test-post'],
+      };
 
-      vi.mocked(getAllCaseStudies).mockReturnValue([]);
+      const mockPortfolioPort: PortfolioContentPort = {
+        getAllSummaries: async () => [],
+        getBySlug: async () => undefined,
+        getAllSlugs: async () => [],
+      };
+
+      vi.mocked(createLocalBlogAdapter).mockReturnValue(mockBlogPort);
+      vi.mocked(createLocalPortfolioAdapter).mockReturnValue(mockPortfolioPort);
 
       const hits = await getAllSearchableContent();
 
@@ -92,23 +115,34 @@ describe('search-data module', () => {
     });
 
     it('should include portfolio case studies with correct type', async () => {
-      const { getAllPosts } = await import('../../lib/blog-data');
-      const { getAllCaseStudies } = await import('../../lib/portfolio-data');
+      const { createLocalBlogAdapter } = await import('../../lib/content/local-blog-adapter');
+      const { createLocalPortfolioAdapter } = await import('../../lib/content/local-portfolio-adapter');
 
-      vi.mocked(getAllPosts).mockReturnValue([]);
+      const mockBlogPort: BlogContentPort = {
+        getAllSummaries: async () => [],
+        getBySlug: async () => undefined,
+        getAllSlugs: async () => [],
+      };
 
-      vi.mocked(getAllCaseStudies).mockReturnValue([
-        {
-          id: 1,
-          slug: 'test-study',
-          title: 'Test Study',
-          category: 'Portfolio',
-          client: 'Test Client',
-          description: 'Test description',
-          results: ['100% improvement'],
-          tags: ['tag1'],
-        },
-      ]);
+      const mockPortfolioPort: PortfolioContentPort = {
+        getAllSummaries: async () => [
+          {
+            id: 1,
+            slug: 'test-study',
+            title: 'Test Study',
+            category: 'Portfolio',
+            client: 'Test Client',
+            description: 'Test description',
+            results: ['100% improvement'],
+            tags: ['tag1'],
+          },
+        ],
+        getBySlug: async () => undefined,
+        getAllSlugs: async () => ['test-study'],
+      };
+
+      vi.mocked(createLocalBlogAdapter).mockReturnValue(mockBlogPort);
+      vi.mocked(createLocalPortfolioAdapter).mockReturnValue(mockPortfolioPort);
 
       const hits = await getAllSearchableContent();
 
@@ -121,11 +155,23 @@ describe('search-data module', () => {
     });
 
     it('should include static pages', async () => {
-      const { getAllPosts } = await import('../../lib/blog-data');
-      const { getAllCaseStudies } = await import('../../lib/portfolio-data');
+      const { createLocalBlogAdapter } = await import('../../lib/content/local-blog-adapter');
+      const { createLocalPortfolioAdapter } = await import('../../lib/content/local-portfolio-adapter');
 
-      vi.mocked(getAllPosts).mockReturnValue([]);
-      vi.mocked(getAllCaseStudies).mockReturnValue([]);
+      const mockBlogPort: BlogContentPort = {
+        getAllSummaries: async () => [],
+        getBySlug: async () => undefined,
+        getAllSlugs: async () => [],
+      };
+
+      const mockPortfolioPort: PortfolioContentPort = {
+        getAllSummaries: async () => [],
+        getBySlug: async () => undefined,
+        getAllSlugs: async () => [],
+      };
+
+      vi.mocked(createLocalBlogAdapter).mockReturnValue(mockBlogPort);
+      vi.mocked(createLocalPortfolioAdapter).mockReturnValue(mockPortfolioPort);
 
       const hits = await getAllSearchableContent();
 
@@ -138,14 +184,26 @@ describe('search-data module', () => {
       expect(servicesPage?.url).toBe('/services');
     });
 
-    it('should handle async-ready design with sync sources', async () => {
-      const { getAllPosts } = await import('../../lib/blog-data');
-      const { getAllCaseStudies } = await import('../../lib/portfolio-data');
+    it('should handle async-ready design with async port sources', async () => {
+      const { createLocalBlogAdapter } = await import('../../lib/content/local-blog-adapter');
+      const { createLocalPortfolioAdapter } = await import('../../lib/content/local-portfolio-adapter');
 
-      vi.mocked(getAllPosts).mockReturnValue([]);
-      vi.mocked(getAllCaseStudies).mockReturnValue([]);
+      const mockBlogPort: BlogContentPort = {
+        getAllSummaries: async () => [],
+        getBySlug: async () => undefined,
+        getAllSlugs: async () => [],
+      };
 
-      // Should not throw even though we use await on sync functions
+      const mockPortfolioPort: PortfolioContentPort = {
+        getAllSummaries: async () => [],
+        getBySlug: async () => undefined,
+        getAllSlugs: async () => [],
+      };
+
+      vi.mocked(createLocalBlogAdapter).mockReturnValue(mockBlogPort);
+      vi.mocked(createLocalPortfolioAdapter).mockReturnValue(mockPortfolioPort);
+
+      // Should not throw even though we use await on async port methods
       const hits = await getAllSearchableContent();
       expect(Array.isArray(hits)).toBe(true);
     });
@@ -153,23 +211,34 @@ describe('search-data module', () => {
 
   describe('getSearchByType', () => {
     it('should filter hits by blog type', async () => {
-      const { getAllPosts } = await import('../../lib/blog-data');
-      const { getAllCaseStudies } = await import('../../lib/portfolio-data');
+      const { createLocalBlogAdapter } = await import('../../lib/content/local-blog-adapter');
+      const { createLocalPortfolioAdapter } = await import('../../lib/content/local-portfolio-adapter');
 
-      vi.mocked(getAllPosts).mockReturnValue([
-        {
-          id: 1,
-          slug: 'test-post',
-          title: 'Test Post',
-          excerpt: 'Test excerpt',
-          category: 'Test',
-          date: '2026-01-01',
-          readTime: '5 min',
-          topicCluster: 'test',
-        },
-      ]);
+      const mockBlogPort: BlogContentPort = {
+        getAllSummaries: async () => [
+          {
+            id: 1,
+            slug: 'test-post',
+            title: 'Test Post',
+            excerpt: 'Test excerpt',
+            category: 'Test',
+            date: '2026-01-01',
+            readTime: '5 min',
+            topicCluster: 'test',
+          },
+        ],
+        getBySlug: async () => undefined,
+        getAllSlugs: async () => ['test-post'],
+      };
 
-      vi.mocked(getAllCaseStudies).mockReturnValue([]);
+      const mockPortfolioPort: PortfolioContentPort = {
+        getAllSummaries: async () => [],
+        getBySlug: async () => undefined,
+        getAllSlugs: async () => [],
+      };
+
+      vi.mocked(createLocalBlogAdapter).mockReturnValue(mockBlogPort);
+      vi.mocked(createLocalPortfolioAdapter).mockReturnValue(mockPortfolioPort);
 
       const blogHits = await getSearchByType('blog');
       expect(blogHits.length).toBe(1);
@@ -177,23 +246,34 @@ describe('search-data module', () => {
     });
 
     it('should filter hits by portfolio type', async () => {
-      const { getAllPosts } = await import('../../lib/blog-data');
-      const { getAllCaseStudies } = await import('../../lib/portfolio-data');
+      const { createLocalBlogAdapter } = await import('../../lib/content/local-blog-adapter');
+      const { createLocalPortfolioAdapter } = await import('../../lib/content/local-portfolio-adapter');
 
-      vi.mocked(getAllPosts).mockReturnValue([]);
+      const mockBlogPort: BlogContentPort = {
+        getAllSummaries: async () => [],
+        getBySlug: async () => undefined,
+        getAllSlugs: async () => [],
+      };
 
-      vi.mocked(getAllCaseStudies).mockReturnValue([
-        {
-          id: 1,
-          slug: 'test-study',
-          title: 'Test Study',
-          category: 'Portfolio',
-          client: 'Test Client',
-          description: 'Test description',
-          results: ['100% improvement'],
-          tags: ['tag1'],
-        },
-      ]);
+      const mockPortfolioPort: PortfolioContentPort = {
+        getAllSummaries: async () => [
+          {
+            id: 1,
+            slug: 'test-study',
+            title: 'Test Study',
+            category: 'Portfolio',
+            client: 'Test Client',
+            description: 'Test description',
+            results: ['100% improvement'],
+            tags: ['tag1'],
+          },
+        ],
+        getBySlug: async () => undefined,
+        getAllSlugs: async () => ['test-study'],
+      };
+
+      vi.mocked(createLocalBlogAdapter).mockReturnValue(mockBlogPort);
+      vi.mocked(createLocalPortfolioAdapter).mockReturnValue(mockPortfolioPort);
 
       const portfolioHits = await getSearchByType('portfolio');
       expect(portfolioHits.length).toBe(1);
@@ -201,11 +281,23 @@ describe('search-data module', () => {
     });
 
     it('should filter hits by page type', async () => {
-      const { getAllPosts } = await import('../../lib/blog-data');
-      const { getAllCaseStudies } = await import('../../lib/portfolio-data');
+      const { createLocalBlogAdapter } = await import('../../lib/content/local-blog-adapter');
+      const { createLocalPortfolioAdapter } = await import('../../lib/content/local-portfolio-adapter');
 
-      vi.mocked(getAllPosts).mockReturnValue([]);
-      vi.mocked(getAllCaseStudies).mockReturnValue([]);
+      const mockBlogPort: BlogContentPort = {
+        getAllSummaries: async () => [],
+        getBySlug: async () => undefined,
+        getAllSlugs: async () => [],
+      };
+
+      const mockPortfolioPort: PortfolioContentPort = {
+        getAllSummaries: async () => [],
+        getBySlug: async () => undefined,
+        getAllSlugs: async () => [],
+      };
+
+      vi.mocked(createLocalBlogAdapter).mockReturnValue(mockBlogPort);
+      vi.mocked(createLocalPortfolioAdapter).mockReturnValue(mockPortfolioPort);
 
       const pageHits = await getSearchByType('page');
       expect(pageHits.length).toBe(4);
@@ -213,11 +305,23 @@ describe('search-data module', () => {
     });
 
     it('should return empty array for type with no matches', async () => {
-      const { getAllPosts } = await import('../../lib/blog-data');
-      const { getAllCaseStudies } = await import('../../lib/portfolio-data');
+      const { createLocalBlogAdapter } = await import('../../lib/content/local-blog-adapter');
+      const { createLocalPortfolioAdapter } = await import('../../lib/content/local-portfolio-adapter');
 
-      vi.mocked(getAllPosts).mockReturnValue([]);
-      vi.mocked(getAllCaseStudies).mockReturnValue([]);
+      const mockBlogPort: BlogContentPort = {
+        getAllSummaries: async () => [],
+        getBySlug: async () => undefined,
+        getAllSlugs: async () => [],
+      };
+
+      const mockPortfolioPort: PortfolioContentPort = {
+        getAllSummaries: async () => [],
+        getBySlug: async () => undefined,
+        getAllSlugs: async () => [],
+      };
+
+      vi.mocked(createLocalBlogAdapter).mockReturnValue(mockBlogPort);
+      vi.mocked(createLocalPortfolioAdapter).mockReturnValue(mockPortfolioPort);
 
       const blogHits = await getSearchByType('blog');
       expect(blogHits.length).toBe(0);

@@ -574,7 +574,18 @@ Find all imports of `blog-data` outside the local adapter (pages, OG images, sit
 
 ## Task T007: Add Portfolio Port Adapter and Migrate Portfolio Routes
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
+
+### Implementation Notes
+
+- Added PortfolioContentPort interface to content-port.ts with DTOs for portfolio content
+- Created local-portfolio-adapter.ts implementing the port by delegating to portfolio-data
+- Port includes three methods: getAllSummaries(), getBySlug(), getAllSlugs() - all async-first
+- Unit tests (app/__tests__/lib/content-port.portfolio.test.ts) written TDD-style with 12 passing tests
+- Migrated 3 portfolio files to use content port: list page, detail page, OG image
+- All QA checks passed: typecheck, lint, 24 port unit tests (blog + portfolio)
+- Playwright e2e smoke showed 6/9 passing - failures are pre-existing selector issues, not regressions from port migration
+- Committed locally (push failed due to missing remote configuration - pre-existing issue)
 
 ### Initial Analysis & Research
 
@@ -628,14 +639,14 @@ Mirror T005/T006 for portfolio: read `app/lib/portfolio-data.ts` and portfolio p
 
 ### Subtasks
 
-#### T007.1 [AGENT] TDD local portfolio adapter
+#### T007.1 [AGENT] TDD local portfolio adapter ✅
 
 - **Targeted file path:** `app/__tests__/lib/content-port.portfolio.test.ts`
 - **Description:** Write failing tests for list/getBySlug/slugs via portfolio port, then implement local adapter over `portfolio-data`.
 - **Commands:**
   - `npm run test:run -- app/__tests__/lib/content-port.portfolio.test.ts`
 
-#### T007.2 [AGENT] Wire portfolio routes to port
+#### T007.2 [AGENT] Wire portfolio routes to port ✅
 
 - **Targeted file path:** `app/[locale]/portfolio/`
 - **Description:** Migrate portfolio pages and OG image to the portfolio port. Run typecheck and portfolio unit tests.
@@ -643,7 +654,7 @@ Mirror T005/T006 for portfolio: read `app/lib/portfolio-data.ts` and portfolio p
   - `npm run typecheck`
   - `npm run test:run -- app/__tests__/lib/content-port.portfolio.test.ts`
 
-#### T007.3 [AGENT] Portfolio e2e smoke
+#### T007.3 [AGENT] Portfolio e2e smoke ✅
 
 - **Targeted file path:** `app/e2e/portfolio-detail.spec.ts`
 - **Description:** Run chromium Playwright portfolio detail spec; fix regressions from wiring only.
@@ -654,7 +665,17 @@ Mirror T005/T006 for portfolio: read `app/lib/portfolio-data.ts` and portfolio p
 
 ## Task T008: Migrate Sitemap and Search Aggregation to Content Ports
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
+
+### Implementation Notes
+
+- Updated `search-data.ts` to use content ports instead of direct `blog-data` and `portfolio-data` imports
+- Updated `sitemap.ts` to use content ports and made it async to support port methods
+- Updated `search-data.test.ts` to mock port factories instead of data modules
+- All 10 search-data tests passing
+- Typecheck passing
+- Verified no stray production imports of `blog-data` or `portfolio-data` outside adapters/tests
+- BDD verified: SearchHit shape unchanged for local dataset (objectID, type, url patterns stable)
 
 ### Initial Analysis & Research
 
@@ -705,14 +726,14 @@ Read `app/sitemap.ts` and `app/lib/search-data.ts`. Confirm they still import lo
 
 ### Subtasks
 
-#### T008.1 [AGENT] Update search-data tests for port usage
+#### T008.1 [AGENT] Update search-data tests for port usage ✅
 
 - **Targeted file path:** `app/__tests__/lib/search-data.test.ts`
 - **Description:** Adjust mocks/imports so tests target ports (or mock port factories). Ensure failure messages stay clear. Run the search-data test file before implementation if tests already encode old modules — update expectations first.
 - **Commands:**
   - `npm run test:run -- app/__tests__/lib/search-data.test.ts`
 
-#### T008.2 [AGENT] Wire search-data and sitemap to ports
+#### T008.2 [AGENT] Wire search-data and sitemap to ports ✅
 
 - **Targeted file path:** `app/lib/search-data.ts`, `app/sitemap.ts`
 - **Description:** Replace remaining `blog-data` / `portfolio-data` imports. Re-run search-data tests and typecheck. Grep to confirm no stray production imports of those modules outside adapters/tests.
