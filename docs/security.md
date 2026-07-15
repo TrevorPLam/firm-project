@@ -65,6 +65,40 @@ For HSTS to function correctly:
 - [ ] Security headers validated
 - [ ] Dependency vulnerabilities monitored (npm audit)
 
+### Dependency Vulnerability Management
+
+#### CI Integration
+
+The CI pipeline includes an automated security audit job that runs on every push and pull request:
+
+```bash
+npm audit --audit-level=high
+```
+
+This command:
+- Fails CI only on high or critical severity vulnerabilities
+- Treats moderate and low severity findings as informational
+- Uses the lockfile via `npm ci` for consistent dependency resolution
+
+#### Local Audit Commands
+
+Run dependency audits locally before committing changes:
+
+```bash
+# Full audit (all severities)
+npm audit
+
+# High/critical only (matches CI threshold)
+npm audit --audit-level=high
+
+# JSON output for triage
+npm audit --json
+```
+
+#### Current Vulnerability Status
+
+As of 2026-07-15, the project has 14 moderate severity vulnerabilities, all transitive dependencies through Next.js and next-sanity packages. These are not blocking CI since the threshold is set to `--audit-level=high`. The vulnerabilities are documented in the Known Vulnerabilities section below for tracking and future remediation.
+
 ### Testing HSTS
 
 Test HSTS configuration using:

@@ -832,7 +832,16 @@ Read `tsconfig.json` `paths`: `"@/*": ["./*", "./app/*"]`. Confirm how imports r
 
 ## Task T010: Add npm Audit Job to CI
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
+
+### Implementation Notes
+
+- Added audit job to CI workflow with `npm audit --audit-level=high` threshold
+- Audit job runs independently and blocks build on high/critical vulnerabilities
+- Updated security.md with CI integration details and local audit commands
+- Baseline audit shows 14 moderate vulnerabilities (transitive through Next.js/next-sanity)
+- All QA checks passed: typecheck, lint, unit tests
+- Moderate vulnerabilities documented in security.md for future tracking
 
 ### Initial Analysis & Research
 
