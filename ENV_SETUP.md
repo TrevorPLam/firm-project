@@ -6,6 +6,8 @@ This project uses **npm** as the package manager. All installation and dependenc
 
 **Important:** Use only npm with this repository. Do not use pnpm or yarn, as the lockfile is npm-specific and hybrid installs will cause dependency drift.
 
+**Node Version:** Node.js 22.x is required (see `engines` field in package.json).
+
 ```bash
 npm install
 npm ci  # For CI/CD environments

@@ -117,7 +117,16 @@ Read `app/actions/newsletter.ts` and `app/__tests__/actions/newsletter.test.ts`.
 
 ## Task T002: Restore a Clean npm Dependency Install
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
+
+### Implementation Notes
+
+- Removed pnpm layout markers (`node_modules/.pnpm` and `node_modules/.modules.yaml`)
+- Lockfile was out of sync, regenerated with `npm install` after `npm ci` failed
+- Clean npm install achieved: 1479 packages installed, no extraneous dependency flood
+- All toolchain validation passed: typecheck, lint, 86 unit tests
+- Updated ENV_SETUP.md with explicit npm-only requirement
+- Committed locally (push failed due to missing remote configuration)
 
 ### Initial Analysis & Research
 
@@ -174,7 +183,7 @@ Confirm package manager drift: `package-lock.json` exists and CI uses `npm ci`, 
 
 ### Subtasks
 
-#### T002.1 [AGENT] Document current install layout evidence
+#### T002.1 [AGENT] Document current install layout evidence ✅
 
 - **Targeted file path:** `TODO.md` (task notes only if needed), working tree inspection
 - **Description:** Verify presence of `package-lock.json`, `node_modules/.pnpm`, and CI `cache: 'npm'`. Capture whether `npm ls --depth=0` shows large extraneous counts. No code changes yet.
@@ -182,7 +191,7 @@ Confirm package manager drift: `package-lock.json` exists and CI uses `npm ci`, 
   - `npm ls --depth=0`
   - PowerShell: `Test-Path node_modules/.pnpm; Test-Path node_modules/.modules.yaml; Test-Path package-lock.json`
 
-#### T002.2 [AGENT] Wipe and reinstall with npm ci
+#### T002.2 [AGENT] Wipe and reinstall with npm ci ✅
 
 - **Targeted file path:** `node_modules/`
 - **Description:** Remove `node_modules` completely, then run `npm ci` from repo root. Confirm pnpm layout markers are gone. If `npm ci` fails due to lockfile mismatch, regenerate with `npm install` once, review the lockfile diff, and keep changes only if required for a successful ci install.
@@ -191,7 +200,7 @@ Confirm package manager drift: `package-lock.json` exists and CI uses `npm ci`, 
   - `npm ci`
   - `Test-Path node_modules/.pnpm`
 
-#### T002.3 [AGENT] Smoke-validate toolchain after reinstall
+#### T002.3 [AGENT] Smoke-validate toolchain after reinstall ✅
 
 - **Targeted file path:** `package-lock.json`
 - **Description:** Run typecheck and one small unit test file. If lockfile changed, note why in the commit message when committing later. Update `ENV_SETUP.md` or README prerequisites only enough to say "npm only; do not use pnpm against this lockfile."
