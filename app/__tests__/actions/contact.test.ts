@@ -7,6 +7,7 @@ process.env.CONTACT_EMAIL_TO = "test@example.com";
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { clearRateLimits } from "@/lib/rate-limiter";
+import { resetEnvCache } from "@/lib/env";
 
 vi.mock("next/headers", () => ({
   headers: vi.fn(),
@@ -112,6 +113,7 @@ describe("submitContactFormAction", () => {
     // Temporarily unset RESEND_API_KEY for this test
     const originalApiKey = process.env.RESEND_API_KEY;
     delete process.env.RESEND_API_KEY;
+    resetEnvCache(); // Clear env cache after modifying env var
 
     const formData = new FormData();
     formData.append("name", "John Doe");
@@ -129,6 +131,7 @@ describe("submitContactFormAction", () => {
 
     // Restore RESEND_API_KEY
     process.env.RESEND_API_KEY = originalApiKey;
+    resetEnvCache(); // Clear env cache after restoring env var
   });
 
   it("should return error for missing name", async () => {

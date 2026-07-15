@@ -1,5 +1,51 @@
 # Environment Variables Setup
 
+## Environment Variable Validation
+
+This project uses a Zod-based environment variable validation module (`app/lib/env.ts`) to ensure type safety and fail-fast validation of environment variables at application startup.
+
+**Key Features:**
+- **Type-safe access:** All environment variables are accessed through typed getter functions
+- **Schema validation:** Public and server environment variables are validated against Zod schemas
+- **Fail-fast in production:** Required variables throw errors if missing in production
+- **Graceful degradation:** Optional marketing integrations don't block local development
+
+**Public Environment Variables** (exposed to client-side):
+- `NEXT_PUBLIC_SITE_URL` - Site URL with default fallback
+- `NEXT_PUBLIC_GA_MEASUREMENT_ID` - Google Analytics 4 ID (optional)
+- `NEXT_PUBLIC_GA_CONVERSION_ID` - Google Ads Conversion ID (optional)
+- `NEXT_PUBLIC_GA_CONVERSION_LABEL` - Google Ads Conversion Label (optional)
+- `NEXT_PUBLIC_ALGOLIA_APPLICATION_ID` - Algolia search app ID (optional)
+- `NEXT_PUBLIC_ALGOLIA_SEARCH_API_KEY` - Algolia search API key (optional)
+- `NEXT_PUBLIC_ALGOLIA_INDEX_NAME` - Algolia index name with default
+- `NEXT_PUBLIC_SANITY_PROJECT_ID` - Sanity CMS project ID (optional)
+- `NEXT_PUBLIC_SANITY_DATASET` - Sanity dataset with default
+
+**Server Environment Variables** (server-side only):
+- `RESEND_API_KEY` - Resend email service API key (required in production)
+- `CONTACT_EMAIL_TO` - Contact form destination email with default
+- `RESEND_AUDIENCE_ID` - Resend newsletter audience ID (optional)
+- `UPSTASH_REDIS_REST_URL` - Upstash Redis URL for rate limiting (optional)
+- `UPSTASH_REDIS_REST_TOKEN` - Upstash Redis token for rate limiting (optional)
+- `SANITY_API_READ_TOKEN` - Sanity API read token for preview (optional)
+- `ALLOW_INDEXING` - Search engine indexing control (enum: true/false)
+- `NODE_ENV` - Node environment (enum: development/production/test)
+- `VERCEL_ENV` - Vercel deployment environment (enum: development/preview/production)
+- `ENABLE_REACT_COMPILER` - React Compiler toggle (enum: true/false)
+
+**Accessing Environment Variables:**
+```typescript
+import { getSiteUrl, getResendApiKey, isProduction } from '@/lib/env';
+
+// Type-safe getters
+const siteUrl = getSiteUrl();
+const apiKey = getResendApiKey();
+const prod = isProduction();
+```
+
+**Production Validation:**
+The `validateProductionEnv()` function checks that required variables are present in production. Call this in your application entry point to fail fast if configuration is missing.
+
 ## Package Manager
 
 This project uses **npm** as the package manager. All installation and dependency management should be done using npm commands.

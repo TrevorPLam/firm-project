@@ -6,6 +6,7 @@ import { headers } from "next/headers";
 import { checkRateLimit } from "@/lib/rate-limiter";
 import { getClientIdentifier } from "@/lib/ip-utils";
 import { Resend } from "resend";
+import { getResendApiKey, getResendAudienceId } from "@/lib/env";
 
 const newsletterSchema = z.object({
   email: z.email("Invalid email address"),
@@ -76,8 +77,8 @@ async function runNewsletterSubscription(formData: FormData): Promise<FormResult
   const { email } = validatedFields.data;
 
   try {
-    const resendApiKey = process.env.RESEND_API_KEY;
-    const audienceId = process.env.RESEND_AUDIENCE_ID;
+    const resendApiKey = getResendApiKey();
+    const audienceId = getResendAudienceId();
 
     if (!resendApiKey || !audienceId) {
       console.warn("[newsletter] Resend API key or audience ID not configured, email service unavailable");

@@ -5,7 +5,8 @@
  * Provides a small public API surface with rich private implementation.
  */
 
-const DEFAULT_SITE_URL = 'https://elevatedigital.com';
+import { getSiteUrl as getEnvSiteUrl } from './env';
+
 const SITE_NAME = 'Elevate Digital';
 const DEFAULT_LOCALE = 'en';
 const SUPPORTED_LOCALES = ['en', 'es'] as const;
@@ -15,7 +16,7 @@ const SUPPORTED_LOCALES = ['en', 'es'] as const;
  * @returns The site URL as a string
  */
 export function siteUrl(): string {
-  return process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL;
+  return getEnvSiteUrl();
 }
 
 /**

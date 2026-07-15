@@ -7,6 +7,7 @@ import { checkRateLimit } from "@/lib/rate-limiter";
 import { getClientIdentifier } from "@/lib/ip-utils";
 import { escapeHtml } from "@/lib/escape-html";
 import { Resend } from "resend";
+import { getResendApiKey, getContactEmailTo } from "@/lib/env";
 
 const contactFormSchema = z.object({
   name: z.string().trim().min(2, "Name must be at least 2 characters"),
@@ -88,7 +89,8 @@ async function runContactFormSubmission(formData: FormData): Promise<FormResult>
 
   try {
     // Check if email service is configured
-    if (!process.env.RESEND_API_KEY) {
+    const resendApiKey = getResendApiKey();
+    if (!resendApiKey) {
       console.warn("[contact] RESEND_API_KEY not configured, email service unavailable");
       return {
         success: false,
@@ -97,8 +99,8 @@ async function runContactFormSubmission(formData: FormData): Promise<FormResult>
     }
 
     // Initialize Resend client
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    const contactEmailTo = process.env.CONTACT_EMAIL_TO || "contact@elevatedigital.com";
+    const resend = new Resend(resendApiKey);
+    const contactEmailTo = getContactEmailTo();
 
     // Send email using Resend
     const emailResult = await resend.emails.send({
