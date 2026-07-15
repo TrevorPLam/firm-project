@@ -45,6 +45,26 @@ The application implements the following security headers:
 - **Permissions-Policy**: Restricts browser features (camera, microphone, geolocation)
 - **Content-Security-Policy-Report-Only**: CSP in report-only mode for monitoring
 
+### CSP Nonce vs Static Rendering Decision
+
+**Decision:** Accept dynamic rendering to maintain CSP nonce security (Option A - T013)
+
+The root locale layout uses `headers()` to read the CSP nonce from middleware, which forces all locale routes to render dynamically. After investigation, we chose to accept dynamic rendering rather than remove CSP nonce security.
+
+**Rationale:**
+- CSP security takes priority over static generation performance
+- Aligns with Next.js 16 PPR (Partial Prerendering) philosophy
+- Dynamic rendering performance is acceptable for current scale
+- Future caching strategies (ISR, revalidate) can regain static benefits
+
+**Implementation:**
+- Explicit `export const dynamic = 'force-dynamic'` in `app/[locale]/layout.tsx`
+- CSP nonce generated per-request in `proxy.ts` middleware
+- Nonce forwarded via `x-nonce` header to Server Components
+- See `docs/dynamic-rendering-investigation.md` for full analysis
+
+**Note:** The nonce wiring has a known issue (T015) where early i18n redirects skip `x-nonce` forwarding. This must be fixed for CSP to actually function.
+
 ### Next.js Image Remote Patterns
 
 The Next.js Image component uses `remotePatterns` in `next.config.ts` to control which external domains can be optimized through `/_next/image`. This prevents Server-Side Request Forgery (SSRF) attacks by only allowing explicit, trusted hostnames.
