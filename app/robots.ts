@@ -1,16 +1,16 @@
 import type { MetadataRoute } from 'next';
+import { shouldAllowIndexing } from '@/lib/robots-policy';
 
 export default function robots(): MetadataRoute.Robots {
-  const isProduction = process.env.NODE_ENV === 'production';
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://elevatedigital.com';
 
-  if (isProduction) {
+  if (shouldAllowIndexing()) {
     return {
       rules: [
         // AI Crawler Permissions for GEO (Generative Engine Optimization)
         // These rules allow AI crawlers to index content for AI search answers
         // while maintaining control over training vs search crawlers
-        
+
         // OpenAI Crawlers
         // GPTBot: Training crawler - allows content in future GPT model training
         {
@@ -30,7 +30,7 @@ export default function robots(): MetadataRoute.Robots {
           allow: '/',
           disallow: ['/_next/'],
         },
-        
+
         // Anthropic Crawlers
         // ClaudeBot: Training crawler - allows content in Claude model training
         {
@@ -50,7 +50,7 @@ export default function robots(): MetadataRoute.Robots {
           allow: '/',
           disallow: ['/_next/'],
         },
-        
+
         // Perplexity Crawlers
         // PerplexityBot: Search index crawler - enables citations in Perplexity answers
         {
@@ -58,7 +58,7 @@ export default function robots(): MetadataRoute.Robots {
           allow: '/',
           disallow: ['/_next/'],
         },
-        
+
         // Google AI Training
         // Google-Extended: Training-only crawler - allows Gemini training
         // Note: Blocking this does NOT affect Google Search rankings
@@ -67,7 +67,7 @@ export default function robots(): MetadataRoute.Robots {
           allow: '/',
           disallow: ['/_next/'],
         },
-        
+
         // Common Crawl
         // CCBot: Common Crawl crawler - allows content in public web archive
         // This indirectly allows training for many open-source models
@@ -76,14 +76,14 @@ export default function robots(): MetadataRoute.Robots {
           allow: '/',
           disallow: ['/_next/'],
         },
-        
+
         // Block Non-Compliant Crawlers
         // Bytespider: ByteDance crawler with history of robots.txt non-compliance
         {
           userAgent: 'Bytespider',
           disallow: '/',
         },
-        
+
         // Default rule for all other crawlers
         {
           userAgent: '*',

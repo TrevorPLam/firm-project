@@ -31,6 +31,12 @@ Then edit `.env.local` with your actual values.
 # Site URL (for metadataBase)
 NEXT_PUBLIC_SITE_URL=https://elevatedigital.com
 
+# Search Engine Indexing Control
+# On Vercel: Only allows indexing when VERCEL_ENV=production (not preview)
+# On other platforms: Allows indexing when NODE_ENV=production
+# ALLOW_INDEXING=true  # Optional: Force allow indexing
+# ALLOW_INDEXING=false # Optional: Force deny indexing
+
 # Google Analytics 4
 NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 

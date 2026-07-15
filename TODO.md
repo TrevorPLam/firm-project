@@ -570,7 +570,7 @@ Read `app/components/analytics.tsx`. Confirm GA scripts load whenever `NEXT_PUBL
 
 ## Task T018: Escape Contact Form Fields in Outbound HTML Email
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -618,20 +618,40 @@ Read `app/actions/contact.ts` email HTML construction. Confirm user-controlled f
 
 ### Subtasks
 
-#### T018.1 [AGENT] Write failing test for HTML injection in email body
+#### T018.1 [AGENT] Write failing test for HTML injection in email body ✅
 
 - **Targeted file path:** `app/__tests__/actions/contact.test.ts`
 - **Description:** With Resend mocked and credentials set for the send path, submit fields containing HTML and assert the HTML string passed to Resend is escaped. Follow existing mock patterns.
 - **Commands:**
   - `npm run test:run -- app/__tests__/actions/contact.test.ts`
 
-#### T018.2 [AGENT] Implement escape helper and wire contact action
+#### T018.2 [AGENT] Implement escape helper and wire contact action ✅
 
 - **Targeted file path:** `app/lib/escape-html.ts` (or similar), `app/actions/contact.ts`
 - **Description:** Implement escaping; use it for all interpolated user fields in HTML. Keep text-only alternatives if already present. Make tests green.
 - **Commands:**
   - `npm run test:run -- app/__tests__/actions/contact.test.ts`
   - `npm run typecheck`
+
+### Implementation Notes
+
+**Changes Made:**
+1. Created `app/lib/escape-html.ts` with pure `escapeHtml()` function
+2. Updated `app/actions/contact.ts` to escape all user-controlled fields (name, email, company, service, budget, message) in HTML email body
+3. Added 7 unit tests for `escapeHtml()` function in `app/__tests__/lib/escape-html.test.ts`
+4. Added 3 integration tests in `app/__tests__/actions/contact.test.ts` to verify HTML injection is prevented
+5. All QA checks passed: typecheck, lint, and 21 tests (14 contact + 7 escape-html)
+
+**Rationale:**
+- Pure function deep module pattern for HTML entity escaping
+- Escapes &, <, >, ", ' to prevent XSS in email inbox viewers
+- Minimal, focused change without affecting validation schema
+- Follows TDD principles with comprehensive test coverage
+
+**No Issues Discovered:**
+- All tests passing
+- No typecheck or lint errors
+- No behavior change to form validation
 
 ---
 
