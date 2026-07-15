@@ -385,7 +385,7 @@ Read `c:\Users\Trevor\Documents\firm\app\components\error-boundary.tsx`. Confirm
 
 ## Task T024: Add vite-tsconfig-paths to Vitest Config
 
-**Status:** `[ ]` PENDING
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -430,13 +430,22 @@ Read `c:\Users\Trevor\Documents\firm\vitest.config.mjs` and `c:\Users\Trevor\Doc
 
 ### Subtasks
 
-#### T024.1 [AGENT] Install and configure vite-tsconfig-paths
+#### T024.1 [AGENT] Install and configure vite-tsconfig-paths ✅
 
 - **Targeted file path:** `c:\Users\Trevor\Documents\firm\vitest.config.mjs`
 - **Description:** Install the plugin, add it to plugins, and remove the manual `resolve.alias` block.
 - **Commands:**
   - `npm install --save-dev vite-tsconfig-paths`
   - `npm run test:run`
+
+### Implementation Notes
+
+- Installed `vite-tsconfig-paths` package as dev dependency
+- Updated `vitest.config.mjs` to import and use `tsconfigPaths` plugin
+- Removed manual `resolve.alias` block and unused imports (`path`, `fileURLToPath`, `__dirname`)
+- Path resolution now uses single source of truth from `tsconfig.json`
+- Tests pass successfully (11 tests in site-config.test.ts)
+- Pre-existing typecheck error found: missing `@types/sanitize-html` package (unrelated to this task)
 
 ---
 
@@ -547,6 +556,41 @@ The portfolio route `app/[locale]/portfolio/[slug]/page.tsx` accesses uncached d
 ### Implementation Notes
 
 The portfolio route already had a `loading.tsx` file which acts as a Suspense boundary. The actual issue was that `cacheComponents` was disabled in `next.config.ts`. With `cacheComponents` disabled, the build passes. The route is now ready for when `cacheComponents` is re-enabled in the future. The `loading.tsx` file provides the proper Suspense boundary for the async data fetching.
+
+---
+
+## Task T029: Add Missing @types/sanitize-html Package
+
+**Status:** `[ ]` PENDING
+
+### Initial Analysis & Research
+
+Type checking fails with error: "Could not find a declaration file for module 'sanitize-html'". The package `sanitize-html` is used in `app/lib/content-sanitizer.ts` but lacks TypeScript definitions.
+
+### Related File Paths
+
+- `c:\Users\Trevor\Documents\firm\app\lib\content-sanitizer.ts`
+- `c:\Users\Trevor\Documents\firm\package.json`
+
+### Definition of Done
+
+- `@types/sanitize-html` is installed as dev dependency
+- Type checking passes without errors
+- Content sanitizer tests still pass
+
+### Out of Scope
+
+- Changing the sanitize-html implementation
+- Adding alternative sanitization libraries
+
+### Rules to Follow
+
+- Install the types package that matches the sanitize-html version
+
+### Depends On / Blocks
+
+- Depends on: None
+- Blocks: None
 
 ---
 
