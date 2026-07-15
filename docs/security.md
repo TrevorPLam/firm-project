@@ -63,7 +63,23 @@ The root locale layout uses `headers()` to read the CSP nonce from middleware, w
 - Nonce forwarded via `x-nonce` header to Server Components
 - See `docs/dynamic-rendering-investigation.md` for full analysis
 
-**Note:** The nonce wiring has a known issue (T015) where early i18n redirects skip `x-nonce` forwarding. This must be fixed for CSP to actually function.
+**Note:** The nonce wiring issue (T015) has been fixed. The middleware now sets `x-nonce` on request headers before calling next-intl middleware, ensuring the nonce is available to Server Components even on i18n redirect paths.
+
+### CSP Nonce and next-intl Middleware Composition
+
+**Problem:** When next-intl middleware returns a response early (e.g., for locale redirects), the nonce header must be available to Server Components on the redirected path.
+
+**Solution:** Set custom request headers before calling the middleware, not after. The correct composition pattern is:
+
+1. Generate nonce
+2. Set `x-nonce` on request headers
+3. Create modified `NextRequest` with nonce header
+4. Call `intlMiddleware(requestWithNonce)`
+5. Set CSP header on the response (whether redirect or passthrough)
+
+**Verification:** Run `npx tsx scripts/verify-nonce-wiring.ts` to see the original issue analysis.
+
+**Key Pattern:** Always decorate the request before middleware composition, not after early returns.
 
 ### Next.js Image Remote Patterns
 

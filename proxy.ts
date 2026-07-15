@@ -31,8 +31,21 @@ export function proxy(request: NextRequest) {
   // Build the CSP header with the nonce
   const cspHeader = buildCspHeader(nonce);
 
-  // Apply i18n middleware
-  const intlResponse = intlMiddleware(request);
+  // Set x-nonce on request headers BEFORE calling intlMiddleware
+  // This ensures the nonce is available to Server Components even on redirect paths
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-nonce', nonce);
+
+  // Create a modified request with the nonce header
+  const requestWithNonce = new NextRequest(request.url, {
+    headers: requestHeaders,
+    method: request.method,
+    body: request.body,
+    duplex: 'half',
+  });
+
+  // Apply i18n middleware with the modified request
+  const intlResponse = intlMiddleware(requestWithNonce);
   
   // If i18n middleware returns a response (e.g., redirect), use it
   if (intlResponse) {
@@ -41,9 +54,6 @@ export function proxy(request: NextRequest) {
   }
 
   // Create response with nonce header for Server Components
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set('x-nonce', nonce);
-
   const response = NextResponse.next({
     request: {
       headers: requestHeaders,

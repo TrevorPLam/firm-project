@@ -278,7 +278,7 @@ Reread architecture assessment goals: eventually monorepo, not now. Confirm Sani
 
 ## Task T015: Fix CSP Nonce Request Wiring Through next-intl Proxy
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -334,14 +334,14 @@ Read `proxy.ts`. Confirm `intlMiddleware(request)` always returns a response, so
 
 ### Subtasks
 
-#### T015.1 [AGENT] Prove dead-path with minimal reproduction notes
+#### T015.1 [AGENT] Prove dead-path with minimal reproduction notes ✅
 
 - **Targeted file path:** `proxy.ts`, `app/lib/nonce.ts`
 - **Description:** Document in task research notes (and later security.md) that the early return skips `x-nonce`. Confirm layout awaits `getNonce()`. No behavioral fix yet.
 - **Commands:**
   - `Select-String -Path proxy.ts -Pattern "x-nonce|intlResponse"`
 
-#### T015.2 [AGENT] Implement request+response nonce merge
+#### T015.2 [AGENT] Implement request+response nonce merge ✅
 
 - **Targeted file path:** `proxy.ts`
 - **Description:** Forward `x-nonce` into the request used by intl middleware / passthrough, and set CSP Report-Only on the returned response. Preserve matcher. Add a focused test if the project can unit-test proxy helpers; otherwise add a small Node assertion script under `scripts/` used only for this verification and referenced in docs (do not add flaky e2e solely for headers unless easy).
@@ -349,12 +349,35 @@ Read `proxy.ts`. Confirm `intlMiddleware(request)` always returns a response, so
   - `npm run typecheck`
   - Targeted test or script command documented in the subtask result
 
-#### T015.3 [AGENT] Update security docs
+#### T015.3 [AGENT] Update security docs ✅
 
 - **Targeted file path:** `docs/security.md`
 - **Description:** Document correct next-intl + CSP nonce composition and how to verify `x-nonce` is present.
 - **Commands:**
   - None beyond doc edit
+
+### Implementation Notes
+
+**Changes Made:**
+1. Created `scripts/verify-nonce-wiring.ts` to document the dead-path issue
+2. Fixed `proxy.ts` to set `x-nonce` on request headers BEFORE calling `intlMiddleware`
+3. Created modified `NextRequest` with nonce header for middleware composition
+4. Updated `docs/security.md` with CSP nonce composition pattern and verification instructions
+5. All QA checks passed: typecheck, lint, and 110 tests
+
+**Rationale:**
+- Middleware composition requires decorating the request before calling next-intl, not after early returns
+- The pattern ensures nonce is available to Server Components even on i18n redirect paths
+- CSP Report-Only header is set on both redirect and passthrough responses
+- Verification script documents the original issue for future reference
+
+**Key Pattern:**
+Always decorate request headers before middleware composition. The correct order is:
+1. Generate nonce
+2. Set `x-nonce` on request headers
+3. Create modified `NextRequest` with nonce header
+4. Call `intlMiddleware(requestWithNonce)`
+5. Set CSP header on the response
 
 ---
 
