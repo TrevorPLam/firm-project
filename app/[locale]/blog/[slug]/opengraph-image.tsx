@@ -1,5 +1,5 @@
 import { createOGImageResponse, OG_IMAGE_CONTENT_TYPE, OG_IMAGE_SIZE } from "@/lib/og-image-helper";
-import { getPostBySlug } from "@/lib/blog-data";
+import { createLocalBlogAdapter } from "@/lib/content/local-blog-adapter";
 
 export const size = OG_IMAGE_SIZE;
 export const contentType = OG_IMAGE_CONTENT_TYPE;
@@ -10,7 +10,8 @@ export default async function Image({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const blogPort = createLocalBlogAdapter();
+  const post = await blogPort.getBySlug(slug);
 
   if (!post) {
     return createOGImageResponse({

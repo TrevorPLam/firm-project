@@ -17,8 +17,8 @@ Error: expect(locator).toContainText(expected) failed
 Locator: locator('span.bg-primary\\/10')
 Expected substring: "Web Design"
 Error: strict mode violation: locator('span.bg-primary\\/10') resolved to 2 elements:
-    1) <span class="bg-primary/10 text-primary rounded-full px-3 py-1 text-sm font-medium">Web Design</span> aka getByText('Web Design').nth(1)
-    2) <span class="bg-primary/10 text-primary rounded-full px-2 py-1 text-xs font-medium">Web Design</span> aka getByText('Web Design', { exact: true }).nth(2)
+    1) <span class="bg-primary/10 text-primary rounded-full px-3 py-1 text-sm font-medium">Web Design</span> aka getByText('Web Design').first()
+    2) <span class="bg-primary/10 text-primary rounded-full px-2 py-1 text-xs font-medium">Web Design</span> aka getByRole('link', { name: 'Web Design How to Build a' })
 
 Call log:
   - Expect "toContainText" with timeout 5000ms

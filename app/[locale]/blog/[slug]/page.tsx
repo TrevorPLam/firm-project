@@ -6,7 +6,7 @@ import Image from "next/image";
 import { SanitizedContent } from "../../../components/sanitized-content";
 import { NewsletterForm } from "../../../components/newsletter-form";
 import { SocialShare } from "../../../components/social-share";
-import { getPostBySlug, getAllPosts, getAllSlugs } from "../../../lib/blog-data";
+import { createLocalBlogAdapter } from "../../../lib/content/local-blog-adapter";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../../lib/schema";
 import { absoluteUrl } from "../../../lib/site-config";
 import { setRequestLocale } from 'next-intl/server';
@@ -14,7 +14,9 @@ import { routing } from '../../../../i18n/routing';
 import { hasLocale } from 'next-intl';
 
 export async function generateStaticParams() {
-  return getAllSlugs().map((slug) => ({
+  const blogPort = createLocalBlogAdapter();
+  const slugs = await blogPort.getAllSlugs();
+  return slugs.map((slug) => ({
     slug,
   }));
 }
@@ -25,7 +27,8 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const blogPort = createLocalBlogAdapter();
+  const post = await blogPort.getBySlug(slug);
   if (!post) {
     return {
       title: "Blog Post Not Found",
@@ -62,7 +65,8 @@ export default async function BlogPostPage({
   }
   setRequestLocale(locale);
 
-  const post = getPostBySlug(slug);
+  const blogPort = createLocalBlogAdapter();
+  const post = await blogPort.getBySlug(slug);
 
   if (!post) {
     notFound();
@@ -247,7 +251,7 @@ export default async function BlogPostPage({
               Related Articles
             </h2>
             <div className="grid gap-6 md:grid-cols-2">
-              {getAllPosts()
+              {(await blogPort.getAllSummaries())
                 .filter(
                   (p) => p.slug !== post.slug && p.category === post.category,
                 )

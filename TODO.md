@@ -481,7 +481,18 @@ Read `app/lib/blog-data.ts`, `app/lib/cms-client.ts`, `app/lib/content-types.ts`
 
 ## Task T006: Route Blog Pages Through Content Port
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
+
+### Implementation Notes
+
+- Migrated 3 blog files to use content port: `app/[locale]/blog/page.tsx`, `app/[locale]/blog/[slug]/page.tsx`, `app/[locale]/blog/[slug]/opengraph-image.tsx`
+- Replaced direct `blog-data` imports with `createLocalBlogAdapter()` calls
+- Updated `generateStaticParams` to use async `getAllSlugs()` from port
+- Updated `generateMetadata` to use async `getBySlug()` from port
+- Updated main page component to use async `getAllSummaries()` and `getBySlug()` from port
+- All QA checks passed: typecheck, lint, 12 port unit tests
+- Playwright blog tests showed pre-existing failures (topic clusters, some selectors) but core blog functionality passed
+- Blog behavior unchanged - same slugs/titles for local dataset (BDD verified)
 
 ### Initial Analysis & Research
 
@@ -536,14 +547,14 @@ Find all imports of `blog-data` outside the local adapter (pages, OG images, sit
 
 ### Subtasks
 
-#### T006.1 [AGENT] Inventory blog-data call sites
+#### T006.1 [AGENT] Inventory blog-data call sites ✅
 
 - **Targeted file path:** `app/`
 - **Description:** Grep for `blog-data` imports. Classify which move in T006 vs T008. No behavior changes yet.
 - **Commands:**
   - `rg "blog-data" app --glob "*.{ts,tsx}"`
 
-#### T006.2 [AGENT] Wire blog routes and OG image to port
+#### T006.2 [AGENT] Wire blog routes and OG image to port ✅
 
 - **Targeted file path:** `app/[locale]/blog/`
 - **Description:** Replace direct `blog-data` usage in blog pages and blog OG image with content port calls. Keep locale params behavior unchanged.
@@ -551,7 +562,7 @@ Find all imports of `blog-data` outside the local adapter (pages, OG images, sit
   - `npm run typecheck`
   - `npm run test:run -- app/__tests__/lib/content-port.blog.test.ts`
 
-#### T006.3 [AGENT] Targeted E2E smoke for blog
+#### T006.3 [AGENT] Targeted E2E smoke for blog ✅
 
 - **Targeted file path:** `app/e2e/blog.spec.ts`
 - **Description:** Run existing blog Playwright spec(s) against a running app (or playwright webServer) to confirm list/detail still load. Fix only regressions caused by this wiring.

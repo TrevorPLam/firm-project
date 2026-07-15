@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ScrollReveal } from "../../components/scroll-reveal";
 import { Link } from '../../../i18n/navigation';
-import { getAllPosts } from "../../lib/blog-data";
+import { createLocalBlogAdapter } from "../../lib/content/local-blog-adapter";
 import { NewsletterForm } from "../../components/newsletter-form";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
 import { setRequestLocale } from 'next-intl/server';
@@ -43,7 +43,8 @@ export default async function BlogPage({
   }
   setRequestLocale(locale);
 
-  const posts = getAllPosts();
+  const blogPort = createLocalBlogAdapter();
+  const posts = await blogPort.getAllSummaries();
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: `/${locale}` },
