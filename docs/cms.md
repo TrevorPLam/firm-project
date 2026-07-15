@@ -17,6 +17,16 @@ Sanity CMS provides a headless content management system that enables non-techni
 
 ## Architecture
 
+### Content Port Pattern
+
+Blog and portfolio content are accessed through a content port interface (`BlogContentPort`) with a local adapter implementation. This creates a clean seam for future CMS integration:
+
+- **Port Interface** (`app/lib/content-port.ts`): Defines the contract for content access (async methods for summaries, details, and slugs)
+- **Local Adapter** (`app/lib/content/local-blog-adapter.ts`): Implements the port using existing local data modules (`blog-data.ts`)
+- **Future Sanity Adapter**: Will implement the same port interface using `cms-client.ts` for CMS-backed content
+
+Blog pages will consume the port interface, making the switch from local to CMS content a simple adapter swap without page-level changes. The Sanity Studio remains standalone as documented below.
+
 ### Standalone Studio (Recommended)
 
 The Sanity Studio runs as a separate application at `http://localhost:3333` during development, deployed independently from the Next.js frontend. This approach offers:

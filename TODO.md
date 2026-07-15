@@ -385,7 +385,18 @@ Compare `README.md` claims against `package.json` and the real tree: README stat
 
 ## Task T005: Add Content Port Module with Local Blog Adapter
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
+
+### Implementation Notes
+
+- Created `app/lib/content-port.ts` with `BlogContentPort` interface defining async contract for blog content access
+- Created `app/lib/content/local-blog-adapter.ts` implementing the port by delegating to existing `blog-data.ts`
+- Port includes three methods: `getAllSummaries()`, `getBySlug()`, and `getAllSlugs()` - all async-first
+- Unit tests (`app/__tests__/lib/content-port.blog.test.ts`) written TDD-style with 12 passing tests
+- All QA checks passed: typecheck, lint, and unit tests
+- Updated `docs/cms.md` with Content Port Pattern subsection documenting the seam for future Sanity adapter
+- `cms-client.ts` remains untouched as specified
+- Port uses DTOs separate from internal `blog-data` types to avoid leaking implementation details
 
 ### Initial Analysis & Research
 
@@ -444,14 +455,14 @@ Read `app/lib/blog-data.ts`, `app/lib/cms-client.ts`, `app/lib/content-types.ts`
 
 ### Subtasks
 
-#### T005.1 [AGENT] Research and draft port surface
+#### T005.1 [AGENT] Research and draft port surface ✅
 
 - **Targeted file path:** `app/lib/blog-data.ts`
 - **Description:** Inventory current blog read API (`getAllPosts`, `getPostBySlug`, `getAllSlugs`, summary types). Draft the minimal async port that preserves those behaviors. Write failing unit tests for the local adapter first (TDD).
 - **Commands:**
   - `npm run test:run -- app/__tests__/lib/content-port.blog.test.ts` (expect fail/missing until implemented)
 
-#### T005.2 [AGENT] Implement local blog adapter behind port
+#### T005.2 [AGENT] Implement local blog adapter behind port ✅
 
 - **Targeted file path:** `app/lib/content-port.ts` (and sibling files as needed)
 - **Description:** Implement deep module + local adapter wrapping `blog-data`. Export only port types and a factory/getter for the default local adapter. Add/adjust unit tests until green.
@@ -459,7 +470,7 @@ Read `app/lib/blog-data.ts`, `app/lib/cms-client.ts`, `app/lib/content-types.ts`
   - `npm run test:run -- app/__tests__/lib/content-port.blog.test.ts`
   - `npm run typecheck`
 
-#### T005.3 [AGENT] Document the seam
+#### T005.3 [AGENT] Document the seam ✅
 
 - **Targeted file path:** `docs/cms.md`
 - **Description:** Add a short "Content port" subsection stating blog pages will consume the port; Sanity becomes another adapter later; Studio remains standalone. Do not rewrite the whole CMS guide.
