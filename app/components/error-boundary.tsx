@@ -1,7 +1,6 @@
 "use client";
 
 import { Component, type ErrorInfo, type ReactNode } from "react";
-import { useEffect } from "react";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -11,6 +10,11 @@ interface ErrorBoundaryProps {
 interface ErrorBoundaryState {
   hasError: boolean;
   error?: Error;
+}
+
+interface ErrorFallbackProps {
+  error: Error | undefined;
+  resetError: () => void;
 }
 
 export class ErrorBoundary extends Component<
@@ -30,25 +34,24 @@ export class ErrorBoundary extends Component<
     console.error("Error caught by boundary:", error, errorInfo);
   }
 
+  resetError = () => {
+    this.setState({ hasError: false } as ErrorBoundaryState);
+  };
+
   override render() {
     if (this.state.hasError) {
       if (this.props.fallback) {
         return this.props.fallback;
       }
 
-      return <ErrorFallback error={this.state.error} />;
+      return <ErrorFallback error={this.state.error} resetError={this.resetError} />;
     }
 
     return this.props.children;
   }
 }
 
-function ErrorFallback({ error }: { error: Error | undefined }) {
-  useEffect(() => {
-    // Reload page on mount (client-side only)
-    window.location.reload();
-  }, []);
-
+function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
   return (
     <div className="flex min-h-screen items-center justify-center px-6">
       <div className="w-full max-w-md text-center">
@@ -72,9 +75,12 @@ function ErrorFallback({ error }: { error: Error | undefined }) {
         <p className="text-foreground/60 mb-6">
           {error?.message || "An unexpected error occurred"}
         </p>
-        <p className="text-foreground/60 text-sm">
-          Reloading the page...
-        </p>
+        <button
+          onClick={resetError}
+          className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        >
+          Try again
+        </button>
       </div>
     </div>
   );

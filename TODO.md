@@ -309,7 +309,7 @@ Read `c:\Users\Trevor\Documents\firm\app\components\language-switcher.tsx`. Conf
 
 ## Task T023: Fix Error Boundary Auto-Reload
 
-**Status:** `[ ]` PENDING
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -353,7 +353,7 @@ Read `c:\Users\Trevor\Documents\firm\app\components\error-boundary.tsx`. Confirm
 
 ### Subtasks
 
-#### T023.1 [AGENT] Replace auto-reload with retry button
+#### T023.1 [AGENT] Replace auto-reload with retry button ✅
 
 - **Targeted file path:** `c:\Users\Trevor\Documents\firm\app\components\error-boundary.tsx`
 - **Description:** Pass a reset callback from the class boundary to `ErrorFallback`. Replace `window.location.reload()` with a button that calls reset.
@@ -361,6 +361,25 @@ Read `c:\Users\Trevor\Documents\firm\app\components\error-boundary.tsx`. Confirm
 - **Commands:**
   - `npm run test:run -- app/__tests__/components/error-boundary.test.tsx` (create if missing)
   - `npm run build -- --webpack`
+
+### Implementation Notes
+
+- Removed `useEffect` hook and `window.location.reload()` from `ErrorFallback` component
+- Added `ErrorFallbackProps` interface with `resetError` callback
+- Added `resetError` method to `ErrorBoundary` class that resets state to `{ hasError: false }`
+- Updated `ErrorFallback` to accept `resetError` prop and display a "Try again" button
+- Button uses Tailwind CSS classes for styling with proper focus states
+- Removed unused `useEffect` import
+- Created comprehensive test suite with 5 tests covering:
+  - Normal rendering without errors
+  - Error catching and fallback UI display
+  - Retry button functionality
+  - Custom fallback support
+  - Verification that auto-reload is disabled
+- All tests pass successfully
+- Type checking passed with no errors
+- Linting passed with no errors
+- Build completed successfully
 
 ---
 
