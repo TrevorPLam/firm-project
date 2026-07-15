@@ -212,7 +212,16 @@ Confirm package manager drift: `package-lock.json` exists and CI uses `npm ci`, 
 
 ## Task T003: Pin Node Engine and packageManager Metadata
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
+
+### Implementation Notes
+
+- Added `engines.node: ">=22.0.0 <23.0.0"` to package.json
+- Added `packageManager: "npm@10.9.7"` to package.json
+- Updated README.md prerequisite from Node 18+ to Node 22.x
+- Updated ENV_SETUP.md with Node 22.x requirement
+- All validation passed: typecheck, lint, 86 unit tests
+- Committed locally (push failed due to missing remote configuration)
 
 ### Initial Analysis & Research
 
@@ -264,7 +273,7 @@ Read `package.json` and `.github/workflows/ci.yml`. Confirm CI uses Node 22 whil
 
 ### Subtasks
 
-#### T003.1 [AGENT] Read CI and local Node/npm versions
+#### T003.1 [AGENT] Read CI and local Node/npm versions ✅
 
 - **Targeted file path:** `.github/workflows/ci.yml`
 - **Description:** Record `NODE_VERSION` from CI and local `node -v` / `npm -v`. Decide exact `engines` and `packageManager` strings from those facts.
@@ -272,14 +281,14 @@ Read `package.json` and `.github/workflows/ci.yml`. Confirm CI uses Node 22 whil
   - `node -v`
   - `npm -v`
 
-#### T003.2 [AGENT] Write engines and packageManager fields
+#### T003.2 [AGENT] Write engines and packageManager fields ✅
 
 - **Targeted file path:** `package.json`
 - **Description:** Add `engines` and `packageManager`. Update README prerequisites and ENV_SETUP so Node 22 is required. Do not change application source.
 - **Commands:**
   - `node -e "const p=require('./package.json'); console.log(p.engines, p.packageManager)"`
 
-#### T003.3 [AGENT] Validate install still works under the pin
+#### T003.3 [AGENT] Validate install still works under the pin ✅
 
 - **Targeted file path:** `package.json`
 - **Description:** Re-run a quick `npm ci` smoke (or `npm install` if ci already warm) and typecheck. Ensure CI workflow Node major still matches engines.
@@ -290,7 +299,15 @@ Read `package.json` and `.github/workflows/ci.yml`. Confirm CI uses Node 22 whil
 
 ## Task T004: Correct README and Stack Documentation Drift
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
+
+### Implementation Notes
+
+- Corrected Tailwind CSS version from "4" to "3.x" in README description and features
+- Updated project structure to include missing directories: `[locale]/`, `i18n/`, `messages/`, `sitemap.ts`, `robots.ts`
+- Added `proxy.ts` to project structure
+- Verified ENV_SETUP.md already has correct Node 22.x and Tailwind v3 information
+- All QA checks passed: typecheck, lint, unit tests
 
 ### Initial Analysis & Research
 

@@ -1,10 +1,10 @@
 # Elevate Digital
 
-A modern Next.js website for Elevate Digital, built with Next.js 16, React 19, TypeScript, and Tailwind CSS 4.
+A modern Next.js website for Elevate Digital, built with Next.js 16, React 19, TypeScript, and Tailwind CSS 3.x.
 
 ## Features
 
-- **Modern Stack**: Next.js 16 with App Router, React 19, TypeScript, and Tailwind CSS 4
+- **Modern Stack**: Next.js 16 with App Router, React 19, TypeScript, and Tailwind CSS 3.x
 - **Performance**: Optimized fonts, static generation, and server components
 - **Security**: Content Security Policy, rate limiting, and input sanitization
 - **Forms**: Contact form and newsletter subscription with Resend integration
@@ -88,13 +88,18 @@ npm run build
 
 ```
 app/
+├── [locale]/           # Internationalized routes (about, blog, contact, portfolio)
 ├── __tests__/          # Test files
 ├── actions/            # Server Actions (contact, newsletter)
 ├── components/         # React components
 ├── lib/                # Utility functions and helpers
-├── about/              # About page
-├── blog/               # Blog pages
+├── i18n/               # Internationalization configuration
+├── messages/           # Translation files (en.json, es.json)
+├── sitemap.ts          # Dynamic sitemap generation
+├── robots.ts           # Robots.txt configuration
 └── layout.tsx          # Root layout
+i18n/                   # I18n routing and request configuration
+proxy.ts                # Development proxy configuration
 ```
 
 ## Deployment
