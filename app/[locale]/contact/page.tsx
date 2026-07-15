@@ -3,7 +3,7 @@ import { ScrollReveal } from "../../components/scroll-reveal";
 import { ContactForm } from "../../components/contact-form";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
 import { setRequestLocale } from 'next-intl/server';
-import { routing } from '../../../i18n/routing';
+import { routing } from '@/i18n/routing';
 import { hasLocale } from 'next-intl';
 
 export const metadata: Metadata = {

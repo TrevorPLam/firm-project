@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { ScrollReveal } from "../../components/scroll-reveal";
-import { Link } from '../../../i18n/navigation';
+import { Link } from '@/i18n/navigation';
 import { createLocalBlogAdapter } from "../../lib/content/local-blog-adapter";
 import { NewsletterForm } from "../../components/newsletter-form";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
 import { setRequestLocale } from 'next-intl/server';
-import { routing } from '../../../i18n/routing';
+import { routing } from '@/i18n/routing';
 import { hasLocale } from 'next-intl';
 
 export const metadata: Metadata = {

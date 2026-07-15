@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
-import { Link } from '../../i18n/navigation';
+import { Link } from '@/i18n/navigation';
 import { SearchBar } from "./search-bar";
 import { LanguageSwitcher } from "./language-switcher";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { Link } from '../../i18n/navigation';
+import { Link } from '@/i18n/navigation';
 import { CopyrightYear } from "./copyright-year";
 import { motion } from "motion/react";
 

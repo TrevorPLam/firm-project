@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ScrollReveal } from "../../../components/scroll-reveal";
 import { notFound } from "next/navigation";
-import { Link } from '../../../../i18n/navigation';
+import { Link } from '@/i18n/navigation';
 import Image from "next/image";
 import { SanitizedContent } from "../../../components/sanitized-content";
 import { NewsletterForm } from "../../../components/newsletter-form";
@@ -10,7 +10,7 @@ import { createLocalBlogAdapter } from "../../../lib/content/local-blog-adapter"
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../../lib/schema";
 import { absoluteUrl } from "../../../lib/site-config";
 import { setRequestLocale } from 'next-intl/server';
-import { routing } from '../../../../i18n/routing';
+import { routing } from '@/i18n/routing';
 import { hasLocale } from 'next-intl';
 
 export async function generateStaticParams() {

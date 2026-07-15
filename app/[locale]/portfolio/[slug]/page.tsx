@@ -1,4 +1,4 @@
-import { Link } from '../../../../i18n/navigation';
+import { Link } from '@/i18n/navigation';
 import Image from "next/image";
 import { ScrollReveal } from "../../../components/scroll-reveal";
 import { SocialShare } from "../../../components/social-share";
@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import { createLocalPortfolioAdapter } from "../../../lib/content/local-portfolio-adapter";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../../lib/schema";
 import { setRequestLocale } from 'next-intl/server';
-import { routing } from '../../../../i18n/routing';
+import { routing } from '@/i18n/routing';
 import { hasLocale } from 'next-intl';
 
 export async function generateStaticParams() {

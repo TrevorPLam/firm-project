@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale } from 'next-intl';
-import { usePathname, useRouter } from '../../i18n/navigation';
+import { usePathname, useRouter } from '@/i18n/navigation';
 import { useState } from 'react';
 
 function LocaleFlag({ locale }: { locale: string }) {

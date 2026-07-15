@@ -5,7 +5,7 @@ import React from 'react';
 
 // Mock next-intl navigation to avoid module resolution issues in Vitest
 // See: https://github.com/amannn/next-intl/issues/2121
-vi.mock('../../i18n/navigation', () => ({
+vi.mock('../i18n/navigation', () => ({
   Link: ({ children, href, ...props }: { children?: React.ReactNode; href?: string; [key: string]: unknown }) => React.createElement('a', { href, ...props }, children),
   redirect: vi.fn(),
   usePathname: vi.fn(() => '/'),

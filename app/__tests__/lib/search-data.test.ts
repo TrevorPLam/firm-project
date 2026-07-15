@@ -3,7 +3,7 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getAllSearchableContent, getSearchByType, type SearchHit } from '../../lib/search-data';
-import type { BlogContentPort, PortfolioContentPort, BlogPostSummary, CaseStudySummary } from '../../lib/content-port';
+import type { BlogContentPort, PortfolioContentPort } from '../../lib/content-port';
 
 // Mock the content port adapters
 vi.mock('../../lib/content/local-blog-adapter', () => ({

@@ -746,7 +746,18 @@ Read `app/sitemap.ts` and `app/lib/search-data.ts`. Confirm they still import lo
 
 ## Task T009: Simplify TypeScript Path Aliases for Extractability
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
+
+### Implementation Notes
+
+- Moved `i18n/` directory from root to `app/i18n/` to enable single-path mapping
+- Simplified tsconfig.json paths from dual mapping `"@/*": ["./*", "./app/*"]` to single `"@/*": ["./app/*"]`
+- Updated all relative i18n imports across 15 files to use `@/i18n/` alias
+- Updated proxy.ts to import from `./app/i18n/routing` (relative from root)
+- Updated test setup mock path from `../../i18n/navigation` to `../i18n/navigation`
+- Fixed lint warnings by removing unused type imports in search-data.test.ts
+- All QA checks passed: typecheck, lint, 60 unit tests
+- Single clear mapping documented in tsconfig.json for future monorepo alignment
 
 ### Initial Analysis & Research
 

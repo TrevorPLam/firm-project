@@ -1,10 +1,10 @@
-import { Link } from '../../i18n/navigation';
+import { Link } from '@/i18n/navigation';
 import { ScrollReveal } from "../components/scroll-reveal";
 import { ContactForm } from "../components/contact-form";
 import type { Metadata } from "next";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../lib/schema";
 import { setRequestLocale, getTranslations } from 'next-intl/server';
-import { routing } from '../../i18n/routing';
+import { routing } from '@/i18n/routing';
 import { hasLocale } from 'next-intl';
 
 export const metadata: Metadata = {

@@ -2,7 +2,7 @@
 
 import { liteClient as algoliasearch } from "algoliasearch/lite";
 import { InstantSearch, SearchBox, Hits, Highlight, RefinementList, Pagination, Stats } from "react-instantsearch";
-import { Link } from '../../../i18n/navigation';
+import { Link } from '@/i18n/navigation';
 
 const searchClient =
   process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID &&
