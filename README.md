@@ -346,6 +346,7 @@ The project includes a GitHub Actions workflow (`.github/workflows/ci.yml`) that
 ### Setup & Configuration
 - [ENV_SETUP.md](ENV_SETUP.md) - Detailed environment variable setup guide
 - [TODO.md](TODO.md) - Development task tracking and roadmap
+- [docs/monorepo-alignment.md](docs/monorepo-alignment.md) - Future monorepo migration conventions
 
 ### Feature Documentation
 - [docs/analytics.md](docs/analytics.md) - Analytics implementation guide (GA4, conversion tracking)

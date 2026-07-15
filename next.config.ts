@@ -4,6 +4,8 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const withNextIntl = createNextIntlPlugin('./app/i18n/request.ts');
 
 const nextConfig: NextConfig = {
+  // Future monorepo: When extracting packages to packages/, may need transpilePackages
+  // See docs/monorepo-alignment.md for migration plan
   images: {
     formats: ['image/avif', 'image/webp'],
     // Only allow explicit, trusted hostnames to avoid SSRF abuse via /_next/image.

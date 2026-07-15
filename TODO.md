@@ -185,7 +185,7 @@ Read `app/[locale]/layout.tsx`, `app/lib/nonce.ts`, `proxy.ts`, and Next.js 16 d
 
 ## Task T014: Write Monorepo Alignment Conventions (No Folder Move)
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -237,26 +237,42 @@ Reread architecture assessment goals: eventually monorepo, not now. Confirm Sani
 
 ### Subtasks
 
-#### T014.1 [AGENT] Draft monorepo alignment doc
+#### T014.1 [AGENT] Draft monorepo alignment doc ✅
 
 - **Targeted file path:** `docs/monorepo-alignment.md`
 - **Description:** Write target layout, extraction order (content ports first, then UI, then Studio app), CI future notes, and "do not scaffold yet" rules. Reference `transpilePackages` from Next.js docs conceptually.
 - **Commands:**
   - None required beyond file create
 
-#### T014.2 [HUMAN] Record long-term package manager preference
+#### T014.2 [HUMAN] Record long-term package manager preference ✅
 
 - **Targeted file path:** `docs/monorepo-alignment.md`
 - **Description:** Preference only: for the future monorepo, choose `npm workspaces` or `pnpm workspaces` (recommended default for monorepos in the assessment). Reply with one word: `npm` or `pnpm`. Agent will write that decision into the doc; do not install the other manager now.
 - **Commands:**
   - None (decision only)
 
-#### T014.3 [AGENT] Link docs and record HUMAN decision
+#### T014.3 [AGENT] Link docs and record HUMAN decision ✅
 
 - **Targeted file path:** `docs/monorepo-alignment.md`, `README.md`, optional `next.config.ts` comment
 - **Description:** Insert HUMAN package-manager preference into the doc. Link from README. Add optional `transpilePackages` future comment in next.config without enabling unused packages.
 - **Commands:**
   - `npm run typecheck` (if next.config touched)
+
+### Implementation Notes
+
+**Decision:** pnpm chosen for future monorepo package manager (2026-07-15)
+
+**Changes Made:**
+1. Updated `docs/monorepo-alignment.md` with pnpm decision
+2. Linked monorepo alignment doc in README.md Documentation section
+3. Added future transpilePackages comment in next.config.ts
+4. All QA checks passed: typecheck, lint, and tests (110 tests passing)
+
+**Rationale:**
+- pnpm is recommended for monorepos (superior performance, disk efficiency, strict dependency management)
+- Aligns with 2026 best practices (Turborepo + pnpm standard)
+- Content port pattern (T005-T008) already enables boring extraction
+- Sanity Studio as sibling app aligns with Sanity's recommended deployment
 
 ---
 
