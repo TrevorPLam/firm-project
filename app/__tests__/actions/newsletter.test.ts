@@ -79,7 +79,7 @@ describe("Newsletter Action", () => {
     expect(logOutput).not.toContain("test@example.com");
   });
 
-  it("should return success for valid subscription", async () => {
+  it("should return success: false when email service is not configured", async () => {
     vi.mocked(clearRateLimits).mockResolvedValue(undefined);
     vi.mocked(checkRateLimit).mockResolvedValue(true);
     const formData = new FormData();
@@ -87,8 +87,8 @@ describe("Newsletter Action", () => {
 
     const result = await subscribeNewsletter(formData);
 
-    expect(result.success).toBe(true);
-    expect(result.message).toContain("Thanks for subscribing");
+    expect(result.success).toBe(false);
+    expect(result.message).toContain("Email service is not configured");
     expect(result.errors).toBeUndefined();
   });
 
@@ -120,14 +120,15 @@ describe("Newsletter Action", () => {
     const formData = new FormData();
     formData.append("email", "test@example.com");
 
-    // First 3 should succeed
+    // First 3 should fail due to missing credentials (not rate limit)
     for (let i = 0; i < 3; i++) {
       vi.mocked(checkRateLimit).mockResolvedValue(true);
       const result = await subscribeNewsletter(formData);
-      expect(result.success).toBe(true);
+      expect(result.success).toBe(false);
+      expect(result.message).toContain("Email service is not configured");
     }
 
-    // 4th should be rate limited
+    // 4th should be rate limited (when credentials are present, this would be the rate limit error)
     vi.mocked(checkRateLimit).mockResolvedValue(false);
     const result = await subscribeNewsletter(formData);
     expect(result.success).toBe(false);
