@@ -84,3 +84,25 @@ ENABLE_REACT_COMPILER=true
 - With compiler: Build fails due to memory issue
 
 **Recommendation:** Keep the compiler disabled until the memory issue with opengraph-image generation is resolved. The environment-aware toggle allows for easy testing once the issue is fixed.
+
+## E2E Testing
+
+This project uses Playwright for end-to-end testing. The test suite is configured to run across multiple browser projects locally (chromium, firefox, webkit, Mobile Chrome, Mobile Safari), but CI runs a focused chromium-only smoke test for efficiency.
+
+**Local Development (Full Matrix):**
+```bash
+# Run all e2e tests across all browser projects
+npm run test:e2e
+
+# Run specific spec files
+npx playwright test app/e2e/home-page.spec.ts
+
+# Run specific browser project only
+npx playwright test --project=chromium
+```
+
+**CI (Chromium-Only Smoke):**
+The CI workflow runs a focused smoke test using only chromium to reduce cost and runtime while still catching critical routing and navigation regressions. The smoke test uses `app/e2e/home-page.spec.ts` which validates core homepage functionality.
+
+**E2E Build Process:**
+Playwright tests use the built-in webServer configuration to automatically build and start the application before running tests (`npm run build && npm start`). This ensures tests run against a production-like build rather than dev mode.
