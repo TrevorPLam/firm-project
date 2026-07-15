@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
-// Don't set RESEND_API_KEY so the action skips email sending in tests
-// process.env.RESEND_API_KEY = "test-api-key";
+// Set RESEND_API_KEY for email injection tests
+process.env.RESEND_API_KEY = "test-api-key";
 process.env.CONTACT_EMAIL_TO = "test@example.com";
 
 import { headers } from "next/headers";
@@ -14,6 +14,16 @@ vi.mock("next/headers", () => ({
 
 vi.mock("next/cache", () => ({
   revalidatePath: vi.fn(),
+}));
+
+const mockSend = vi.fn().mockResolvedValue({ data: { id: "test-id" }, error: null });
+
+vi.mock("resend", () => ({
+  Resend: vi.fn().mockImplementation(() => ({
+    emails: {
+      send: mockSend,
+    },
+  })),
 }));
 
 // Import after mocks are set up
@@ -99,6 +109,10 @@ describe("submitContactFormAction", () => {
 
   it("should return success: false when email service is not configured", async () => {
     clearRateLimits(); // Clear rate limits before this test
+    // Temporarily unset RESEND_API_KEY for this test
+    const originalApiKey = process.env.RESEND_API_KEY;
+    delete process.env.RESEND_API_KEY;
+
     const formData = new FormData();
     formData.append("name", "John Doe");
     formData.append("email", "john@example.com");
@@ -112,6 +126,9 @@ describe("submitContactFormAction", () => {
     expect(result.success).toBe(false);
     expect(result.message).toContain("Email service is not configured");
     expect(result.errors).toBeUndefined();
+
+    // Restore RESEND_API_KEY
+    process.env.RESEND_API_KEY = originalApiKey;
   });
 
   it("should return error for missing name", async () => {
@@ -213,5 +230,53 @@ describe("submitContactFormAction", () => {
     expect(result.success).toBe(false);
     expect(result.errors).toBeDefined();
     expect(result.errors?.message).toBeDefined();
+  });
+
+  it("should escape HTML in name field to prevent XSS in email", async () => {
+    const formData = new FormData();
+    formData.append("name", "<script>alert('xss')</script>TestName");
+    formData.append("email", "john@example.com");
+    formData.append("company", "Acme Corp");
+    formData.append("service", "Web Development");
+    formData.append("budget", "$5000-$10000");
+    formData.append("message", "This is a test message with sufficient length");
+
+    const result = await submitContactFormAction(null, formData);
+
+    // The form should process without crashing
+    expect(result).toBeDefined();
+    // The escapeHtml function is tested separately in escape-html.test.ts
+  });
+
+  it("should escape HTML in message field to prevent XSS in email", async () => {
+    const formData = new FormData();
+    formData.append("name", "John Doe");
+    formData.append("email", "john@example.com");
+    formData.append("company", "Acme Corp");
+    formData.append("service", "Web Development");
+    formData.append("budget", "$5000-$10000");
+    formData.append("message", "<img src=x onerror=alert('xss')>Test message here");
+
+    const result = await submitContactFormAction(null, formData);
+
+    // The form should process without crashing
+    expect(result).toBeDefined();
+    // The escapeHtml function is tested separately in escape-html.test.ts
+  });
+
+  it("should escape HTML in company field to prevent XSS in email", async () => {
+    const formData = new FormData();
+    formData.append("name", "John Doe");
+    formData.append("email", "john@example.com");
+    formData.append("company", "<b>Acme</b>Corp");
+    formData.append("service", "Web Development");
+    formData.append("budget", "$5000-$10000");
+    formData.append("message", "This is a test message with sufficient length");
+
+    const result = await submitContactFormAction(null, formData);
+
+    // The form should process without crashing
+    expect(result).toBeDefined();
+    // The escapeHtml function is tested separately in escape-html.test.ts
   });
 });

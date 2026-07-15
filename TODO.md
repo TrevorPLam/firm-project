@@ -471,7 +471,7 @@ Confirm `zod` is listed under `devDependencies` in `package.json` while producti
 
 ## Task T017: Decide and Implement Analytics Consent Posture
 
-**Status:** `[ ]` OPEN
+**Status:** `[!]` BLOCKED
 
 ### Initial Analysis & Research
 
@@ -524,7 +524,7 @@ Read `app/components/analytics.tsx`. Confirm GA scripts load whenever `NEXT_PUBL
 
 ### Subtasks
 
-#### T017.1 [AGENT] Document current ungated GA behavior
+#### T017.1 [AGENT] Document current ungated GA behavior ✅
 
 - **Targeted file path:** `app/components/analytics.tsx`
 - **Description:** Summarize when scripts load and what the privacy page claims. Propose option A vs B text for HUMAN. No code change yet.
@@ -534,17 +534,37 @@ Read `app/components/analytics.tsx`. Confirm GA scripts load whenever `NEXT_PUBL
 #### T017.2 [HUMAN] Choose analytics posture
 
 - **Targeted file path:** TBD based on choice
-- **Description:** Reply with exactly `A` (document US-only / no banner) or `B` (implement consent gate before GA). If jurisdictions matter, say them in one line; agent will not invent legal advice.
+- **Description:** Reply with exactly `A` (document US-only / no banner), `B` (implement consent gate before GA), or `C` (cookieless analytics alternative). If jurisdictions matter, say them in one line; agent will not invent legal advice.
 - **Commands:**
   - None (decision only)
 
 #### T017.3 [AGENT] Implement chosen posture
 
 - **Targeted file path:** `app/components/analytics.tsx` and related consent module/UI if B; privacy page + ENV_SETUP either way
-- **Description:** Implement A (docs + code comments + privacy alignment) or B (gate + tests). Add/adjust a focused unit/component test for the gate if B.
+- **Description:** Implement A (docs + code comments + privacy alignment), B (gate + tests), or C (replace GA with cookieless alternative). Add/adjust a focused unit/component test for the gate if B.
 - **Commands:**
   - `npm run test:run -- app/__tests__/components/` (targeted new consent test file if added)
   - `npm run typecheck`
+
+### Implementation Notes
+
+**Status:** BLOCKED - Pending HUMAN research and decision on analytics consent posture.
+
+**Research Completed:**
+- Documented current ungated GA behavior (scripts load immediately when NEXT_PUBLIC_GA_MEASUREMENT_ID is set)
+- Conducted online research on GDPR, CCPA, Consent Mode v2, and cookieless analytics alternatives
+- Provided three options:
+  - **Option A**: US-only documented, no consent banner
+  - **Option B**: Consent-gated GA4 with Google Consent Mode v2
+  - **Option C**: Replace GA4 with cookieless analytics (Plausible/Fathom/Matomo)
+
+**Research Findings:**
+- GDPR requires consent before GA4 loads in EU/UK
+- Consent Mode v2 mandatory for EU traffic since March 2024
+- Cookieless analytics alternatives eliminate consent requirements
+- CCPA does not require consent for analytics (focus on data sales)
+
+**Decision Required:** HUMAN must choose Option A, B, or C to proceed.
 
 ---
 

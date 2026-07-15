@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { checkRateLimit } from "@/lib/rate-limiter";
 import { getClientIdentifier } from "@/lib/ip-utils";
+import { escapeHtml } from "@/lib/escape-html";
 import { Resend } from "resend";
 
 const contactFormSchema = z.object({
@@ -103,16 +104,16 @@ async function runContactFormSubmission(formData: FormData): Promise<FormResult>
     const emailResult = await resend.emails.send({
       from: "Elevate Digital <onboarding@resend.dev>",
       to: contactEmailTo,
-      subject: `New Contact Form Submission from ${name}`,
+      subject: `New Contact Form Submission from ${escapeHtml(name)}`,
       html: `
         <h2>New Contact Form Submission</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        ${company ? `<p><strong>Company:</strong> ${company}</p>` : ""}
-        <p><strong>Service:</strong> ${service}</p>
-        ${budget ? `<p><strong>Budget:</strong> ${budget}</p>` : ""}
+        <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+        <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+        ${company ? `<p><strong>Company:</strong> ${escapeHtml(company)}</p>` : ""}
+        <p><strong>Service:</strong> ${escapeHtml(service)}</p>
+        ${budget ? `<p><strong>Budget:</strong> ${escapeHtml(budget)}</p>` : ""}
         <p><strong>Message:</strong></p>
-        <p>${message}</p>
+        <p>${escapeHtml(message)}</p>
       `,
     });
 
