@@ -1,5 +1,14 @@
 # Environment Variables Setup
 
+## Package Manager
+
+This project uses **npm** as the package manager. All installation and dependency management should be done using npm commands.
+
+```bash
+npm install
+npm ci  # For CI/CD environments
+```
+
 ## Tailwind CSS v3 Configuration
 
 This project uses Tailwind CSS v3 with JavaScript configuration in `tailwind.config.mjs`. The typography plugin is loaded via `require("@tailwindcss/typography")` in the config file. PostCSS uses the standard `tailwindcss` and `autoprefixer` plugins.

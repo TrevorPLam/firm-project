@@ -17,7 +17,7 @@ A modern Next.js website for Elevate Digital, built with Next.js 16, React 19, T
 ### Prerequisites
 
 - Node.js 18+ 
-- npm, yarn, pnpm, or bun
+- npm (required - this project uses npm as the package manager)
 
 ### Installation
 
@@ -26,12 +26,6 @@ A modern Next.js website for Elevate Digital, built with Next.js 16, React 19, T
 
 ```bash
 npm install
-# or
-yarn install
-# or
-pnpm install
-# or
-bun install
 ```
 
 ### Environment Setup
