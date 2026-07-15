@@ -3,14 +3,15 @@ import Image from "next/image";
 import { ScrollReveal } from "../../../components/scroll-reveal";
 import { SocialShare } from "../../../components/social-share";
 import { notFound } from "next/navigation";
-import { getCaseStudyBySlug, getAllSlugs } from "../../../lib/portfolio-data";
+import { createLocalPortfolioAdapter } from "../../../lib/content/local-portfolio-adapter";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../../lib/schema";
 import { setRequestLocale } from 'next-intl/server';
 import { routing } from '../../../../i18n/routing';
 import { hasLocale } from 'next-intl';
 
 export async function generateStaticParams() {
-  const slugs = getAllSlugs();
+  const portfolioAdapter = createLocalPortfolioAdapter();
+  const slugs = await portfolioAdapter.getAllSlugs();
   const locales = routing.locales;
   return locales.flatMap((locale) =>
     slugs.map((slug) => ({
@@ -33,7 +34,8 @@ export default async function CaseStudyPage({
   }
   setRequestLocale(locale);
 
-  const study = getCaseStudyBySlug(slug);
+  const portfolioAdapter = createLocalPortfolioAdapter();
+  const study = await portfolioAdapter.getBySlug(slug);
 
   if (!study) {
     notFound();

@@ -493,6 +493,7 @@ Read `app/lib/blog-data.ts`, `app/lib/cms-client.ts`, `app/lib/content-types.ts`
 - All QA checks passed: typecheck, lint, 12 port unit tests
 - Playwright blog tests showed pre-existing failures (topic clusters, some selectors) but core blog functionality passed
 - Blog behavior unchanged - same slugs/titles for local dataset (BDD verified)
+- Committed locally (push failed due to missing remote configuration)
 
 ### Initial Analysis & Research
 

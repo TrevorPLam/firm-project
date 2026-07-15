@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { getCaseStudyBySlug } from "@/lib/portfolio-data";
+import { createLocalPortfolioAdapter } from "@/lib/content/local-portfolio-adapter";
 
 export const size = {
   width: 1200,
@@ -14,7 +14,8 @@ export default async function Image({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const study = getCaseStudyBySlug(slug);
+  const portfolioAdapter = createLocalPortfolioAdapter();
+  const study = await portfolioAdapter.getBySlug(slug);
 
   if (!study) {
     return new ImageResponse(

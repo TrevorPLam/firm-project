@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Link } from '../../../i18n/navigation';
 import { ScrollReveal } from "../../components/scroll-reveal";
-import { getAllCaseStudies } from "../../lib/portfolio-data";
+import { createLocalPortfolioAdapter } from "../../lib/content/local-portfolio-adapter";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
 import { setRequestLocale } from 'next-intl/server';
 import { routing } from '../../../i18n/routing';
@@ -42,7 +42,8 @@ export default async function PortfolioPage({
   }
   setRequestLocale(locale);
 
-  const caseStudies = getAllCaseStudies();
+  const portfolioAdapter = createLocalPortfolioAdapter();
+  const caseStudies = await portfolioAdapter.getAllSummaries();
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: `/${locale}` },
