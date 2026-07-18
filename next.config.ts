@@ -17,7 +17,8 @@ const nextConfig: NextConfig = {
       },
     ],
     // Block optimization of local files by default; opt-in when assets are ready.
-    localPatterns: [],
+    // Allow client logo SVGs for portfolio case studies
+    localPatterns: [{ pathname: "/clients/*.svg" }],
   },
   // Next.js 16: opt-in component/function-level caching with "use cache".
   // Temporarily disabled due to about route params access issue (separate from T027)

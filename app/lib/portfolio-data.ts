@@ -50,7 +50,7 @@ const caseStudies: Record<string, CaseStudy> = {
     title: "E-Commerce Redesign",
     category: "Web Design",
     client: "TechStyle Boutique",
-    clientLogo: "/clients/techstyle.png",
+    clientLogo: "/clients/techstyle.svg",
     description:
       "Complete e-commerce website redesign resulting in 150% increase in conversions and improved user experience.",
     overview:
@@ -81,7 +81,7 @@ const caseStudies: Record<string, CaseStudy> = {
     title: "Local SEO Campaign",
     category: "SEO",
     client: "Metro Dental Group",
-    clientLogo: "/clients/metro-dental.png",
+    clientLogo: "/clients/metro-dental.svg",
     description:
       "Comprehensive local SEO strategy that increased organic traffic by 300% and improved Google Business Profile visibility.",
     overview:
@@ -112,7 +112,7 @@ const caseStudies: Record<string, CaseStudy> = {
     title: "Analytics Implementation",
     category: "Analytics",
     client: "Fitness First Chain",
-    clientLogo: "/clients/fitness-first.png",
+    clientLogo: "/clients/fitness-first.svg",
     description:
       "Full analytics setup with custom dashboards and conversion tracking, enabling data-driven marketing decisions.",
     overview:
@@ -143,7 +143,7 @@ const caseStudies: Record<string, CaseStudy> = {
     title: "SaaS Website Development",
     category: "Web Design",
     client: "CloudSync Solutions",
-    clientLogo: "/clients/cloudsync.png",
+    clientLogo: "/clients/cloudsync.svg",
     description:
       "Modern SaaS website with interactive product demos and optimized conversion funnels for B2B audience.",
     overview:
@@ -174,7 +174,7 @@ const caseStudies: Record<string, CaseStudy> = {
     title: "Content Strategy & SEO",
     category: "SEO",
     client: "GreenHome Products",
-    clientLogo: "/clients/greenhome.png",
+    clientLogo: "/clients/greenhome.svg",
     description:
       "Content-first SEO strategy with blog optimization and pillar pages, establishing topical authority in sustainable home products.",
     overview:
@@ -205,7 +205,7 @@ const caseStudies: Record<string, CaseStudy> = {
     title: "Performance Optimization",
     category: "Web Design",
     client: "NewsPortal Media",
-    clientLogo: "/clients/newsportal.png",
+    clientLogo: "/clients/newsportal.svg",
     description:
       "Complete performance optimization for high-traffic news website, improving Core Web Vitals and user experience.",
     overview:
