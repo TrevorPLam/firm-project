@@ -11,6 +11,7 @@
 import { createLocalBlogAdapter } from './content/local-blog-adapter';
 import { createLocalPortfolioAdapter } from './content/local-portfolio-adapter';
 import type { BlogContentPort, PortfolioContentPort } from './content-port';
+import { routing } from '../i18n/routing';
 
 export interface SearchHit {
   objectID: string;
@@ -20,6 +21,7 @@ export interface SearchHit {
   category?: string;
   tags?: string[];
   url: string;
+  locale: string;
   author?: string;
   client?: string;
   date?: string;
@@ -32,8 +34,14 @@ export interface SearchHit {
  * Async-ready design: All source calls are awaited to support both sync local sources
  * and async CMS sources (e.g., Sanity via cms-client). When CMS sources are added,
  * they will be awaited alongside current sync sources without breaking the contract.
+ * 
+ * @param locale - The locale code (e.g., 'en', 'es') for URL prefixing
  */
-export async function getAllSearchableContent(): Promise<SearchHit[]> {
+export async function getAllSearchableContent(locale: string): Promise<SearchHit[]> {
+  // Validate locale against configured locales
+  if (!routing.locales.includes(locale as any)) {
+    throw new Error(`Invalid locale: ${locale}. Must be one of: ${routing.locales.join(', ')}`);
+  }
   const searchHits: SearchHit[] = [];
 
   // Create content port adapters
@@ -50,7 +58,8 @@ export async function getAllSearchableContent(): Promise<SearchHit[]> {
       description: post.excerpt,
       category: post.category,
       tags: [], // Tags not available in summary view
-      url: `/blog/${post.slug}`,
+      url: `/${locale}/blog/${post.slug}`,
+      locale,
       author: '', // Author not available in summary view
       date: post.date,
       readTime: post.readTime,
@@ -67,7 +76,8 @@ export async function getAllSearchableContent(): Promise<SearchHit[]> {
       description: study.description,
       category: study.category,
       tags: study.tags,
-      url: `/portfolio/${study.slug}`,
+      url: `/${locale}/portfolio/${study.slug}`,
+      locale,
       client: study.client,
     });
   }
@@ -80,7 +90,8 @@ export async function getAllSearchableContent(): Promise<SearchHit[]> {
       title: 'Services',
       description: 'Digital marketing services including SEO, web design, analytics, and content strategy to help your business grow.',
       category: 'Services',
-      url: '/services',
+      url: `/${locale}/services`,
+      locale,
     },
     {
       objectID: 'page-about',
@@ -88,7 +99,8 @@ export async function getAllSearchableContent(): Promise<SearchHit[]> {
       title: 'About',
       description: 'Learn about Elevate Digital, our team, and our mission to help businesses succeed in the digital landscape.',
       category: 'About',
-      url: '/about',
+      url: `/${locale}/about`,
+      locale,
     },
     {
       objectID: 'page-pricing',
@@ -96,7 +108,8 @@ export async function getAllSearchableContent(): Promise<SearchHit[]> {
       title: 'Pricing',
       description: 'Transparent pricing for our digital marketing services with flexible packages to fit your budget.',
       category: 'Pricing',
-      url: '/pricing',
+      url: `/${locale}/pricing`,
+      locale,
     },
     {
       objectID: 'page-contact',
@@ -104,7 +117,8 @@ export async function getAllSearchableContent(): Promise<SearchHit[]> {
       title: 'Contact',
       description: 'Get in touch with Elevate Digital to discuss your digital marketing needs and how we can help your business grow.',
       category: 'Contact',
-      url: '/contact',
+      url: `/${locale}/contact`,
+      locale,
     },
   ];
 
@@ -135,8 +149,11 @@ export function transformForAlgolia(searchHits: SearchHit[]): Record<string, str
 /**
  * Get search data by type filter
  * Async-ready: awaits getAllSearchableContent to support async sources
+ * 
+ * @param locale - The locale code (e.g., 'en', 'es') for URL prefixing
+ * @param type - The content type to filter by
  */
-export async function getSearchByType(type: 'blog' | 'portfolio' | 'page'): Promise<SearchHit[]> {
-  const allHits = await getAllSearchableContent();
+export async function getSearchByType(locale: string, type: 'blog' | 'portfolio' | 'page'): Promise<SearchHit[]> {
+  const allHits = await getAllSearchableContent(locale);
   return allHits.filter((hit) => hit.type === type);
 }
