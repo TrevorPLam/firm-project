@@ -497,7 +497,7 @@ Agent must confirm that Prettier is installed but no `format`/`format:check` scr
 
 ## Task T007: Remove Unused NonceProvider
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -553,6 +553,16 @@ Agent must confirm that `app/lib/nonce-provider.tsx` exports are not imported an
   - `rm app/lib/nonce-provider.tsx` (if confirmed)
   - `npm run typecheck`
   - `npm run test:run -- app/__tests__/lib/` (if any test deleted, else just existing fast test)
+- **Status:** ✅ Complete
+
+### Implementation Notes
+
+- Verified zero imports of `NonceProvider` or `useNonce` in the entire `app/` directory
+- Deleted `app/lib/nonce-provider.tsx` file
+- No related test files existed
+- Typecheck shows pre-existing errors in `app/__tests__/lib/env.test.ts` (T017) - unrelated to this change
+- Tests show pre-existing failures in `app/__tests__/lib/site-config.test.ts` (T016) - unrelated to this change
+- No new test failures introduced by this change
 
 ---
 
