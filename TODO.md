@@ -1269,7 +1269,7 @@ Agent must read `app/lib/portfolio-data.ts` and list the missing `/clients/*.png
 
 ## Task T016: Locale‑Aware revalidatePath in Server Actions
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -1326,6 +1326,7 @@ Agent must read `app/actions/contact.ts` and `app/actions/newsletter.ts` and con
 - **Targeted file path:** `app/actions/contact.ts`, `app/actions/newsletter.ts`
 - **Description:** Locate the exact lines with `revalidatePath` and note the argument. Confirm that the app uses `[locale]` routing.
 - **Commands:** none
+- **Status:** ✅ Complete
 
 #### T016.2 [AGENT] Implement localized revalidate helper and update actions
 
@@ -1335,6 +1336,23 @@ Agent must read `app/actions/contact.ts` and `app/actions/newsletter.ts` and con
   - `npm run test:run -- app/__tests__/actions/contact.test.ts`
   - `npm run test:run -- app/__tests__/actions/newsletter.test.ts`
   - `npm run typecheck`
+- **Status:** ✅ Complete
+
+### Implementation Notes
+
+- **T016.1 Complete:** Verified contact.ts calls `revalidatePath("/contact")` and newsletter.ts calls `revalidatePath("/blog")` without locale prefixes. App uses `[locale]` routing with `en` and `es` locales.
+- **T016.2 Complete:**
+  - Created `app/lib/revalidate-localized.ts` with `revalidateLocalizedPath(path)` helper that calls `revalidatePath` for each locale in `routing.locales`
+  - Updated `app/actions/contact.ts` to use `revalidateLocalizedPath("/contact")` instead of `revalidatePath("/contact")`
+  - Updated `app/actions/newsletter.ts` to use `revalidateLocalizedPath("/blog")` instead of `revalidatePath("/blog")`
+  - Removed unused `revalidatePath` imports from both action files
+  - Created `app/__tests__/lib/revalidate-localized.test.ts` with 4 unit tests verifying the helper calls `revalidatePath` with correct locale-prefixed paths
+  - All action tests (14 contact + 6 newsletter) passing
+  - Lint passes
+  - Typecheck shows pre-existing errors in T013 (revalidate.test.ts) and T017 (env.test.ts) - unrelated to this change
+  - No new errors introduced by this change
+  - Git commit created: feat: T016 add locale-aware revalidatePath helper for server actions
+  - Git push failed: no configured push destination (requires remote repository setup)
 
 ---
 

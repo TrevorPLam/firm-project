@@ -6,6 +6,7 @@ import {
   supportedLocales,
   absoluteUrl,
 } from "@/lib/site-config";
+import { resetEnvCache } from "@/lib/env";
 
 describe("site-config", () => {
   const originalEnv = process.env.NEXT_PUBLIC_SITE_URL;
@@ -13,6 +14,8 @@ describe("site-config", () => {
   afterEach(() => {
     // Restore original environment variable after each test
     process.env.NEXT_PUBLIC_SITE_URL = originalEnv;
+    // Reset env cache to clear cached values
+    resetEnvCache();
   });
 
   describe("siteUrl", () => {

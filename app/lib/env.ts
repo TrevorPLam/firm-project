@@ -8,7 +8,12 @@ import * as z from "zod";
 
 // Public environment variables (exposed to browser via NEXT_PUBLIC_ prefix)
 const publicEnvSchema = z.object({
-  NEXT_PUBLIC_SITE_URL: z.url().default("https://elevateddigital.com"),
+  NEXT_PUBLIC_SITE_URL: z
+    .string()
+    .trim()
+    .optional()
+    .transform((val) => (val && val !== "" ? val : undefined))
+    .pipe(z.url().default("https://elevateddigital.com")),
   NEXT_PUBLIC_GA_MEASUREMENT_ID: z.string().trim().optional(),
   NEXT_PUBLIC_GA_CONVERSION_ID: z.string().trim().optional(),
   NEXT_PUBLIC_GA_CONVERSION_LABEL: z.string().trim().optional(),
