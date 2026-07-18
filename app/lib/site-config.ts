@@ -1,15 +1,15 @@
 /**
  * Site Configuration Deep Module
- * 
+ *
  * Single source of truth for site-wide configuration values.
  * Provides a small public API surface with rich private implementation.
  */
 
-import { getSiteUrl as getEnvSiteUrl } from './env';
+import { getSiteUrl as getEnvSiteUrl } from "./env";
 
-const SITE_NAME = 'Elevate Digital';
-const DEFAULT_LOCALE = 'en';
-const SUPPORTED_LOCALES = ['en', 'es'] as const;
+const SITE_NAME = "Elevate Digital";
+const DEFAULT_LOCALE = "en";
+const SUPPORTED_LOCALES = ["en", "es"] as const;
 
 /**
  * Get the base site URL from environment or fallback

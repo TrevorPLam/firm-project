@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
-import { Link } from '@/i18n/navigation';
-import { useLocale } from 'next-intl';
+import { Link } from "@/i18n/navigation";
+import { useLocale } from "next-intl";
 import { SearchBar } from "./search-bar";
 import { LanguageSwitcher } from "./language-switcher";
 
@@ -88,7 +88,7 @@ export function Navigation() {
 
   return (
     <nav
-      className={`fixed top-0 right-0 left-0 z-50 transition-all duration-300 ${
+      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
         isScrolled
           ? "bg-background/80 border-foreground/10 border-b py-4 backdrop-blur-lg"
           : "bg-background/0 border-b border-transparent py-6 backdrop-blur-none"
@@ -103,50 +103,68 @@ export function Navigation() {
 
         {/* Desktop Navigation */}
         <div className="hidden items-center gap-8 md:flex">
-          <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.2 }}
+          >
             <Link
               href="/services"
-              className="text-foreground/80 hover:text-foreground inline-block transition-colors"
+              className="text-foreground/80 inline-block transition-colors hover:text-foreground"
             >
               Services
             </Link>
           </motion.div>
-          <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.2 }}
+          >
             <Link
               href="/about"
-              className="text-foreground/80 hover:text-foreground inline-block transition-colors"
+              className="text-foreground/80 inline-block transition-colors hover:text-foreground"
             >
               About
             </Link>
           </motion.div>
-          <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.2 }}
+          >
             <Link
               href="/portfolio"
-              className="text-foreground/80 hover:text-foreground inline-block transition-colors"
+              className="text-foreground/80 inline-block transition-colors hover:text-foreground"
             >
               Portfolio
             </Link>
           </motion.div>
-          <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.2 }}
+          >
             <Link
               href="/pricing"
-              className="text-foreground/80 hover:text-foreground inline-block transition-colors"
+              className="text-foreground/80 inline-block transition-colors hover:text-foreground"
             >
               Pricing
             </Link>
           </motion.div>
-          <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.2 }}
+          >
             <Link
               href="/blog"
-              className="text-foreground/80 hover:text-foreground inline-block transition-colors"
+              className="text-foreground/80 inline-block transition-colors hover:text-foreground"
             >
               Blog
             </Link>
           </motion.div>
-          <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.2 }}
+          >
             <Link
               href="/contact"
-              className="text-foreground/80 hover:text-foreground inline-block transition-colors"
+              className="text-foreground/80 inline-block transition-colors hover:text-foreground"
             >
               Contact
             </Link>
@@ -156,10 +174,14 @@ export function Navigation() {
         </div>
 
         <div className="hidden md:block">
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.2 }}>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+          >
             <Link
               href="/contact"
-              className="bg-primary hover:bg-primary-dark rounded-full px-6 py-2.5 font-medium text-white transition-colors"
+              className="rounded-full bg-primary px-6 py-2.5 font-medium text-white transition-colors hover:bg-primary-dark"
             >
               Get Started
             </Link>
@@ -205,59 +227,66 @@ export function Navigation() {
       {isMobileMenuOpen && (
         <div
           ref={menuRef}
-          className="bg-background border-foreground/10 absolute top-full right-0 left-0 border-b px-6 py-4 md:hidden"
+          className="border-foreground/10 absolute left-0 right-0 top-full border-b bg-background px-6 py-4 md:hidden"
         >
           <div className="flex flex-col gap-4">
             <Link
               href="/services"
-              className="text-foreground/80 hover:text-foreground py-2 transition-colors"
+              className="text-foreground/80 py-2 transition-colors hover:text-foreground"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Services
             </Link>
             <Link
               href="/about"
-              className="text-foreground/80 hover:text-foreground py-2 transition-colors"
+              className="text-foreground/80 py-2 transition-colors hover:text-foreground"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               About
             </Link>
             <Link
               href="/portfolio"
-              className="text-foreground/80 hover:text-foreground py-2 transition-colors"
+              className="text-foreground/80 py-2 transition-colors hover:text-foreground"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Portfolio
             </Link>
             <Link
               href="/pricing"
-              className="text-foreground/80 hover:text-foreground py-2 transition-colors"
+              className="text-foreground/80 py-2 transition-colors hover:text-foreground"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Pricing
             </Link>
             <Link
               href="/blog"
-              className="text-foreground/80 hover:text-foreground py-2 transition-colors"
+              className="text-foreground/80 py-2 transition-colors hover:text-foreground"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Blog
             </Link>
             <Link
               href="/contact"
-              className="text-foreground/80 hover:text-foreground py-2 transition-colors"
+              className="text-foreground/80 py-2 transition-colors hover:text-foreground"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Contact
             </Link>
             <div className="flex items-center gap-2 py-2">
-              <SearchBar locale={locale} onClose={() => setIsMobileMenuOpen(false)} />
+              <SearchBar
+                locale={locale}
+                onClose={() => setIsMobileMenuOpen(false)}
+              />
               <LanguageSwitcher />
             </div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.2 }}>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+            >
               <Link
                 href="/contact"
-                className="bg-primary hover:bg-primary-dark mt-2 rounded-full px-6 py-2.5 text-center font-medium text-white transition-colors"
+                className="mt-2 rounded-full bg-primary px-6 py-2.5 text-center font-medium text-white transition-colors hover:bg-primary-dark"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Get Started

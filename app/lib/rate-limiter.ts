@@ -14,8 +14,8 @@
  * @see docs/rate-limiting.md
  */
 
-import { Ratelimit } from '@upstash/ratelimit';
-import { Redis } from '@upstash/redis';
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 
 /**
  * Rate limit result with metadata for headers and logging.
@@ -33,15 +33,20 @@ export interface RateLimitResult {
  */
 let redis: Redis | null = null;
 
-if (typeof window === 'undefined') {
+if (typeof window === "undefined") {
   try {
-    if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+    if (
+      process.env.UPSTASH_REDIS_REST_URL &&
+      process.env.UPSTASH_REDIS_REST_TOKEN
+    ) {
       redis = Redis.fromEnv();
     } else {
-      console.warn('[rate-limiter] Upstash Redis credentials not configured, rate limiting disabled');
+      console.warn(
+        "[rate-limiter] Upstash Redis credentials not configured, rate limiting disabled",
+      );
     }
   } catch (error) {
-    console.error('[rate-limiter] Failed to initialize Upstash Redis:', error);
+    console.error("[rate-limiter] Failed to initialize Upstash Redis:", error);
   }
 }
 
@@ -65,7 +70,7 @@ function getLimiter(limit: number, windowMs: number): Ratelimit | null {
   }
 
   const cacheKey = `${limit}:${windowMs}`;
-  
+
   // Return cached instance if available
   if (limiterCache.has(cacheKey)) {
     return limiterCache.get(cacheKey)!;
@@ -76,7 +81,7 @@ function getLimiter(limit: number, windowMs: number): Ratelimit | null {
     redis: redis,
     limiter: Ratelimit.slidingWindow(limit, `${windowMs} ms`),
     analytics: true,
-    prefix: 'ratelimit',
+    prefix: "ratelimit",
   });
 
   limiterCache.set(cacheKey, limiter);
@@ -106,13 +111,19 @@ function getLimiter(limit: number, windowMs: number): Ratelimit | null {
  * }
  * ```
  */
-export async function checkRateLimit(key: string, limit: number, windowMs: number): Promise<boolean> {
+export async function checkRateLimit(
+  key: string,
+  limit: number,
+  windowMs: number,
+): Promise<boolean> {
   // Get limiter from factory cache
   const limiter = getLimiter(limit, windowMs);
-  
+
   // If Upstash is not configured, allow all requests (graceful degradation)
   if (!limiter) {
-    console.warn('[rate-limiter] Rate limiting disabled - Upstash Redis not configured');
+    console.warn(
+      "[rate-limiter] Rate limiting disabled - Upstash Redis not configured",
+    );
     return true;
   }
 
@@ -121,7 +132,7 @@ export async function checkRateLimit(key: string, limit: number, windowMs: numbe
 
     // Log rate limit events for monitoring
     if (!result.success) {
-      console.log('[rate-limiter] Rate limit exceeded', {
+      console.log("[rate-limiter] Rate limit exceeded", {
         key,
         limit: result.limit,
         remaining: result.remaining,
@@ -132,7 +143,7 @@ export async function checkRateLimit(key: string, limit: number, windowMs: numbe
     return result.success;
   } catch (error) {
     // If Redis fails, allow the request (graceful degradation)
-    console.error('[rate-limiter] Redis error, allowing request:', error);
+    console.error("[rate-limiter] Redis error, allowing request:", error);
     return true;
   }
 }
@@ -164,14 +175,16 @@ export async function checkRateLimit(key: string, limit: number, windowMs: numbe
 export async function checkRateLimitWithMetadata(
   key: string,
   limit: number,
-  windowMs: number
+  windowMs: number,
 ): Promise<RateLimitResult> {
   // Get limiter from factory cache
   const limiter = getLimiter(limit, windowMs);
-  
+
   // If Upstash is not configured, return success with default values
   if (!limiter) {
-    console.warn('[rate-limiter] Rate limiting disabled - Upstash Redis not configured');
+    console.warn(
+      "[rate-limiter] Rate limiting disabled - Upstash Redis not configured",
+    );
     return {
       success: true,
       limit,
@@ -184,7 +197,7 @@ export async function checkRateLimitWithMetadata(
     const result = await limiter.limit(key);
 
     if (!result.success) {
-      console.log('[rate-limiter] Rate limit exceeded', {
+      console.log("[rate-limiter] Rate limit exceeded", {
         key,
         limit: result.limit,
         remaining: result.remaining,
@@ -200,7 +213,7 @@ export async function checkRateLimitWithMetadata(
     };
   } catch (error) {
     // If Redis fails, allow the request (graceful degradation)
-    console.error('[rate-limiter] Redis error, allowing request:', error);
+    console.error("[rate-limiter] Redis error, allowing request:", error);
     return {
       success: true,
       limit,
@@ -219,19 +232,21 @@ export async function checkRateLimitWithMetadata(
  */
 export async function clearRateLimits(): Promise<void> {
   if (!redis) {
-    console.warn('[rate-limiter] Cannot clear limits - Upstash Redis not configured');
+    console.warn(
+      "[rate-limiter] Cannot clear limits - Upstash Redis not configured",
+    );
     return;
   }
 
   try {
     // Delete all keys with the rate limit prefix
-    const keys = await redis.keys('ratelimit:*');
+    const keys = await redis.keys("ratelimit:*");
     if (keys.length > 0) {
       await redis.del(...keys);
       console.log(`[rate-limiter] Cleared ${keys.length} rate limit entries`);
     }
   } catch (error) {
-    console.error('[rate-limiter] Failed to clear rate limits:', error);
+    console.error("[rate-limiter] Failed to clear rate limits:", error);
   }
 }
 
@@ -252,9 +267,11 @@ export async function clearRateLimits(): Promise<void> {
 export async function getRateLimitCount(key: string): Promise<number> {
   // Use default limiter (10 requests per 10 seconds) for count queries
   const limiter = getLimiter(10, 10000);
-  
+
   if (!limiter) {
-    console.warn('[rate-limiter] Cannot get count - Upstash Redis not configured');
+    console.warn(
+      "[rate-limiter] Cannot get count - Upstash Redis not configured",
+    );
     return 0;
   }
 
@@ -263,7 +280,7 @@ export async function getRateLimitCount(key: string): Promise<number> {
     const result = await limiter.limit(key);
     return result.limit - result.remaining;
   } catch (error) {
-    console.error('[rate-limiter] Failed to get rate limit count:', error);
+    console.error("[rate-limiter] Failed to get rate limit count:", error);
     return 0;
   }
 }

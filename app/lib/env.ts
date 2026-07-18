@@ -1,4 +1,4 @@
-import * as z from 'zod';
+import * as z from "zod";
 
 /**
  * Environment variable validation using Zod.
@@ -8,25 +8,25 @@ import * as z from 'zod';
 
 // Public environment variables (exposed to browser via NEXT_PUBLIC_ prefix)
 const publicEnvSchema = z.object({
-  NEXT_PUBLIC_SITE_URL: z.url().default('https://elevateddigital.com'),
+  NEXT_PUBLIC_SITE_URL: z.url().default("https://elevateddigital.com"),
   NEXT_PUBLIC_GA_MEASUREMENT_ID: z.string().trim().optional(),
   NEXT_PUBLIC_GA_CONVERSION_ID: z.string().trim().optional(),
   NEXT_PUBLIC_GA_CONVERSION_LABEL: z.string().trim().optional(),
   NEXT_PUBLIC_ALGOLIA_APPLICATION_ID: z.string().trim().optional(),
   NEXT_PUBLIC_ALGOLIA_SEARCH_API_KEY: z.string().trim().optional(),
-  NEXT_PUBLIC_ALGOLIA_INDEX_NAME: z.string().trim().default('content'),
+  NEXT_PUBLIC_ALGOLIA_INDEX_NAME: z.string().trim().default("content"),
   NEXT_PUBLIC_SANITY_PROJECT_ID: z.string().trim().optional(),
-  NEXT_PUBLIC_SANITY_DATASET: z.string().trim().default('production'),
+  NEXT_PUBLIC_SANITY_DATASET: z.string().trim().default("production"),
 });
 
 // Server environment variables (not exposed to browser)
 const serverEnvSchema = z.object({
   // Indexing control
-  ALLOW_INDEXING: z.enum(['true', 'false']).optional(),
+  ALLOW_INDEXING: z.enum(["true", "false"]).optional(),
 
   // Email service (Resend)
   RESEND_API_KEY: z.string().trim().optional(),
-  CONTACT_EMAIL_TO: z.email().default('contact@elevatedigital.com'),
+  CONTACT_EMAIL_TO: z.email().default("contact@elevatedigital.com"),
   RESEND_AUDIENCE_ID: z.string().trim().optional(),
 
   // Rate limiting (Upstash Redis)
@@ -37,11 +37,13 @@ const serverEnvSchema = z.object({
   SANITY_API_READ_TOKEN: z.string().trim().optional(),
 
   // Feature flags
-  ENABLE_REACT_COMPILER: z.enum(['true', 'false']).optional(),
+  ENABLE_REACT_COMPILER: z.enum(["true", "false"]).optional(),
 
   // Platform detection
-  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-  VERCEL_ENV: z.enum(['development', 'preview', 'production']).optional(),
+  NODE_ENV: z
+    .enum(["development", "production", "test"])
+    .default("development"),
+  VERCEL_ENV: z.enum(["development", "preview", "production"]).optional(),
 });
 
 // Validate public env (always available)
@@ -74,14 +76,18 @@ export function getServerEnv() {
 export function validateProductionEnv() {
   const env = getServerEnv();
   const errors: string[] = [];
-  
+
   // In production, Resend API key is required for email functionality
-  if (env.NODE_ENV === 'production' && !env.RESEND_API_KEY) {
-    errors.push('RESEND_API_KEY is required in production for email functionality');
+  if (env.NODE_ENV === "production" && !env.RESEND_API_KEY) {
+    errors.push(
+      "RESEND_API_KEY is required in production for email functionality",
+    );
   }
-  
+
   if (errors.length > 0) {
-    throw new Error(`Production environment validation failed:\n${errors.join('\n')}`);
+    throw new Error(
+      `Production environment validation failed:\n${errors.join("\n")}`,
+    );
   }
 }
 
@@ -147,17 +153,17 @@ export function getUpstashRedisRestToken(): string | undefined {
 }
 
 export function isReactCompilerEnabled(): boolean {
-  return getServerEnv().ENABLE_REACT_COMPILER === 'true';
+  return getServerEnv().ENABLE_REACT_COMPILER === "true";
 }
 
 export function isProduction(): boolean {
-  return getServerEnv().NODE_ENV === 'production';
+  return getServerEnv().NODE_ENV === "production";
 }
 
 export function isDevelopment(): boolean {
-  return getServerEnv().NODE_ENV === 'development';
+  return getServerEnv().NODE_ENV === "development";
 }
 
 export function isTest(): boolean {
-  return getServerEnv().NODE_ENV === 'test';
+  return getServerEnv().NODE_ENV === "test";
 }

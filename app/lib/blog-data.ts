@@ -38,7 +38,8 @@ const blogPosts: Record<string, BlogPost> = {
     id: 1,
     slug: "web-design-trends-2025",
     title: "10 Web Design Trends to Watch in 2025",
-    excerpt: "Explore the latest web design trends that will shape the digital landscape in 2025, from minimalism to advanced interactivity.",
+    excerpt:
+      "Explore the latest web design trends that will shape the digital landscape in 2025, from minimalism to advanced interactivity.",
     category: "Web Design",
     date: "July 10, 2026",
     readTime: "5 min read",
@@ -89,7 +90,8 @@ const blogPosts: Record<string, BlogPost> = {
     id: 2,
     slug: "local-seo-guide",
     title: "The Complete Guide to SEO for Local Businesses",
-    excerpt: "Learn how to optimize your online presence for local search and attract more customers in your area with proven SEO strategies.",
+    excerpt:
+      "Learn how to optimize your online presence for local search and attract more customers in your area with proven SEO strategies.",
     category: "SEO",
     date: "June 15, 2026",
     readTime: "8 min read",
@@ -142,7 +144,8 @@ const blogPosts: Record<string, BlogPost> = {
     id: 3,
     slug: "core-web-vitals",
     title: "Understanding Core Web Vitals and Their Impact",
-    excerpt: "Discover why Core Web Vitals matter for SEO and user experience, and how to optimize your website for better performance.",
+    excerpt:
+      "Discover why Core Web Vitals matter for SEO and user experience, and how to optimize your website for better performance.",
     category: "Analytics",
     date: "May 20, 2026",
     readTime: "6 min read",
@@ -206,7 +209,8 @@ const blogPosts: Record<string, BlogPost> = {
     id: 4,
     slug: "conversion-landing-pages",
     title: "How to Build a Conversion-Optimized Landing Page",
-    excerpt: "Master the art of creating landing pages that convert with our comprehensive guide covering design, copy, and optimization.",
+    excerpt:
+      "Master the art of creating landing pages that convert with our comprehensive guide covering design, copy, and optimization.",
     category: "Web Design",
     date: "April 28, 2026",
     readTime: "7 min read",
@@ -251,13 +255,19 @@ const blogPosts: Record<string, BlogPost> = {
       <h2>Conclusion</h2>
       <p>Creating a high-converting landing page requires careful planning, compelling copy, and continuous optimization. By focusing on the user experience and testing your assumptions, you can create landing pages that consistently convert visitors into customers.</p>
     `,
-    tags: ["Web Design", "Conversion Optimization", "Landing Pages", "Copywriting"],
+    tags: [
+      "Web Design",
+      "Conversion Optimization",
+      "Landing Pages",
+      "Copywriting",
+    ],
   },
   "ai-digital-marketing": {
     id: 5,
     slug: "ai-digital-marketing",
     title: "The Future of AI in Digital Marketing",
-    excerpt: "Explore how artificial intelligence is transforming digital marketing and what it means for businesses in the coming years.",
+    excerpt:
+      "Explore how artificial intelligence is transforming digital marketing and what it means for businesses in the coming years.",
     category: "Digital Marketing",
     date: "March 15, 2026",
     readTime: "6 min read",
@@ -299,7 +309,8 @@ const blogPosts: Record<string, BlogPost> = {
     id: 6,
     slug: "content-strategy-2025",
     title: "Content Strategy: Quality vs Quantity in 2025",
-    excerpt: "Learn why creating high-quality, valuable content is more important than ever for SEO and audience engagement.",
+    excerpt:
+      "Learn why creating high-quality, valuable content is more important than ever for SEO and audience engagement.",
     category: "Content Strategy",
     date: "February 10, 2026",
     readTime: "5 min read",
@@ -367,7 +378,9 @@ export function getAllPosts(): BlogPostSummary[] {
     category: post.category,
     date: post.date,
     readTime: post.readTime,
-    topicCluster: topicClusters[post.slug] || post.category.toLowerCase().replace(/\s+/g, "-"),
+    topicCluster:
+      topicClusters[post.slug] ||
+      post.category.toLowerCase().replace(/\s+/g, "-"),
   }));
 }
 

@@ -72,7 +72,8 @@ describe("Newsletter Action", () => {
 
     await subscribeNewsletter(formData);
 
-    const logCalls = (console.log as unknown as { mock: { calls: unknown[] } }).mock.calls;
+    const logCalls = (console.log as unknown as { mock: { calls: unknown[] } })
+      .mock.calls;
     const logOutput = JSON.stringify(logCalls);
 
     // Assert that email is not present in console output

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { Link } from '@/i18n/navigation';
+import { Link } from "@/i18n/navigation";
 import type { SearchHit } from "@/lib/search-data";
 import { getAllSearchableContent } from "@/lib/search-data";
 
@@ -43,7 +43,7 @@ export function SearchContent({ locale }: LocalSearchContentProps) {
           hit.title.toLowerCase().includes(lowerQuery) ||
           hit.description.toLowerCase().includes(lowerQuery) ||
           hit.category?.toLowerCase().includes(lowerQuery) ||
-          hit.tags?.some((tag) => tag.toLowerCase().includes(lowerQuery))
+          hit.tags?.some((tag) => tag.toLowerCase().includes(lowerQuery)),
       );
     }
 
@@ -61,9 +61,9 @@ export function SearchContent({ locale }: LocalSearchContentProps) {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 py-12">
-        <div className="max-w-4xl mx-auto px-6">
+        <div className="mx-auto max-w-4xl px-6">
           <div className="text-center">
-            <h1 className="text-3xl font-bold mb-4">Search</h1>
+            <h1 className="mb-4 text-3xl font-bold">Search</h1>
             <p className="text-gray-600">Loading search index...</p>
           </div>
         </div>
@@ -73,20 +73,25 @@ export function SearchContent({ locale }: LocalSearchContentProps) {
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="mx-auto max-w-7xl px-6">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Search</h1>
-          <p className="text-gray-600">Search our blog posts, portfolio case studies, and pages.</p>
+          <h1 className="mb-2 text-3xl font-bold">Search</h1>
+          <p className="text-gray-600">
+            Search our blog posts, portfolio case studies, and pages.
+          </p>
         </div>
 
         <div className="flex gap-8">
           {/* Sidebar Filters */}
-          <aside className="w-64 flex-shrink-0 hidden lg:block">
-            <div className="bg-white border border-gray-200 rounded-lg p-6 sticky top-24">
-              <h2 className="font-semibold mb-4">Filter by Type</h2>
+          <aside className="hidden w-64 flex-shrink-0 lg:block">
+            <div className="sticky top-24 rounded-lg border border-gray-200 bg-white p-6">
+              <h2 className="mb-4 font-semibold">Filter by Type</h2>
               <div className="space-y-2">
                 {Object.entries(typeCounts).map(([type, count]) => (
-                  <label key={type} className="flex items-center gap-2 cursor-pointer">
+                  <label
+                    key={type}
+                    className="flex cursor-pointer items-center gap-2"
+                  >
                     <input
                       type="radio"
                       name="type"
@@ -95,7 +100,9 @@ export function SearchContent({ locale }: LocalSearchContentProps) {
                       onChange={(e) => setSelectedType(e.target.value)}
                       className="rounded border-gray-300 text-primary focus:ring-primary"
                     />
-                    <span className="text-sm text-gray-700 capitalize">{type}</span>
+                    <span className="text-sm capitalize text-gray-700">
+                      {type}
+                    </span>
                     <span className="text-xs text-gray-500">({count})</span>
                   </label>
                 ))}
@@ -105,43 +112,52 @@ export function SearchContent({ locale }: LocalSearchContentProps) {
 
           {/* Main Content */}
           <div className="flex-1">
-            <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6">
+            <div className="mb-6 rounded-lg border border-gray-200 bg-white p-6">
               <input
                 type="text"
                 placeholder="Search for content..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-lg"
+                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-lg focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary"
               />
               <div className="mt-4 text-sm text-gray-600">
-                {filteredResults.length} result{filteredResults.length !== 1 ? "s" : ""} found
+                {filteredResults.length} result
+                {filteredResults.length !== 1 ? "s" : ""} found
               </div>
             </div>
 
             <div className="space-y-4">
               {filteredResults.length === 0 ? (
-                <div className="bg-white border border-gray-200 rounded-lg p-12 text-center">
-                  <p className="text-gray-600">No results found for "{query}"</p>
+                <div className="rounded-lg border border-gray-200 bg-white p-12 text-center">
+                  <p className="text-gray-600">
+                    No results found for "{query}"
+                  </p>
                 </div>
               ) : (
                 filteredResults.map((hit) => (
                   <Link
                     key={hit.objectID}
                     href={hit.url}
-                    className="block p-6 bg-white border border-gray-200 rounded-lg hover:border-primary hover:shadow-md transition-all"
+                    className="block rounded-lg border border-gray-200 bg-white p-6 transition-all hover:border-primary hover:shadow-md"
                   >
                     <div className="flex items-start gap-4">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded capitalize">
+                      <div className="min-w-0 flex-1">
+                        <div className="mb-2 flex items-center gap-2">
+                          <span className="bg-primary/10 rounded px-2 py-1 text-xs font-medium capitalize text-primary">
                             {hit.type}
                           </span>
                           {hit.category && (
-                            <span className="text-xs text-gray-500">{hit.category}</span>
+                            <span className="text-xs text-gray-500">
+                              {hit.category}
+                            </span>
                           )}
                         </div>
-                        <h3 className="text-xl font-semibold text-foreground mb-2">{hit.title}</h3>
-                        <p className="text-gray-600 line-clamp-2 mb-3">{hit.description}</p>
+                        <h3 className="mb-2 text-xl font-semibold text-foreground">
+                          {hit.title}
+                        </h3>
+                        <p className="mb-3 line-clamp-2 text-gray-600">
+                          {hit.description}
+                        </p>
                         {(hit.author || hit.client || hit.date) && (
                           <div className="flex items-center gap-3 text-xs text-gray-500">
                             {hit.author && <span>By {hit.author}</span>}

@@ -65,6 +65,7 @@ images: {
 ```
 
 This configuration:
+
 - Allows Next.js to optimize images from Sanity's CDN
 - Uses AVIF and WebP formats for modern browsers
 - Maintains SSRF protection by only allowing explicit hostnames
@@ -101,6 +102,7 @@ npx sanity@latest init
 ```
 
 This will:
+
 - Create a new Sanity project (or link to existing)
 - Scaffold configuration files
 - Set up the Sanity Studio
@@ -134,7 +136,7 @@ Repeat for your production URL.
 
 ```typescript
 interface SanityBlogPost {
-  _type: 'blogPost';
+  _type: "blogPost";
   _id: string;
   title: string;
   slug: { current: string };
@@ -153,7 +155,7 @@ interface SanityBlogPost {
 
 ```typescript
 interface SanityCaseStudy {
-  _type: 'caseStudy';
+  _type: "caseStudy";
   _id: string;
   title: string;
   slug: { current: string };
@@ -176,7 +178,7 @@ interface SanityCaseStudy {
 
 ```typescript
 interface SanityPage {
-  _type: 'page';
+  _type: "page";
   _id: string;
   title: string;
   slug: { current: string };
@@ -191,7 +193,7 @@ interface SanityPage {
 
 ```typescript
 interface SanityService {
-  _type: 'service';
+  _type: "service";
   _id: string;
   name: string;
   slug: { current: string };
@@ -207,13 +209,13 @@ interface SanityService {
 ### Using the CMS Client
 
 ```typescript
-import { getAllBlogPosts, getBlogPostBySlug } from '@/app/lib/cms-client';
+import { getAllBlogPosts, getBlogPostBySlug } from "@/app/lib/cms-client";
 
 // Get all blog posts
 const posts = await getAllBlogPosts();
 
 // Get single blog post
-const post = await getBlogPostBySlug('web-design-trends-2025');
+const post = await getBlogPostBySlug("web-design-trends-2025");
 ```
 
 ### GROQ Queries
@@ -248,6 +250,7 @@ npx tsx scripts/migrate-content.ts
 ```
 
 The script:
+
 - Reads existing blog posts from `app/lib/blog-data.ts`
 - Reads existing case studies from `app/lib/portfolio-data.ts`
 - Transforms to Sanity document format
@@ -257,6 +260,7 @@ The script:
 ### Manual Migration
 
 For manual content entry:
+
 1. Open Sanity Studio at `http://localhost:3333`
 2. Navigate to the content type (Blog Post, Case Study, etc.)
 3. Click "New document"
@@ -270,10 +274,10 @@ The Live Content API (`defineLive`) provides real-time content updates and autom
 ### Setup
 
 ```typescript
-import { defineLive } from 'next-sanity';
+import { defineLive } from "next-sanity";
 
 export const { sanityFetch, SanityLive } = defineLive({
-  client: client.withConfig({ apiVersion: '2026-02-01' }),
+  client: client.withConfig({ apiVersion: "2026-02-01" }),
   serverToken: process.env.SANITY_API_READ_TOKEN,
   browserToken: process.env.SANITY_API_READ_TOKEN,
 });
@@ -306,7 +310,7 @@ Visual editing enables click-to-edit overlays for draft content in the Presentat
 ### Enable Draft Mode
 
 ```typescript
-import { defineEnableDraftMode } from 'next-sanity';
+import { defineEnableDraftMode } from "next-sanity";
 
 export const { enableDraftMode } = defineEnableDraftMode({
   client,
@@ -319,7 +323,7 @@ export const { enableDraftMode } = defineEnableDraftMode({
 Create a preview route at `app/api/draft/route.ts`:
 
 ```typescript
-import { enableDraftMode } from '@/app/lib/cms-client';
+import { enableDraftMode } from "@/app/lib/cms-client";
 
 export async function GET(request: Request) {
   return await enableDraftMode(request);
@@ -336,19 +340,19 @@ Use `defineLive` by default. It handles fetching, caching, and invalidation auto
 
 For fine-grained control:
 
-| Scenario | Approach |
-|----------|----------|
-| Real-time updates, Visual Editing | `defineLive` (default) |
-| Static marketing pages, rarely updated | Time-based revalidation |
-| Blog posts, products with frequent edits | Tag-based revalidation |
+| Scenario                                 | Approach                        |
+| ---------------------------------------- | ------------------------------- |
+| Real-time updates, Visual Editing        | `defineLive` (default)          |
+| Static marketing pages, rarely updated   | Time-based revalidation         |
+| Blog posts, products with frequent edits | Tag-based revalidation          |
 | Critical accuracy (stock levels, prices) | Path-based + short revalidation |
 
 ### CDN vs API
 
-| Setting | Speed | Freshness | Use When |
-|---------|-------|-----------|----------|
-| `useCdn: true` | Fast | May have brief delay | Default for all runtime fetches |
-| `useCdn: false` | Slower | Guaranteed fresh | `generateStaticParams`, webhooks |
+| Setting         | Speed  | Freshness            | Use When                         |
+| --------------- | ------ | -------------------- | -------------------------------- |
+| `useCdn: true`  | Fast   | May have brief delay | Default for all runtime fetches  |
+| `useCdn: false` | Slower | Guaranteed fresh     | `generateStaticParams`, webhooks |
 
 ## Webhooks
 
@@ -366,20 +370,23 @@ Webhooks trigger cache invalidation when content changes.
 Create a route handler at `app/api/revalidate/route.ts`:
 
 ```typescript
-import { parseBody } from 'next-sanity';
-import { revalidatePath } from 'next/cache';
+import { parseBody } from "next-sanity";
+import { revalidatePath } from "next/cache";
 
 export async function POST(request: Request) {
-  const { body, isValidSignature } = await parseBody(request, process.env.SANITY_WEBHOOK_SECRET);
+  const { body, isValidSignature } = await parseBody(
+    request,
+    process.env.SANITY_WEBHOOK_SECRET,
+  );
 
   if (!isValidSignature) {
-    return new Response('Invalid signature', { status: 401 });
+    return new Response("Invalid signature", { status: 401 });
   }
 
   const slug = body.slug.current;
   revalidatePath(`/blog/${slug}`);
 
-  return new Response('Revalidated', { status: 200 });
+  return new Response("Revalidated", { status: 200 });
 }
 ```
 

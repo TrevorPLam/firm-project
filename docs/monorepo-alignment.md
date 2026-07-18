@@ -79,6 +79,7 @@ Sanity CMS documentation recommends standalone Studio deployment. In monorepo co
 ### Decision Gate
 
 Before creating workspace config files, the package manager must be chosen. This decision affects:
+
 - Lockfile format (package-lock.json vs pnpm-lock.yaml)
 - Workspace configuration syntax
 - CI/CD dependency caching
@@ -93,18 +94,20 @@ When extracting packages, Next.js may need `transpilePackages` configuration:
 ```typescript
 // next.config.ts (future apps/web/next.config.ts)
 const nextConfig: NextConfig = {
-  transpilePackages: ['@firm/content', '@firm/ui', '@firm/site-config'],
+  transpilePackages: ["@firm/content", "@firm/ui", "@firm/site-config"],
   // ... other config
 };
 ```
 
 **When transpilePackages is required:**
+
 - Local workspace packages export raw TS/TSX source (no build step)
 - Packages contain CSS imports
 - Packages use path aliases
 - Packages need specific JSX/runtime transforms
 
 **When NOT required:**
+
 - Packages pre-compile to JavaScript
 - Packages export standard ESM/CJS modules
 - Bundler resolves packages as local relative directories
@@ -126,6 +129,7 @@ Current CI (`.github/workflows/ci.yml`) is single-app; will need expansion.
 ## Explicit Non-Goals
 
 **Do NOT create yet:**
+
 - `apps/` or `packages/` directories
 - Turborepo or Nx configuration
 - Workspace configuration files (pnpm-workspace.yaml, package.json workspaces)
@@ -133,6 +137,7 @@ Current CI (`.github/workflows/ci.yml`) is single-app; will need expansion.
 - Any structural monorepo scaffolding
 
 **Do NOT move yet:**
+
 - Current `app/` directory
 - Any source files
 

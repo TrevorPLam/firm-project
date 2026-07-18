@@ -1,12 +1,12 @@
-import { Link } from '@/i18n/navigation';
+import { Link } from "@/i18n/navigation";
 import { ScrollReveal } from "../components/scroll-reveal";
 import { ContactForm } from "../components/contact-form";
 import type { Metadata } from "next";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../lib/schema";
 import { generateLocaleAlternates } from "../lib/seo-alternates";
-import { setRequestLocale, getTranslations } from 'next-intl/server';
-import { routing } from '@/i18n/routing';
-import { hasLocale } from 'next-intl';
+import { setRequestLocale, getTranslations } from "next-intl/server";
+import { routing } from "@/i18n/routing";
+import { hasLocale } from "next-intl";
 
 export async function generateMetadata({
   params,
@@ -14,7 +14,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const alternates = generateLocaleAlternates(locale, '');
+  const alternates = generateLocaleAlternates(locale, "");
 
   return {
     alternates,
@@ -34,10 +34,10 @@ export default async function Home({
   }
   setRequestLocale(locale);
 
-  const t = await getTranslations('HomePage');
+  const t = await getTranslations("HomePage");
 
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: t('hero.titleHighlight'), url: `/${locale}` },
+    { name: t("hero.titleHighlight"), url: `/${locale}` },
   ]);
 
   return (
@@ -49,29 +49,32 @@ export default async function Home({
         }}
       />
       {/* Hero Section */}
-      <section className="px-6 pt-32 pb-20">
+      <section className="px-6 pb-20 pt-32">
         <div className="mx-auto max-w-7xl">
           <ScrollReveal>
             <div className="max-w-3xl">
-              <h1 className="mb-6 text-5xl leading-tight font-bold tracking-tight md:text-7xl">
-                {t('hero.title')}
-                <span className="text-primary"> {t('hero.titleHighlight')}</span>
+              <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight md:text-7xl">
+                {t("hero.title")}
+                <span className="text-primary">
+                  {" "}
+                  {t("hero.titleHighlight")}
+                </span>
               </h1>
               <p className="text-foreground/70 mb-8 text-xl leading-relaxed md:text-2xl">
-                {t('hero.description')}
+                {t("hero.description")}
               </p>
               <div className="flex flex-col gap-4 sm:flex-row">
                 <Link
                   href="/contact"
-                  className="bg-primary hover:bg-primary-dark rounded-full px-8 py-4 text-center text-lg font-semibold text-white transition-all hover:scale-105"
+                  className="rounded-full bg-primary px-8 py-4 text-center text-lg font-semibold text-white transition-all hover:scale-105 hover:bg-primary-dark"
                 >
-                  {t('hero.startProject')}
+                  {t("hero.startProject")}
                 </Link>
                 <Link
                   href="/services"
-                  className="border-foreground/20 hover:border-primary hover:text-primary rounded-full border-2 px-8 py-4 text-center text-lg font-semibold transition-all"
+                  className="border-foreground/20 rounded-full border-2 px-8 py-4 text-center text-lg font-semibold transition-all hover:border-primary hover:text-primary"
                 >
-                  {t('hero.exploreServices')}
+                  {t("hero.exploreServices")}
                 </Link>
               </div>
             </div>
@@ -85,10 +88,10 @@ export default async function Home({
           <ScrollReveal>
             <div className="mb-16 text-center">
               <h2 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">
-                {t('services.title')}
+                {t("services.title")}
               </h2>
               <p className="text-foreground/70 mx-auto max-w-2xl text-xl">
-                {t('services.description')}
+                {t("services.description")}
               </p>
             </div>
           </ScrollReveal>
@@ -96,10 +99,10 @@ export default async function Home({
           <div className="grid gap-8 md:grid-cols-3">
             {/* Web Design */}
             <ScrollReveal delay={100}>
-              <div className="bg-background border-foreground/10 hover:border-primary/50 rounded-2xl border p-8 transition-all hover:shadow-xl">
+              <div className="border-foreground/10 hover:border-primary/50 rounded-2xl border bg-background p-8 transition-all hover:shadow-xl">
                 <div className="bg-primary/10 mb-6 flex h-12 w-12 items-center justify-center rounded-xl">
                   <svg
-                    className="text-primary h-6 w-6"
+                    className="h-6 w-6 text-primary"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -113,23 +116,23 @@ export default async function Home({
                   </svg>
                 </div>
                 <h3 className="mb-3 text-2xl font-bold">
-                  {t('services.webDesign.title')}
+                  {t("services.webDesign.title")}
                 </h3>
                 <p className="text-foreground/70 mb-4">
-                  {t('services.webDesign.description')}
+                  {t("services.webDesign.description")}
                 </p>
                 <ul className="text-foreground/60 space-y-2">
                   <li className="flex items-center gap-2">
-                    <span className="bg-primary h-1.5 w-1.5 rounded-full"></span>
-                    {t('services.webDesign.feature1')}
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
+                    {t("services.webDesign.feature1")}
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="bg-primary h-1.5 w-1.5 rounded-full"></span>
-                    {t('services.webDesign.feature2')}
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
+                    {t("services.webDesign.feature2")}
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="bg-primary h-1.5 w-1.5 rounded-full"></span>
-                    {t('services.webDesign.feature3')}
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
+                    {t("services.webDesign.feature3")}
                   </li>
                 </ul>
               </div>
@@ -137,10 +140,10 @@ export default async function Home({
 
             {/* SEO */}
             <ScrollReveal delay={200}>
-              <div className="bg-background border-foreground/10 hover:border-primary/50 rounded-2xl border p-8 transition-all hover:shadow-xl">
+              <div className="border-foreground/10 hover:border-primary/50 rounded-2xl border bg-background p-8 transition-all hover:shadow-xl">
                 <div className="bg-primary/10 mb-6 flex h-12 w-12 items-center justify-center rounded-xl">
                   <svg
-                    className="text-primary h-6 w-6"
+                    className="h-6 w-6 text-primary"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -153,22 +156,24 @@ export default async function Home({
                     />
                   </svg>
                 </div>
-                <h3 className="mb-3 text-2xl font-bold">{t('services.seo.title')}</h3>
+                <h3 className="mb-3 text-2xl font-bold">
+                  {t("services.seo.title")}
+                </h3>
                 <p className="text-foreground/70 mb-4">
-                  {t('services.seo.description')}
+                  {t("services.seo.description")}
                 </p>
                 <ul className="text-foreground/60 space-y-2">
                   <li className="flex items-center gap-2">
-                    <span className="bg-primary h-1.5 w-1.5 rounded-full"></span>
-                    {t('services.seo.feature1')}
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
+                    {t("services.seo.feature1")}
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="bg-primary h-1.5 w-1.5 rounded-full"></span>
-                    {t('services.seo.feature2')}
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
+                    {t("services.seo.feature2")}
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="bg-primary h-1.5 w-1.5 rounded-full"></span>
-                    {t('services.seo.feature3')}
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
+                    {t("services.seo.feature3")}
                   </li>
                 </ul>
               </div>
@@ -176,10 +181,10 @@ export default async function Home({
 
             {/* Analytics */}
             <ScrollReveal delay={300}>
-              <div className="bg-background border-foreground/10 hover:border-primary/50 rounded-2xl border p-8 transition-all hover:shadow-xl">
+              <div className="border-foreground/10 hover:border-primary/50 rounded-2xl border bg-background p-8 transition-all hover:shadow-xl">
                 <div className="bg-primary/10 mb-6 flex h-12 w-12 items-center justify-center rounded-xl">
                   <svg
-                    className="text-primary h-6 w-6"
+                    className="h-6 w-6 text-primary"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -193,23 +198,23 @@ export default async function Home({
                   </svg>
                 </div>
                 <h3 className="mb-3 text-2xl font-bold">
-                  {t('services.analytics.title')}
+                  {t("services.analytics.title")}
                 </h3>
                 <p className="text-foreground/70 mb-4">
-                  {t('services.analytics.description')}
+                  {t("services.analytics.description")}
                 </p>
                 <ul className="text-foreground/60 space-y-2">
                   <li className="flex items-center gap-2">
-                    <span className="bg-primary h-1.5 w-1.5 rounded-full"></span>
-                    {t('services.analytics.feature1')}
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
+                    {t("services.analytics.feature1")}
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="bg-primary h-1.5 w-1.5 rounded-full"></span>
-                    {t('services.analytics.feature2')}
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
+                    {t("services.analytics.feature2")}
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="bg-primary h-1.5 w-1.5 rounded-full"></span>
-                    {t('services.analytics.feature3')}
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
+                    {t("services.analytics.feature3")}
                   </li>
                 </ul>
               </div>
@@ -224,10 +229,10 @@ export default async function Home({
           <ScrollReveal>
             <div className="mb-16 text-center">
               <h2 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">
-                {t('testimonials.title')}
+                {t("testimonials.title")}
               </h2>
               <p className="text-foreground/70 mx-auto max-w-2xl text-xl">
-                {t('testimonials.description')}
+                {t("testimonials.description")}
               </p>
             </div>
           </ScrollReveal>
@@ -235,28 +240,28 @@ export default async function Home({
           <div className="grid gap-8 md:grid-cols-3">
             {[
               {
-                name: t('testimonials.sarah.name'),
-                role: t('testimonials.sarah.role'),
-                content: t('testimonials.sarah.content'),
+                name: t("testimonials.sarah.name"),
+                role: t("testimonials.sarah.role"),
+                content: t("testimonials.sarah.content"),
               },
               {
-                name: t('testimonials.michael.name'),
-                role: t('testimonials.michael.role'),
-                content: t('testimonials.michael.content'),
+                name: t("testimonials.michael.name"),
+                role: t("testimonials.michael.role"),
+                content: t("testimonials.michael.content"),
               },
               {
-                name: t('testimonials.emily.name'),
-                role: t('testimonials.emily.role'),
-                content: t('testimonials.emily.content'),
+                name: t("testimonials.emily.name"),
+                role: t("testimonials.emily.role"),
+                content: t("testimonials.emily.content"),
               },
             ].map((testimonial, index) => (
               <ScrollReveal key={testimonial.name} delay={index * 100}>
-                <div className="bg-background border-foreground/10 hover:border-primary/50 rounded-2xl border p-8 transition-all hover:shadow-xl">
+                <div className="border-foreground/10 hover:border-primary/50 rounded-2xl border bg-background p-8 transition-all hover:shadow-xl">
                   <div className="mb-4 flex items-center gap-1">
                     {[...Array(5)].map((_, i) => (
                       <svg
                         key={i}
-                        className="text-primary h-5 w-5"
+                        className="h-5 w-5 text-primary"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -287,16 +292,16 @@ export default async function Home({
             <div className="grid items-center gap-12 md:grid-cols-2">
               <div>
                 <h2 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl">
-                  {t('about.title')}
+                  {t("about.title")}
                 </h2>
                 <p className="text-foreground/70 mb-8 text-xl leading-relaxed">
-                  {t('about.description')}
+                  {t("about.description")}
                 </p>
                 <div className="space-y-4">
                   <div className="flex items-start gap-4">
                     <div className="bg-primary/10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg">
                       <svg
-                        className="text-primary h-5 w-5"
+                        className="h-5 w-5 text-primary"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -311,40 +316,17 @@ export default async function Home({
                     </div>
                     <div>
                       <h4 className="mb-1 font-semibold">
-                        {t('about.resultDriven.title')}
+                        {t("about.resultDriven.title")}
                       </h4>
                       <p className="text-foreground/60">
-                        {t('about.resultDriven.description')}
+                        {t("about.resultDriven.description")}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
                     <div className="bg-primary/10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg">
                       <svg
-                        className="text-primary h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 className="mb-1 font-semibold">{t('about.modernTech.title')}</h4>
-                      <p className="text-foreground/60">
-                        {t('about.modernTech.description')}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <div className="bg-primary/10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg">
-                      <svg
-                        className="text-primary h-5 w-5"
+                        className="h-5 w-5 text-primary"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -359,10 +341,35 @@ export default async function Home({
                     </div>
                     <div>
                       <h4 className="mb-1 font-semibold">
-                        {t('about.dedicatedPartnership.title')}
+                        {t("about.modernTech.title")}
                       </h4>
                       <p className="text-foreground/60">
-                        {t('about.dedicatedPartnership.description')}
+                        {t("about.modernTech.description")}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="bg-primary/10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg">
+                      <svg
+                        className="h-5 w-5 text-primary"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="mb-1 font-semibold">
+                        {t("about.dedicatedPartnership.title")}
+                      </h4>
+                      <p className="text-foreground/60">
+                        {t("about.dedicatedPartnership.description")}
                       </p>
                     </div>
                   </div>
@@ -371,30 +378,36 @@ export default async function Home({
               <div className="from-primary/10 to-primary/5 border-primary/20 rounded-2xl border bg-gradient-to-br p-8">
                 <div className="grid grid-cols-2 gap-6">
                   <div className="text-center">
-                    <div className="text-primary mb-2 text-4xl font-bold">
+                    <div className="mb-2 text-4xl font-bold text-primary">
                       150+
                     </div>
-                    <div className="text-foreground/60">{t('about.projectsDelivered')}</div>
+                    <div className="text-foreground/60">
+                      {t("about.projectsDelivered")}
+                    </div>
                   </div>
                   <div className="text-center">
-                    <div className="text-primary mb-2 text-4xl font-bold">
+                    <div className="mb-2 text-4xl font-bold text-primary">
                       98%
                     </div>
                     <div className="text-foreground/60">
-                      {t('about.clientSatisfaction')}
+                      {t("about.clientSatisfaction")}
                     </div>
                   </div>
                   <div className="text-center">
-                    <div className="text-primary mb-2 text-4xl font-bold">
+                    <div className="mb-2 text-4xl font-bold text-primary">
                       5+
                     </div>
-                    <div className="text-foreground/60">{t('about.yearsExperience')}</div>
+                    <div className="text-foreground/60">
+                      {t("about.yearsExperience")}
+                    </div>
                   </div>
                   <div className="text-center">
-                    <div className="text-primary mb-2 text-4xl font-bold">
+                    <div className="mb-2 text-4xl font-bold text-primary">
                       24/7
                     </div>
-                    <div className="text-foreground/60">{t('about.supportAvailable')}</div>
+                    <div className="text-foreground/60">
+                      {t("about.supportAvailable")}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -409,10 +422,10 @@ export default async function Home({
           <ScrollReveal>
             <div className="mb-12 text-center">
               <h2 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">
-                {t('contact.title')}
+                {t("contact.title")}
               </h2>
               <p className="text-foreground/70 text-xl">
-                {t('contact.description')}
+                {t("contact.description")}
               </p>
             </div>
 

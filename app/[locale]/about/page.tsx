@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
-import { Link } from '@/i18n/navigation';
+import { Link } from "@/i18n/navigation";
 import { ScrollReveal } from "../../components/scroll-reveal";
-import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
+import {
+  generateBreadcrumbSchema,
+  generateSchemaJsonLd,
+} from "../../lib/schema";
 import { generateLocaleAlternates } from "../../lib/seo-alternates";
-import { setRequestLocale } from 'next-intl/server';
-import { routing } from '@/i18n/routing';
-import { hasLocale } from 'next-intl';
+import { setRequestLocale } from "next-intl/server";
+import { routing } from "@/i18n/routing";
+import { hasLocale } from "next-intl";
 
 export async function generateMetadata({
   params,
@@ -13,7 +16,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const alternates = generateLocaleAlternates(locale, '/about');
+  const alternates = generateLocaleAlternates(locale, "/about");
 
   return {
     alternates,
@@ -62,11 +65,11 @@ export default async function AboutPage({
         }}
       />
       {/* Hero Section */}
-      <section className="px-6 pt-32 pb-20">
+      <section className="px-6 pb-20 pt-32">
         <div className="mx-auto max-w-7xl">
           <ScrollReveal>
             <div className="max-w-3xl">
-              <h1 className="mb-6 text-5xl leading-tight font-bold tracking-tight md:text-7xl">
+              <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight md:text-7xl">
                 About Us
               </h1>
               <p className="text-foreground/70 mb-8 text-xl leading-relaxed md:text-2xl">
@@ -112,13 +115,13 @@ export default async function AboutPage({
               <div className="from-primary/10 to-primary/5 border-primary/20 rounded-2xl border bg-gradient-to-br p-8">
                 <div className="grid grid-cols-2 gap-6">
                   <div className="text-center">
-                    <div className="text-primary mb-2 text-4xl font-bold">
+                    <div className="mb-2 text-4xl font-bold text-primary">
                       150+
                     </div>
                     <div className="text-foreground/60">Projects Delivered</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-primary mb-2 text-4xl font-bold">
+                    <div className="mb-2 text-4xl font-bold text-primary">
                       98%
                     </div>
                     <div className="text-foreground/60">
@@ -126,13 +129,13 @@ export default async function AboutPage({
                     </div>
                   </div>
                   <div className="text-center">
-                    <div className="text-primary mb-2 text-4xl font-bold">
+                    <div className="mb-2 text-4xl font-bold text-primary">
                       5+
                     </div>
                     <div className="text-foreground/60">Years Experience</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-primary mb-2 text-4xl font-bold">
+                    <div className="mb-2 text-4xl font-bold text-primary">
                       24/7
                     </div>
                     <div className="text-foreground/60">Support Available</div>
@@ -224,8 +227,8 @@ export default async function AboutPage({
               },
             ].map((value, index) => (
               <ScrollReveal key={value.title} delay={index * 100}>
-                <div className="bg-background border-foreground/10 hover:border-primary/50 rounded-2xl border p-8 transition-all hover:shadow-xl">
-                  <div className="bg-primary/10 text-primary mb-6 flex h-12 w-12 items-center justify-center rounded-xl">
+                <div className="border-foreground/10 hover:border-primary/50 rounded-2xl border bg-background p-8 transition-all hover:shadow-xl">
+                  <div className="bg-primary/10 mb-6 flex h-12 w-12 items-center justify-center rounded-xl text-primary">
                     {value.icon}
                   </div>
                   <h3 className="mb-3 text-2xl font-bold">{value.title}</h3>
@@ -306,7 +309,7 @@ export default async function AboutPage({
             </p>
             <Link
               href="/contact"
-              className="bg-primary hover:bg-primary-dark inline-block rounded-full px-8 py-4 text-lg font-semibold text-white transition-all hover:scale-105"
+              className="inline-block rounded-full bg-primary px-8 py-4 text-lg font-semibold text-white transition-all hover:scale-105 hover:bg-primary-dark"
             >
               Get in Touch
             </Link>

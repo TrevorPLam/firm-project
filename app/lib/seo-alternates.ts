@@ -1,4 +1,4 @@
-import { routing } from '@/i18n/routing';
+import { routing } from "@/i18n/routing";
 
 /**
  * Generates locale-aware canonical URL and alternates for SEO.
@@ -11,13 +11,13 @@ import { routing } from '@/i18n/routing';
  */
 export function generateLocaleAlternates(
   locale: string,
-  path: string
+  path: string,
 ): {
   canonical: string;
   languages: Record<string, string>;
 } {
   const canonical = `/${locale}${path}`;
-  
+
   // Build languages map for all available locales
   const languages: Record<string, string> = {};
   for (const loc of routing.locales) {

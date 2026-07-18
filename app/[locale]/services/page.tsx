@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
-import { Link } from '@/i18n/navigation';
+import { Link } from "@/i18n/navigation";
 import { ScrollReveal } from "../../components/scroll-reveal";
-import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
+import {
+  generateBreadcrumbSchema,
+  generateSchemaJsonLd,
+} from "../../lib/schema";
 import { generateLocaleAlternates } from "../../lib/seo-alternates";
-import { setRequestLocale } from 'next-intl/server';
-import { routing } from '@/i18n/routing';
-import { hasLocale } from 'next-intl';
+import { setRequestLocale } from "next-intl/server";
+import { routing } from "@/i18n/routing";
+import { hasLocale } from "next-intl";
 
 export async function generateMetadata({
   params,
@@ -13,7 +16,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const alternates = generateLocaleAlternates(locale, '/services');
+  const alternates = generateLocaleAlternates(locale, "/services");
 
   return {
     alternates,
@@ -63,11 +66,11 @@ export default async function ServicesPage({
         }}
       />
       {/* Hero Section */}
-      <section className="px-6 pt-32 pb-20">
+      <section className="px-6 pb-20 pt-32">
         <div className="mx-auto max-w-7xl">
           <ScrollReveal>
             <div className="max-w-3xl">
-              <h1 className="mb-6 text-5xl leading-tight font-bold tracking-tight md:text-7xl">
+              <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight md:text-7xl">
                 Our Services
               </h1>
               <p className="text-foreground/70 mb-8 text-xl leading-relaxed md:text-2xl">
@@ -88,7 +91,7 @@ export default async function ServicesPage({
               <div>
                 <div className="bg-primary/10 mb-6 flex h-16 w-16 items-center justify-center rounded-2xl">
                   <svg
-                    className="text-primary h-8 w-8"
+                    className="h-8 w-8 text-primary"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -121,7 +124,7 @@ export default async function ServicesPage({
                     "Ongoing maintenance and support",
                   ].map((item, index) => (
                     <li key={index} className="flex items-start gap-3">
-                      <span className="bg-primary mt-2 h-2 w-2 flex-shrink-0 rounded-full"></span>
+                      <span className="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-primary"></span>
                       <span className="text-foreground/70">{item}</span>
                     </li>
                   ))}
@@ -218,7 +221,7 @@ export default async function ServicesPage({
               <div className="order-1 md:order-2">
                 <div className="bg-primary/10 mb-6 flex h-16 w-16 items-center justify-center rounded-2xl">
                   <svg
-                    className="text-primary h-8 w-8"
+                    className="h-8 w-8 text-primary"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -251,7 +254,7 @@ export default async function ServicesPage({
                     "Performance tracking and reporting",
                   ].map((item, index) => (
                     <li key={index} className="flex items-start gap-3">
-                      <span className="bg-primary mt-2 h-2 w-2 flex-shrink-0 rounded-full"></span>
+                      <span className="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-primary"></span>
                       <span className="text-foreground/70">{item}</span>
                     </li>
                   ))}
@@ -270,7 +273,7 @@ export default async function ServicesPage({
               <div>
                 <div className="bg-primary/10 mb-6 flex h-16 w-16 items-center justify-center rounded-2xl">
                   <svg
-                    className="text-primary h-8 w-8"
+                    className="h-8 w-8 text-primary"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -303,7 +306,7 @@ export default async function ServicesPage({
                     "ROI measurement and optimization",
                   ].map((item, index) => (
                     <li key={index} className="flex items-start gap-3">
-                      <span className="bg-primary mt-2 h-2 w-2 flex-shrink-0 rounded-full"></span>
+                      <span className="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-primary"></span>
                       <span className="text-foreground/70">{item}</span>
                     </li>
                   ))}
@@ -343,7 +346,7 @@ export default async function ServicesPage({
                     <div key={item.metric} className="flex items-start gap-3">
                       <div className="bg-primary/10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg">
                         <svg
-                          className="text-primary h-5 w-5"
+                          className="h-5 w-5 text-primary"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -384,7 +387,7 @@ export default async function ServicesPage({
             </p>
             <Link
               href="/contact"
-              className="bg-primary hover:bg-primary-dark inline-block rounded-full px-8 py-4 text-lg font-semibold text-white transition-all hover:scale-105"
+              className="inline-block rounded-full bg-primary px-8 py-4 text-lg font-semibold text-white transition-all hover:scale-105 hover:bg-primary-dark"
             >
               Get in Touch
             </Link>

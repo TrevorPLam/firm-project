@@ -70,11 +70,11 @@ GA4 supports per-conversion attribution settings that allow different attributio
 
 ### Attribution Model Comparison
 
-| Model | Description | Best For |
-|-------|-------------|----------|
-| Data-Driven | ML-based, distributes credit based on actual contribution | Multi-channel journeys with sufficient conversion volume |
-| Last Click | All credit to last touchpoint before conversion | Simple journeys, low conversion volume |
-| Google Paid Last Click | All credit to last Google Ads click | Google Ads-focused reporting |
+| Model                  | Description                                               | Best For                                                 |
+| ---------------------- | --------------------------------------------------------- | -------------------------------------------------------- |
+| Data-Driven            | ML-based, distributes credit based on actual contribution | Multi-channel journeys with sufficient conversion volume |
+| Last Click             | All credit to last touchpoint before conversion           | Simple journeys, low conversion volume                   |
+| Google Paid Last Click | All credit to last Google Ads click                       | Google Ads-focused reporting                             |
 
 ## Conversion Tracking
 

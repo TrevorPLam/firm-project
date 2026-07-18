@@ -2,33 +2,33 @@
 // DDD: Content types are bounded contexts; defined once in domain module
 // Deep module: exports typed interfaces, internal logic is private
 
-import * as z from 'zod';
+import * as z from "zod";
 
 // ============================================
 // Blog Content Types
 // ============================================
 
 export interface SanityBlogAuthor {
-  _type: 'blogAuthor';
+  _type: "blogAuthor";
   name: string;
   role: string;
   image?: {
     asset: {
       _ref: string;
-      _type: 'reference';
+      _type: "reference";
     };
   };
 }
 
 export interface SanityBlogPost {
-  _type: 'blogPost';
+  _type: "blogPost";
   _id: string;
   _createdAt: string;
   _updatedAt: string;
   title: string;
   slug: {
     current: string;
-    _type: 'slug';
+    _type: "slug";
   };
   excerpt: string;
   category: string;
@@ -69,21 +69,21 @@ export interface SanityCaseStudyTestimonial {
 }
 
 export interface SanityCaseStudy {
-  _type: 'caseStudy';
+  _type: "caseStudy";
   _id: string;
   _createdAt: string;
   _updatedAt: string;
   title: string;
   slug: {
     current: string;
-    _type: 'slug';
+    _type: "slug";
   };
   category: string;
   client: string;
   clientLogo?: {
     asset: {
       _ref: string;
-      _type: 'reference';
+      _type: "reference";
     };
   };
   description: string;
@@ -116,14 +116,14 @@ export interface SanityCaseStudySummary {
 // ============================================
 
 export interface SanityPage {
-  _type: 'page';
+  _type: "page";
   _id: string;
   _createdAt: string;
   _updatedAt: string;
   title: string;
   slug: {
     current: string;
-    _type: 'slug';
+    _type: "slug";
   };
   content: Record<string, unknown>; // Portable Text
   seoTitle?: string;
@@ -136,14 +136,14 @@ export interface SanityPage {
 // ============================================
 
 export interface SanityService {
-  _type: 'service';
+  _type: "service";
   _id: string;
   _createdAt: string;
   _updatedAt: string;
   name: string;
   slug: {
     current: string;
-    _type: 'slug';
+    _type: "slug";
   };
   description: string;
   benefits: string[];
@@ -156,26 +156,28 @@ export interface SanityService {
 // ============================================
 
 export const SanityBlogAuthorSchema = z.object({
-  _type: z.literal('blogAuthor'),
+  _type: z.literal("blogAuthor"),
   name: z.string().trim(),
   role: z.string().trim(),
-  image: z.object({
-    asset: z.object({
-      _ref: z.string().trim(),
-      _type: z.literal('reference'),
-    }),
-  }).optional(),
+  image: z
+    .object({
+      asset: z.object({
+        _ref: z.string().trim(),
+        _type: z.literal("reference"),
+      }),
+    })
+    .optional(),
 });
 
 export const SanityBlogPostSchema = z.object({
-  _type: z.literal('blogPost'),
+  _type: z.literal("blogPost"),
   _id: z.string().trim(),
   _createdAt: z.string().trim(),
   _updatedAt: z.string().trim(),
   title: z.string().trim(),
   slug: z.object({
     current: z.string().trim(),
-    _type: z.literal('slug'),
+    _type: z.literal("slug"),
   }),
   excerpt: z.string().trim(),
   category: z.string().trim(),
@@ -212,23 +214,25 @@ export const SanityCaseStudyTestimonialSchema = z.object({
 });
 
 export const SanityCaseStudySchema = z.object({
-  _type: z.literal('caseStudy'),
+  _type: z.literal("caseStudy"),
   _id: z.string().trim(),
   _createdAt: z.string().trim(),
   _updatedAt: z.string().trim(),
   title: z.string().trim(),
   slug: z.object({
     current: z.string().trim(),
-    _type: z.literal('slug'),
+    _type: z.literal("slug"),
   }),
   category: z.string().trim(),
   client: z.string().trim(),
-  clientLogo: z.object({
-    asset: z.object({
-      _ref: z.string().trim(),
-      _type: z.literal('reference'),
-    }),
-  }).optional(),
+  clientLogo: z
+    .object({
+      asset: z.object({
+        _ref: z.string().trim(),
+        _type: z.literal("reference"),
+      }),
+    })
+    .optional(),
   description: z.string().trim(),
   overview: z.string().trim(),
   challenge: z.string().trim(),
@@ -255,14 +259,14 @@ export const SanityCaseStudySummarySchema = z.object({
 });
 
 export const SanityPageSchema = z.object({
-  _type: z.literal('page'),
+  _type: z.literal("page"),
   _id: z.string().trim(),
   _createdAt: z.string().trim(),
   _updatedAt: z.string().trim(),
   title: z.string().trim(),
   slug: z.object({
     current: z.string().trim(),
-    _type: z.literal('slug'),
+    _type: z.literal("slug"),
   }),
   content: z.record(z.string(), z.unknown()), // Portable Text
   seoTitle: z.string().trim().optional(),
@@ -271,14 +275,14 @@ export const SanityPageSchema = z.object({
 });
 
 export const SanityServiceSchema = z.object({
-  _type: z.literal('service'),
+  _type: z.literal("service"),
   _id: z.string().trim(),
   _createdAt: z.string().trim(),
   _updatedAt: z.string().trim(),
   name: z.string().trim(),
   slug: z.object({
     current: z.string().trim(),
-    _type: z.literal('slug'),
+    _type: z.literal("slug"),
   }),
   description: z.string().trim(),
   benefits: z.array(z.string().trim()),
@@ -291,17 +295,37 @@ export const SanityServiceSchema = z.object({
 // ============================================
 
 export function isBlogPost(doc: unknown): doc is SanityBlogPost {
-  return typeof doc === 'object' && doc !== null && '_type' in doc && (doc as { _type: string })._type === 'blogPost';
+  return (
+    typeof doc === "object" &&
+    doc !== null &&
+    "_type" in doc &&
+    (doc as { _type: string })._type === "blogPost"
+  );
 }
 
 export function isCaseStudy(doc: unknown): doc is SanityCaseStudy {
-  return typeof doc === 'object' && doc !== null && '_type' in doc && (doc as { _type: string })._type === 'caseStudy';
+  return (
+    typeof doc === "object" &&
+    doc !== null &&
+    "_type" in doc &&
+    (doc as { _type: string })._type === "caseStudy"
+  );
 }
 
 export function isPage(doc: unknown): doc is SanityPage {
-  return typeof doc === 'object' && doc !== null && '_type' in doc && (doc as { _type: string })._type === 'page';
+  return (
+    typeof doc === "object" &&
+    doc !== null &&
+    "_type" in doc &&
+    (doc as { _type: string })._type === "page"
+  );
 }
 
 export function isService(doc: unknown): doc is SanityService {
-  return typeof doc === 'object' && doc !== null && '_type' in doc && (doc as { _type: string })._type === 'service';
+  return (
+    typeof doc === "object" &&
+    doc !== null &&
+    "_type" in doc &&
+    (doc as { _type: string })._type === "service"
+  );
 }

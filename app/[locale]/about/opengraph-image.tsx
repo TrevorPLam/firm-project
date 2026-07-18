@@ -55,7 +55,8 @@ export default async function Image() {
           lineHeight: 1.4,
         }}
       >
-        We're a team of digital strategists, designers, and developers passionate about helping businesses succeed
+        We're a team of digital strategists, designers, and developers
+        passionate about helping businesses succeed
       </div>
       <div
         style={{
@@ -70,6 +71,6 @@ export default async function Image() {
     </div>,
     {
       ...size,
-    }
+    },
   );
 }

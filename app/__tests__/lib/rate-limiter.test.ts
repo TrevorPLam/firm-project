@@ -71,10 +71,14 @@ describe("rate-limiter", () => {
       process.env.UPSTASH_REDIS_REST_TOKEN = "test-token";
 
       const { Ratelimit } = await import("@upstash/ratelimit");
-      const mockLimit = vi.fn().mockRejectedValue(new Error("Redis connection failed"));
-      (Ratelimit as unknown as ReturnType<typeof vi.fn>).mockImplementation(() => ({
-        limit: mockLimit,
-      }));
+      const mockLimit = vi
+        .fn()
+        .mockRejectedValue(new Error("Redis connection failed"));
+      (Ratelimit as unknown as ReturnType<typeof vi.fn>).mockImplementation(
+        () => ({
+          limit: mockLimit,
+        }),
+      );
 
       const { checkRateLimit } = await import("@/lib/rate-limiter");
       const result = await checkRateLimit("test-key", 10, 60000);
@@ -86,7 +90,9 @@ describe("rate-limiter", () => {
     it("should export all public functions", async () => {
       const rateLimiterModule = await import("@/lib/rate-limiter");
       expect(typeof rateLimiterModule.checkRateLimit).toBe("function");
-      expect(typeof rateLimiterModule.checkRateLimitWithMetadata).toBe("function");
+      expect(typeof rateLimiterModule.checkRateLimitWithMetadata).toBe(
+        "function",
+      );
       expect(typeof rateLimiterModule.clearRateLimits).toBe("function");
       expect(typeof rateLimiterModule.getRateLimitCount).toBe("function");
     });

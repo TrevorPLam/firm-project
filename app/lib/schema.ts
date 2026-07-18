@@ -1,12 +1,13 @@
-import { siteUrl, absoluteUrl, siteName } from './site-config';
+import { siteUrl, absoluteUrl, siteName } from "./site-config";
 
 export const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: siteName(),
-  description: "Transform your digital presence with expert web design, SEO, and analytics services. We create experiences that convert visitors into customers.",
+  description:
+    "Transform your digital presence with expert web design, SEO, and analytics services. We create experiences that convert visitors into customers.",
   url: siteUrl(),
-  logo: absoluteUrl('/logo.png'),
+  logo: absoluteUrl("/logo.png"),
   contactPoint: {
     "@type": "ContactPoint",
     telephone: "+1-234-567-890",
@@ -26,7 +27,8 @@ export const webDesignServiceSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
   name: "Web Design & Development",
-  description: "Custom, responsive websites built with modern frameworks. Fast, accessible, and conversion-optimized designs that represent your brand perfectly.",
+  description:
+    "Custom, responsive websites built with modern frameworks. Fast, accessible, and conversion-optimized designs that represent your brand perfectly.",
   provider: {
     "@type": "Organization",
     name: siteName(),
@@ -44,7 +46,8 @@ export const seoServiceSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
   name: "SEO Optimization",
-  description: "Data-driven search engine optimization to improve your visibility and drive organic traffic. We help you rank higher and reach more customers.",
+  description:
+    "Data-driven search engine optimization to improve your visibility and drive organic traffic. We help you rank higher and reach more customers.",
   provider: {
     "@type": "Organization",
     name: siteName(),
@@ -62,7 +65,8 @@ export const analyticsServiceSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
   name: "Analytics & Insights",
-  description: "Comprehensive analytics setup and reporting to track performance, understand user behavior, and make data-driven decisions for growth.",
+  description:
+    "Comprehensive analytics setup and reporting to track performance, understand user behavior, and make data-driven decisions for growth.",
   provider: {
     "@type": "Organization",
     name: siteName(),
@@ -159,13 +163,15 @@ export function generateArticleSchema({
       name: siteName(),
       logo: {
         "@type": "ImageObject",
-        url: absoluteUrl('/logo.png'),
+        url: absoluteUrl("/logo.png"),
       },
     },
   };
 }
 
-export function generateBreadcrumbSchema(items: Array<{ name: string; url: string }>) {
+export function generateBreadcrumbSchema(
+  items: Array<{ name: string; url: string }>,
+) {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",

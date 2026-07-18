@@ -9,13 +9,13 @@ import {
   type BlogPost as LocalBlogPost,
   type BlogPostSummary as LocalBlogPostSummary,
   type BlogAuthor as LocalBlogAuthor,
-} from '../blog-data';
+} from "../blog-data";
 import type {
   BlogContentPort,
   BlogPostSummary,
   BlogPostDetail,
   BlogAuthor,
-} from '../content-port';
+} from "../content-port";
 
 /**
  * Map local blog author to port author

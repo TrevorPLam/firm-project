@@ -21,9 +21,7 @@ const config = {
       },
     },
   },
-  plugins: [
-    typography,
-  ],
+  plugins: [typography],
 };
 
 export default config;

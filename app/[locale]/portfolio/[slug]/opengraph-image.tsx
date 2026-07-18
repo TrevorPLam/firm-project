@@ -44,7 +44,7 @@ export default async function Image({
       </div>,
       {
         ...size,
-      }
+      },
     );
   }
 
@@ -133,6 +133,6 @@ export default async function Image({
     </div>,
     {
       ...size,
-    }
+    },
   );
 }

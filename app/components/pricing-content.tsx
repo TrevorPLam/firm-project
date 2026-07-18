@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Link } from '@/i18n/navigation';
+import { Link } from "@/i18n/navigation";
 import { ScrollReveal } from "./scroll-reveal";
 import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../lib/schema";
 
@@ -105,9 +105,9 @@ interface PricingContentProps {
 export function PricingContent({ locale }: PricingContentProps) {
   const [isYearly, setIsYearly] = useState(() => {
     // Load saved preference from localStorage on mount
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('billing-preference');
-      return saved === 'yearly' ? true : saved === 'monthly' ? false : true;
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("billing-preference");
+      return saved === "yearly" ? true : saved === "monthly" ? false : true;
     }
     return true;
   });
@@ -120,7 +120,7 @@ export function PricingContent({ locale }: PricingContentProps) {
 
   // Save preference to localStorage when it changes
   useEffect(() => {
-    localStorage.setItem('billing-preference', isYearly ? 'yearly' : 'monthly');
+    localStorage.setItem("billing-preference", isYearly ? "yearly" : "monthly");
   }, [isYearly]);
 
   return (
@@ -132,11 +132,11 @@ export function PricingContent({ locale }: PricingContentProps) {
         }}
       />
       {/* Hero Section */}
-      <section className="px-6 pt-32 pb-20">
+      <section className="px-6 pb-20 pt-32">
         <div className="mx-auto max-w-7xl">
           <ScrollReveal>
             <div className="max-w-3xl">
-              <h1 className="mb-6 text-5xl leading-tight font-bold tracking-tight md:text-7xl">
+              <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight md:text-7xl">
                 Transparent Pricing
               </h1>
               <p className="text-foreground/70 mb-8 text-xl leading-relaxed md:text-2xl">
@@ -153,13 +153,13 @@ export function PricingContent({ locale }: PricingContentProps) {
         <div className="mx-auto max-w-7xl">
           {/* Billing Toggle */}
           <div className="mb-12 flex justify-center">
-            <div className="flex items-center gap-4 rounded-full bg-background border border-foreground/10 p-1">
+            <div className="border-foreground/10 flex items-center gap-4 rounded-full border bg-background p-1">
               <button
                 onClick={() => setIsYearly(false)}
                 className={`rounded-full px-6 py-2 text-sm font-medium transition-all ${
                   !isYearly
-                    ? 'bg-primary text-white'
-                    : 'text-foreground/60 hover:text-foreground'
+                    ? "bg-primary text-white"
+                    : "text-foreground/60 hover:text-foreground"
                 }`}
                 aria-pressed={!isYearly}
               >
@@ -169,8 +169,8 @@ export function PricingContent({ locale }: PricingContentProps) {
                 onClick={() => setIsYearly(true)}
                 className={`rounded-full px-6 py-2 text-sm font-medium transition-all ${
                   isYearly
-                    ? 'bg-primary text-white'
-                    : 'text-foreground/60 hover:text-foreground'
+                    ? "bg-primary text-white"
+                    : "text-foreground/60 hover:text-foreground"
                 }`}
                 aria-pressed={isYearly}
               >
@@ -186,14 +186,14 @@ export function PricingContent({ locale }: PricingContentProps) {
             {packages.map((pkg, index) => (
               <ScrollReveal key={pkg.name} delay={index * 100}>
                 <div
-                  className={`bg-background overflow-hidden rounded-2xl border-2 transition-all hover:shadow-xl ${
+                  className={`overflow-hidden rounded-2xl border-2 bg-background transition-all hover:shadow-xl ${
                     pkg.popular
-                      ? "border-primary relative shadow-xl"
+                      ? "relative border-primary shadow-xl"
                       : "border-foreground/10 hover:border-primary/50"
                   }`}
                 >
                   {pkg.popular && (
-                    <div className="bg-primary absolute top-0 right-0 rounded-bl-lg px-3 py-1 text-xs font-bold text-white">
+                    <div className="absolute right-0 top-0 rounded-bl-lg bg-primary px-3 py-1 text-xs font-bold text-white">
                       MOST POPULAR
                     </div>
                   )}
@@ -205,7 +205,10 @@ export function PricingContent({ locale }: PricingContentProps) {
                       ) : (
                         <>
                           <span className="text-4xl font-bold transition-all duration-300">
-                            ${isYearly ? pkg.yearlyPrice : pkg.monthlyPrice.toLocaleString()}
+                            $
+                            {isYearly
+                              ? pkg.yearlyPrice
+                              : pkg.monthlyPrice.toLocaleString()}
                           </span>
                           <span className="text-foreground/60 ml-2">
                             {pkg.period}
@@ -218,7 +221,7 @@ export function PricingContent({ locale }: PricingContentProps) {
                       {pkg.features.map((feature) => (
                         <li key={feature} className="flex items-start gap-3">
                           <svg
-                            className="text-primary mt-0.5 h-5 w-5 flex-shrink-0"
+                            className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -261,8 +264,8 @@ export function PricingContent({ locale }: PricingContentProps) {
                       href="/contact"
                       className={`block w-full rounded-lg py-3 text-center font-medium transition-colors ${
                         pkg.popular
-                          ? "bg-primary hover:bg-primary-dark text-white"
-                          : "bg-foreground/10 text-foreground hover:bg-foreground/20"
+                          ? "bg-primary text-white hover:bg-primary-dark"
+                          : "bg-foreground/10 hover:bg-foreground/20 text-foreground"
                       }`}
                     >
                       Get Started
@@ -293,10 +296,10 @@ export function PricingContent({ locale }: PricingContentProps) {
           <div className="grid gap-6 md:grid-cols-2">
             {addOns.map((addon, index) => (
               <ScrollReveal key={addon.name} delay={index * 100}>
-                <div className="bg-background border-foreground/10 hover:border-primary/50 rounded-xl border p-6 transition-all">
+                <div className="border-foreground/10 hover:border-primary/50 rounded-xl border bg-background p-6 transition-all">
                   <div className="mb-2 flex items-start justify-between">
                     <h3 className="text-xl font-bold">{addon.name}</h3>
-                    <span className="text-primary font-semibold">
+                    <span className="font-semibold text-primary">
                       {addon.price}
                     </span>
                   </div>
@@ -348,7 +351,7 @@ export function PricingContent({ locale }: PricingContentProps) {
               },
             ].map((faq, index) => (
               <ScrollReveal key={index} delay={index * 50}>
-                <div className="bg-background border-foreground/10 rounded-xl border p-6">
+                <div className="border-foreground/10 rounded-xl border bg-background p-6">
                   <h3 className="mb-2 text-lg font-semibold">{faq.question}</h3>
                   <p className="text-foreground/70">{faq.answer}</p>
                 </div>
@@ -371,7 +374,7 @@ export function PricingContent({ locale }: PricingContentProps) {
             </p>
             <Link
               href="/contact"
-              className="bg-primary hover:bg-primary-dark inline-block rounded-full px-8 py-4 text-lg font-semibold text-white transition-all hover:scale-105"
+              className="inline-block rounded-full bg-primary px-8 py-4 text-lg font-semibold text-white transition-all hover:scale-105 hover:bg-primary-dark"
             >
               Schedule a Consultation
             </Link>

@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
 import { ScrollReveal } from "../../components/scroll-reveal";
-import { Link } from '@/i18n/navigation';
+import { Link } from "@/i18n/navigation";
 import { createLocalBlogAdapter } from "../../lib/content/local-blog-adapter";
 import { NewsletterForm } from "../../components/newsletter-form";
-import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
+import {
+  generateBreadcrumbSchema,
+  generateSchemaJsonLd,
+} from "../../lib/schema";
 import { generateLocaleAlternates } from "../../lib/seo-alternates";
-import { setRequestLocale } from 'next-intl/server';
-import { routing } from '@/i18n/routing';
-import { hasLocale } from 'next-intl';
+import { setRequestLocale } from "next-intl/server";
+import { routing } from "@/i18n/routing";
+import { hasLocale } from "next-intl";
 
 export async function generateMetadata({
   params,
@@ -15,7 +18,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const alternates = generateLocaleAlternates(locale, '/blog');
+  const alternates = generateLocaleAlternates(locale, "/blog");
 
   return {
     alternates,
@@ -68,11 +71,11 @@ export default async function BlogPage({
         }}
       />
       {/* Hero Section */}
-      <section className="px-6 pt-32 pb-20">
+      <section className="px-6 pb-20 pt-32">
         <div className="mx-auto max-w-7xl">
           <ScrollReveal>
             <div className="max-w-3xl">
-              <h1 className="mb-6 text-5xl leading-tight font-bold tracking-tight md:text-7xl">
+              <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight md:text-7xl">
                 Blog & Insights
               </h1>
               <p className="text-foreground/70 mb-8 text-xl leading-relaxed md:text-2xl">
@@ -92,14 +95,14 @@ export default async function BlogPage({
             {posts.map((post, index) => (
               <ScrollReveal key={post.id} delay={index * 100}>
                 <Link href={`/blog/${post.slug}`} className="group">
-                  <article className="bg-background border-foreground/10 group-hover:border-primary/50 overflow-hidden rounded-2xl border transition-all group-hover:shadow-xl">
+                  <article className="border-foreground/10 group-hover:border-primary/50 overflow-hidden rounded-2xl border bg-background transition-all group-hover:shadow-xl">
                     <div className="p-8">
                       <div className="mb-4 flex items-center gap-2">
-                        <span className="bg-primary/10 text-primary rounded-full px-3 py-1 text-sm font-medium">
+                        <span className="bg-primary/10 rounded-full px-3 py-1 text-sm font-medium text-primary">
                           {post.category}
                         </span>
                       </div>
-                      <h3 className="group-hover:text-primary mb-3 text-2xl font-bold transition-colors">
+                      <h3 className="mb-3 text-2xl font-bold transition-colors group-hover:text-primary">
                         {post.title}
                       </h3>
                       <p className="text-foreground/70 mb-6 leading-relaxed">
@@ -154,10 +157,10 @@ export default async function BlogPage({
               <ScrollReveal key={topic.slug} delay={index * 50}>
                 <Link
                   href={`/blog?topic=${topic.slug}`}
-                  className="bg-background border-foreground/10 hover:border-primary/50 group rounded-xl border p-6 transition-all hover:shadow-lg"
+                  className="border-foreground/10 hover:border-primary/50 group rounded-xl border bg-background p-6 transition-all hover:shadow-lg"
                 >
                   <div className="mb-3 text-3xl">{topic.icon}</div>
-                  <h3 className="group-hover:text-primary mb-2 text-lg font-bold transition-colors">
+                  <h3 className="mb-2 text-lg font-bold transition-colors group-hover:text-primary">
                     {topic.name}
                   </h3>
                   <p className="text-foreground/60 text-sm">

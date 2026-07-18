@@ -5,12 +5,14 @@
 This project uses a Zod-based environment variable validation module (`app/lib/env.ts`) to ensure type safety and fail-fast validation of environment variables at application startup.
 
 **Key Features:**
+
 - **Type-safe access:** All environment variables are accessed through typed getter functions
 - **Schema validation:** Public and server environment variables are validated against Zod schemas
 - **Fail-fast in production:** Required variables throw errors if missing in production
 - **Graceful degradation:** Optional marketing integrations don't block local development
 
 **Public Environment Variables** (exposed to client-side):
+
 - `NEXT_PUBLIC_SITE_URL` - Site URL with default fallback
 - `NEXT_PUBLIC_GA_MEASUREMENT_ID` - Google Analytics 4 ID (optional)
 - `NEXT_PUBLIC_GA_CONVERSION_ID` - Google Ads Conversion ID (optional)
@@ -22,6 +24,7 @@ This project uses a Zod-based environment variable validation module (`app/lib/e
 - `NEXT_PUBLIC_SANITY_DATASET` - Sanity dataset with default
 
 **Server Environment Variables** (server-side only):
+
 - `RESEND_API_KEY` - Resend email service API key (required in production)
 - `CONTACT_EMAIL_TO` - Contact form destination email with default
 - `RESEND_AUDIENCE_ID` - Resend newsletter audience ID (optional)
@@ -34,8 +37,9 @@ This project uses a Zod-based environment variable validation module (`app/lib/e
 - `ENABLE_REACT_COMPILER` - React Compiler toggle (enum: true/false)
 
 **Accessing Environment Variables:**
+
 ```typescript
-import { getSiteUrl, getResendApiKey, isProduction } from '@/lib/env';
+import { getSiteUrl, getResendApiKey, isProduction } from "@/lib/env";
 
 // Type-safe getters
 const siteUrl = getSiteUrl();
@@ -114,6 +118,7 @@ The `NEXT_PUBLIC_SITE_URL` is used for the `metadataBase` in the root layout. Th
 ## Conversion Tracking Setup
 
 For Google Ads conversion tracking:
+
 1. Go to [Google Ads](https://ads.google.com/)
 2. Tools & Settings > Conversions
 3. Create a new conversion action
@@ -126,12 +131,14 @@ The React Compiler is available in Next.js 16 for automatic memoization of compo
 **Current Status:** Disabled by default due to a build failure with opengraph-image generation (vips_tracked: out of memory error).
 
 **To enable the compiler:**
+
 ```bash
 # In .env.local
 ENABLE_REACT_COMPILER=true
 ```
 
 **Build Performance Impact:**
+
 - Without compiler: ~56 seconds (baseline)
 - With compiler: Build fails due to memory issue
 
@@ -142,6 +149,7 @@ ENABLE_REACT_COMPILER=true
 This project uses Playwright for end-to-end testing. The test suite is configured to run across multiple browser projects locally (chromium, firefox, webkit, Mobile Chrome, Mobile Safari), but CI runs a focused chromium-only smoke test for efficiency.
 
 **Local Development (Full Matrix):**
+
 ```bash
 # Run all e2e tests across all browser projects
 npm run test:e2e

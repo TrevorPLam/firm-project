@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { ScrollReveal } from "../../../components/scroll-reveal";
 import { generateLocaleAlternates } from "../../../lib/seo-alternates";
-import { setRequestLocale } from 'next-intl/server';
-import { routing } from '@/i18n/routing';
-import { hasLocale } from 'next-intl';
+import { setRequestLocale } from "next-intl/server";
+import { routing } from "@/i18n/routing";
+import { hasLocale } from "next-intl";
 
 export async function generateMetadata({
   params,
@@ -11,7 +11,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const alternates = generateLocaleAlternates(locale, '/legal/privacy');
+  const alternates = generateLocaleAlternates(locale, "/legal/privacy");
 
   return {
     alternates,
@@ -41,7 +41,7 @@ export default async function PrivacyPolicyPage({
 
   return (
     <div className="flex flex-col">
-      <section className="px-6 pt-32 pb-20">
+      <section className="px-6 pb-20 pt-32">
         <div className="mx-auto max-w-4xl">
           <ScrollReveal>
             <h1 className="mb-6 text-5xl font-bold tracking-tight md:text-6xl">

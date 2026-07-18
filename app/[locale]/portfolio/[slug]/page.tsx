@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
-import { Link } from '@/i18n/navigation';
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { ScrollReveal } from "../../../components/scroll-reveal";
 import { SocialShare } from "../../../components/social-share";
 import { notFound } from "next/navigation";
 import { createLocalPortfolioAdapter } from "../../../lib/content/local-portfolio-adapter";
-import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../../lib/schema";
+import {
+  generateBreadcrumbSchema,
+  generateSchemaJsonLd,
+} from "../../../lib/schema";
 import { generateLocaleAlternates } from "../../../lib/seo-alternates";
-import { setRequestLocale } from 'next-intl/server';
-import { routing } from '@/i18n/routing';
-import { hasLocale } from 'next-intl';
+import { setRequestLocale } from "next-intl/server";
+import { routing } from "@/i18n/routing";
+import { hasLocale } from "next-intl";
 
 export async function generateStaticParams() {
   const portfolioAdapter = createLocalPortfolioAdapter();
@@ -19,7 +22,7 @@ export async function generateStaticParams() {
     slugs.map((slug) => ({
       locale,
       slug,
-    }))
+    })),
   );
 }
 
@@ -88,16 +91,16 @@ export default async function CaseStudyPage({
         }}
       />
       {/* Hero Section */}
-      <section className="px-6 pt-32 pb-20">
+      <section className="px-6 pb-20 pt-32">
         <div className="mx-auto max-w-7xl">
           <ScrollReveal>
             <div className="max-w-3xl">
               <div className="mb-4 flex items-center gap-2">
-                <span className="bg-primary/10 text-primary rounded-full px-3 py-1 text-sm font-medium">
+                <span className="bg-primary/10 rounded-full px-3 py-1 text-sm font-medium text-primary">
                   {study.category}
                 </span>
               </div>
-              <h1 className="mb-6 text-5xl leading-tight font-bold tracking-tight md:text-7xl">
+              <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight md:text-7xl">
                 {study.title}
               </h1>
               <p className="text-foreground/70 mb-8 text-xl leading-relaxed md:text-2xl">
@@ -126,7 +129,7 @@ export default async function CaseStudyPage({
                   </div>
                 </div>
                 <SocialShare
-                  url={`${process.env.NEXT_PUBLIC_SITE_URL || ''}/portfolio/${slug}`}
+                  url={`${process.env.NEXT_PUBLIC_SITE_URL || ""}/portfolio/${slug}`}
                   title={study.title}
                   description={study.description}
                 />
@@ -143,7 +146,7 @@ export default async function CaseStudyPage({
             <div className="grid gap-8 md:grid-cols-4">
               {study.results.map((result, index) => (
                 <div key={index} className="text-center">
-                  <div className="text-primary mb-2 text-5xl font-bold">
+                  <div className="mb-2 text-5xl font-bold text-primary">
                     {result.metric}
                   </div>
                   <div className="text-foreground/60">{result.label}</div>
@@ -207,7 +210,7 @@ export default async function CaseStudyPage({
               {study.technologies.map((tech) => (
                 <span
                   key={tech}
-                  className="bg-background border-foreground/20 text-foreground/70 rounded-lg border px-4 py-2"
+                  className="border-foreground/20 text-foreground/70 rounded-lg border bg-background px-4 py-2"
                 >
                   {tech}
                 </span>
@@ -254,7 +257,7 @@ export default async function CaseStudyPage({
               {study.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="bg-background border-foreground/20 text-foreground/70 rounded-lg border px-4 py-2"
+                  className="border-foreground/20 text-foreground/70 rounded-lg border bg-background px-4 py-2"
                 >
                   {tag}
                 </span>
@@ -277,7 +280,7 @@ export default async function CaseStudyPage({
             </p>
             <Link
               href="/contact"
-              className="bg-primary hover:bg-primary-dark inline-block rounded-full px-8 py-4 text-lg font-semibold text-white transition-all hover:scale-105"
+              className="inline-block rounded-full bg-primary px-8 py-4 text-lg font-semibold text-white transition-all hover:scale-105 hover:bg-primary-dark"
             >
               Start Your Project
             </Link>

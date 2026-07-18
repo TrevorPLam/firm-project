@@ -1,7 +1,7 @@
-import type { MetadataRoute } from 'next';
-import { createLocalBlogAdapter } from '@/lib/content/local-blog-adapter';
-import { createLocalPortfolioAdapter } from '@/lib/content/local-portfolio-adapter';
-import { siteUrl, supportedLocales } from '@/lib/site-config';
+import type { MetadataRoute } from "next";
+import { createLocalBlogAdapter } from "@/lib/content/local-blog-adapter";
+import { createLocalPortfolioAdapter } from "@/lib/content/local-portfolio-adapter";
+import { siteUrl, supportedLocales } from "@/lib/site-config";
 
 const locales = supportedLocales();
 const baseUrl = siteUrl();
@@ -9,16 +9,16 @@ const baseUrl = siteUrl();
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Static routes with fixed lastModified date
   const staticRoutes = [
-    '',
-    '/services',
-    '/about',
-    '/portfolio',
-    '/pricing',
-    '/blog',
-    '/contact',
-    '/faq',
-    '/legal/privacy',
-    '/legal/terms',
+    "",
+    "/services",
+    "/about",
+    "/portfolio",
+    "/pricing",
+    "/blog",
+    "/contact",
+    "/faq",
+    "/legal/privacy",
+    "/legal/terms",
   ];
 
   const staticSitemapEntries: MetadataRoute.Sitemap = [];
@@ -29,11 +29,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       staticSitemapEntries.push({
         url: `${baseUrl}/${locale}${route}`,
         lastModified: new Date(),
-        changeFrequency: 'monthly' as const,
-        priority: route === '' ? 1 : 0.7,
+        changeFrequency: "monthly" as const,
+        priority: route === "" ? 1 : 0.7,
         alternates: {
           languages: Object.fromEntries(
-            locales.map((loc) => [loc, `${baseUrl}/${loc}${route}`])
+            locales.map((loc) => [loc, `${baseUrl}/${loc}${route}`]),
           ),
         },
       });
@@ -53,11 +53,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       blogSitemapEntries.push({
         url: `${baseUrl}/${locale}/blog/${post.slug}`,
         lastModified: new Date(post.date),
-        changeFrequency: 'monthly' as const,
+        changeFrequency: "monthly" as const,
         priority: 0.6,
         alternates: {
           languages: Object.fromEntries(
-            locales.map((loc) => [loc, `${baseUrl}/${loc}/blog/${post.slug}`])
+            locales.map((loc) => [loc, `${baseUrl}/${loc}/blog/${post.slug}`]),
           ),
         },
       });
@@ -73,16 +73,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       portfolioSitemapEntries.push({
         url: `${baseUrl}/${locale}/portfolio/${slug}`,
         lastModified: new Date(),
-        changeFrequency: 'monthly' as const,
+        changeFrequency: "monthly" as const,
         priority: 0.6,
         alternates: {
           languages: Object.fromEntries(
-            locales.map((loc) => [loc, `${baseUrl}/${loc}/portfolio/${slug}`])
+            locales.map((loc) => [loc, `${baseUrl}/${loc}/portfolio/${slug}`]),
           ),
         },
       });
     }
   }
 
-  return [...staticSitemapEntries, ...blogSitemapEntries, ...portfolioSitemapEntries];
+  return [
+    ...staticSitemapEntries,
+    ...blogSitemapEntries,
+    ...portfolioSitemapEntries,
+  ];
 }

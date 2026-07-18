@@ -10,14 +10,14 @@ import {
   type CaseStudySummary as LocalCaseStudySummary,
   type CaseStudyResult as LocalCaseStudyResult,
   type CaseStudyTestimonial as LocalCaseStudyTestimonial,
-} from '../portfolio-data';
+} from "../portfolio-data";
 import type {
   PortfolioContentPort,
   CaseStudySummary,
   CaseStudyDetail,
   CaseStudyResult,
   CaseStudyTestimonial,
-} from '../content-port';
+} from "../content-port";
 
 /**
  * Map local case study result to port result
@@ -32,7 +32,9 @@ function mapResult(result: LocalCaseStudyResult): CaseStudyResult {
 /**
  * Map local case study testimonial to port testimonial
  */
-function mapTestimonial(testimonial: LocalCaseStudyTestimonial): CaseStudyTestimonial {
+function mapTestimonial(
+  testimonial: LocalCaseStudyTestimonial,
+): CaseStudyTestimonial {
   return {
     quote: testimonial.quote,
     author: testimonial.author,

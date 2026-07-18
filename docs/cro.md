@@ -15,6 +15,7 @@ A good hypothesis follows the format:
 > **If** we [change], **then** [outcome] **because** [rationale].
 
 Example:
+
 > If we change the CTA button color from blue to green, then the contact form submission rate will increase because green creates a sense of urgency and action.
 
 ### 2. Test Prioritization
@@ -81,7 +82,11 @@ export async function getVariant(testId: string): Promise<string> {
   // Returns variant ID (e.g., 'control', 'variant-a', 'variant-b')
 }
 
-export async function trackEvent(testId: string, variant: string, event: string): Promise<void> {
+export async function trackEvent(
+  testId: string,
+  variant: string,
+  event: string,
+): Promise<void> {
   // Track conversion events for the test
 }
 ```
@@ -303,16 +308,16 @@ Track these events for A/B tests:
 
 ```typescript
 // Track experiment view
-trackEvent('experiment_view', {
-  experiment_id: 'hero-cta-test',
-  variant: 'variant-a',
+trackEvent("experiment_view", {
+  experiment_id: "hero-cta-test",
+  variant: "variant-a",
 });
 
 // Track experiment conversion
-trackEvent('experiment_convert', {
-  experiment_id: 'hero-cta-test',
-  variant: 'variant-a',
-  conversion_type: 'contact_form',
+trackEvent("experiment_convert", {
+  experiment_id: "hero-cta-test",
+  variant: "variant-a",
+  conversion_type: "contact_form",
 });
 ```
 
@@ -349,18 +354,21 @@ For testing backend changes:
 ## CRO Roadmap
 
 ### Phase 1: Foundation (Current)
+
 - [ ] Set up A/B testing platform
 - [ ] Create CRO documentation
 - [ ] Train team on A/B testing process
 - [ ] Implement first A/B test
 
 ### Phase 2: Optimization
+
 - [ ] Build test library
 - [ ] Implement personalization
 - [ ] Integrate with analytics
 - [ ] Establish testing cadence
 
 ### Phase 3: Advanced
+
 - [ ] Multivariate testing
 - [ ] Machine learning optimization
 - [ ] Automated experimentation
@@ -369,16 +377,19 @@ For testing backend changes:
 ## Resources
 
 ### A/B Testing Platforms
+
 - [VWO](https://vwo.com/) - All-in-one CRO platform
 - [Optimizely](https://www.optimizely.com/) - Enterprise experimentation platform
 - [Statsig](https://statsig.com/) - Developer-first platform with advanced statistics
 
 ### Learning Resources
+
 - [Speero CRO Blog](https://speero.com/blog) - CRO best practices and frameworks
 - [Convert Blog](https://www.convert.com/blog) - A/B testing and optimization
 - [Investing in CRO](https://www.invespcro.com/blog) - CRO research and case studies
 
 ### Statistical Tools
+
 - [Optimizely Sample Size Calculator](https://www.optimizely.com/sample-size-calculator/)
 - [AB Testguide Calculator](https://abtestguide.com/calc/)
 - [Evan Miller Calculator](https://www.evanmiller.org/ab-testing/sample-size.html)

@@ -7,11 +7,11 @@
  */
 export function escapeHtml(value: string): string {
   const map: Record<string, string> = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;',
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
   };
 
   return value.replace(/[&<>"']/g, (char) => map[char] || char);

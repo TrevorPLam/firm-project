@@ -44,7 +44,9 @@ export class ErrorBoundary extends Component<
         return this.props.fallback;
       }
 
-      return <ErrorFallback error={this.state.error} resetError={this.resetError} />;
+      return (
+        <ErrorFallback error={this.state.error} resetError={this.resetError} />
+      );
     }
 
     return this.props.children;
@@ -56,7 +58,7 @@ function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
     <div className="flex min-h-screen items-center justify-center px-6">
       <div className="w-full max-w-md text-center">
         <svg
-          className="mb-4 mx-auto h-16 w-16 text-amber-500"
+          className="mx-auto mb-4 h-16 w-16 text-amber-500"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -77,7 +79,7 @@ function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
         </p>
         <button
           onClick={resetError}
-          className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          className="text-primary-foreground hover:bg-primary/90 inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
         >
           Try again
         </button>

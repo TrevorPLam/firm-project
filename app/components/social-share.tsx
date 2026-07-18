@@ -8,7 +8,11 @@ interface SocialShareProps {
   description?: string;
 }
 
-export function SocialShare({ url, title, description = "" }: SocialShareProps) {
+export function SocialShare({
+  url,
+  title,
+  description = "",
+}: SocialShareProps) {
   const encodedUrl = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);
   const encodedDescription = encodeURIComponent(description);
@@ -31,12 +35,12 @@ export function SocialShare({ url, title, description = "" }: SocialShareProps) 
   return (
     <div className="flex items-center gap-3">
       <span className="text-foreground/60 text-sm font-medium">Share:</span>
-      
+
       <motion.button
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => handleShare("twitter", shareUrls.twitter)}
-        className="text-foreground/60 hover:text-foreground transition-colors"
+        className="text-foreground/60 transition-colors hover:text-foreground"
         aria-label="Share on Twitter/X"
       >
         <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -48,7 +52,7 @@ export function SocialShare({ url, title, description = "" }: SocialShareProps) 
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => handleShare("facebook", shareUrls.facebook)}
-        className="text-foreground/60 hover:text-foreground transition-colors"
+        className="text-foreground/60 transition-colors hover:text-foreground"
         aria-label="Share on Facebook"
       >
         <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -60,7 +64,7 @@ export function SocialShare({ url, title, description = "" }: SocialShareProps) 
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => handleShare("linkedin", shareUrls.linkedin)}
-        className="text-foreground/60 hover:text-foreground transition-colors"
+        className="text-foreground/60 transition-colors hover:text-foreground"
         aria-label="Share on LinkedIn"
       >
         <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -72,11 +76,21 @@ export function SocialShare({ url, title, description = "" }: SocialShareProps) 
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => handleShare("email", shareUrls.email)}
-        className="text-foreground/60 hover:text-foreground transition-colors"
+        className="text-foreground/60 transition-colors hover:text-foreground"
         aria-label="Share via email"
       >
-        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        <svg
+          className="h-5 w-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+          />
         </svg>
       </motion.button>
     </div>

@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { ScrollReveal } from "../../components/scroll-reveal";
 import { ContactForm } from "../../components/contact-form";
-import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
+import {
+  generateBreadcrumbSchema,
+  generateSchemaJsonLd,
+} from "../../lib/schema";
 import { generateLocaleAlternates } from "../../lib/seo-alternates";
-import { setRequestLocale } from 'next-intl/server';
-import { routing } from '@/i18n/routing';
-import { hasLocale } from 'next-intl';
+import { setRequestLocale } from "next-intl/server";
+import { routing } from "@/i18n/routing";
+import { hasLocale } from "next-intl";
 
 export async function generateMetadata({
   params,
@@ -13,7 +16,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const alternates = generateLocaleAlternates(locale, '/contact');
+  const alternates = generateLocaleAlternates(locale, "/contact");
 
   return {
     alternates,
@@ -62,11 +65,11 @@ export default async function ContactPage({
         }}
       />
       {/* Hero Section */}
-      <section className="px-6 pt-32 pb-20">
+      <section className="px-6 pb-20 pt-32">
         <div className="mx-auto max-w-7xl">
           <ScrollReveal>
             <div className="max-w-3xl">
-              <h1 className="mb-6 text-5xl leading-tight font-bold tracking-tight md:text-7xl">
+              <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight md:text-7xl">
                 Get in Touch
               </h1>
               <p className="text-foreground/70 mb-8 text-xl leading-relaxed md:text-2xl">
@@ -105,7 +108,7 @@ export default async function ContactPage({
                   <div className="flex items-start gap-4">
                     <div className="bg-primary/10 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl">
                       <svg
-                        className="text-primary h-6 w-6"
+                        className="h-6 w-6 text-primary"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -122,7 +125,7 @@ export default async function ContactPage({
                       <h3 className="mb-1 font-semibold">Email</h3>
                       <a
                         href="mailto:hello@elevatedigital.com"
-                        className="text-foreground/70 hover:text-primary transition-colors"
+                        className="text-foreground/70 transition-colors hover:text-primary"
                       >
                         hello@elevatedigital.com
                       </a>
@@ -132,7 +135,7 @@ export default async function ContactPage({
                   <div className="flex items-start gap-4">
                     <div className="bg-primary/10 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl">
                       <svg
-                        className="text-primary h-6 w-6"
+                        className="h-6 w-6 text-primary"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -149,7 +152,7 @@ export default async function ContactPage({
                       <h3 className="mb-1 font-semibold">Phone</h3>
                       <a
                         href="tel:+1234567890"
-                        className="text-foreground/70 hover:text-primary transition-colors"
+                        className="text-foreground/70 transition-colors hover:text-primary"
                       >
                         +1 (234) 567-890
                       </a>
@@ -159,7 +162,7 @@ export default async function ContactPage({
                   <div className="flex items-start gap-4">
                     <div className="bg-primary/10 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl">
                       <svg
-                        className="text-primary h-6 w-6"
+                        className="h-6 w-6 text-primary"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -191,7 +194,7 @@ export default async function ContactPage({
                   <div className="flex items-start gap-4">
                     <div className="bg-primary/10 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl">
                       <svg
-                        className="text-primary h-6 w-6"
+                        className="h-6 w-6 text-primary"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"

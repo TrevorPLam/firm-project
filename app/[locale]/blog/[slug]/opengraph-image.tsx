@@ -1,4 +1,8 @@
-import { createOGImageResponse, OG_IMAGE_CONTENT_TYPE, OG_IMAGE_SIZE } from "@/lib/og-image-helper";
+import {
+  createOGImageResponse,
+  OG_IMAGE_CONTENT_TYPE,
+  OG_IMAGE_SIZE,
+} from "@/lib/og-image-helper";
 import { createLocalBlogAdapter } from "@/lib/content/local-blog-adapter";
 
 export const size = OG_IMAGE_SIZE;

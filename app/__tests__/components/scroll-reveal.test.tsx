@@ -29,7 +29,7 @@ describe("ScrollReveal", () => {
   it("should render with initial hidden state (Motion animation)", () => {
     render(<ScrollReveal>Test content</ScrollReveal>);
     const element = screen.getByText("Test content");
-    
+
     // Motion uses inline styles for initial state
     expect(element).toHaveStyle({ opacity: "0" });
     expect(element).toHaveStyle({ transform: "translateY(32px) scale(0.95)" });
@@ -38,7 +38,7 @@ describe("ScrollReveal", () => {
   it("should apply delay prop correctly", () => {
     render(<ScrollReveal delay={500}>Test content</ScrollReveal>);
     const element = screen.getByText("Test content");
-    
+
     // Element should still render with delay applied
     expect(element).toBeInTheDocument();
   });
@@ -46,7 +46,7 @@ describe("ScrollReveal", () => {
   it("should apply custom className", () => {
     render(<ScrollReveal className="custom-class">Test content</ScrollReveal>);
     const element = screen.getByText("Test content");
-    
+
     expect(element).toHaveClass("custom-class");
   });
 

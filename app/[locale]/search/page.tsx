@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { SearchContent } from "../../components/search-content";
 import { generateLocaleAlternates } from "../../lib/seo-alternates";
-import { setRequestLocale } from 'next-intl/server';
-import { routing } from '@/i18n/routing';
-import { hasLocale } from 'next-intl';
+import { setRequestLocale } from "next-intl/server";
+import { routing } from "@/i18n/routing";
+import { hasLocale } from "next-intl";
 
 export async function generateMetadata({
   params,
@@ -11,16 +11,18 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const alternates = generateLocaleAlternates(locale, '/search');
+  const alternates = generateLocaleAlternates(locale, "/search");
 
   return {
     alternates,
     title: "Search | Elevate Digital",
-    description: "Search our blog posts, portfolio case studies, and pages to find the content you need.",
+    description:
+      "Search our blog posts, portfolio case studies, and pages to find the content you need.",
     keywords: ["search", "find content", "blog search", "portfolio search"],
     openGraph: {
       title: "Search | Elevate Digital",
-      description: "Search our blog posts, portfolio case studies, and pages to find the content you need.",
+      description:
+        "Search our blog posts, portfolio case studies, and pages to find the content you need.",
       type: "website",
     },
   };

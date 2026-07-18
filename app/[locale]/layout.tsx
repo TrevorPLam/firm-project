@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, setRequestLocale } from 'next-intl/server';
-import { notFound } from 'next/navigation';
-import { routing } from '@/i18n/routing';
-import { hasLocale } from 'next-intl';
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages, setRequestLocale } from "next-intl/server";
+import { notFound } from "next/navigation";
+import { routing } from "@/i18n/routing";
+import { hasLocale } from "next-intl";
 import "../globals.css";
 import { Navigation } from "../components/navigation";
 import { Footer } from "../components/footer";
@@ -38,7 +38,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  
+
   return {
     metadataBase: new URL(
       process.env.NEXT_PUBLIC_SITE_URL || "https://elevatedigital.com",
@@ -46,8 +46,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: `/${locale}`,
       languages: {
-        en: '/en',
-        es: '/es',
+        en: "/en",
+        es: "/es",
       },
     },
     title: {
@@ -80,7 +80,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -138,9 +138,7 @@ export default async function LocaleLayout({ children, params }: Props) {
           nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: generateSchemaJsonLd(
-              generateBreadcrumbSchema([
-                { name: "Home", url: `/${locale}` },
-              ])
+              generateBreadcrumbSchema([{ name: "Home", url: `/${locale}` }]),
             ),
           }}
         />
@@ -148,7 +146,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       <body className="flex min-h-full flex-col">
         <a
           href="#main-content"
-          className="focus:bg-primary sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-lg focus:px-4 focus:py-2 focus:text-white"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-white"
         >
           Skip to main content
         </a>

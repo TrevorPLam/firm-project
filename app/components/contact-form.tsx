@@ -14,7 +14,7 @@ export function ContactForm({ showTitle = true }: ContactFormProps) {
   );
 
   return (
-    <div className="bg-background border-foreground/10 rounded-2xl border p-8">
+    <div className="border-foreground/10 rounded-2xl border bg-background p-8">
       {showTitle && (
         <h2 className="mb-6 text-3xl font-bold tracking-tight">
           Send us a message
@@ -55,7 +55,7 @@ export function ContactForm({ showTitle = true }: ContactFormProps) {
             name="name"
             required
             disabled={isPending}
-            className="border-foreground/20 bg-background focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-3 transition-all outline-none focus:ring-2 disabled:opacity-50"
+            className="border-foreground/20 focus:ring-primary/20 w-full rounded-lg border bg-background px-4 py-3 outline-none transition-all focus:border-primary focus:ring-2 disabled:opacity-50"
             placeholder="Your name"
           />
         </div>
@@ -69,7 +69,7 @@ export function ContactForm({ showTitle = true }: ContactFormProps) {
             name="email"
             required
             disabled={isPending}
-            className="border-foreground/20 bg-background focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-3 transition-all outline-none focus:ring-2 disabled:opacity-50"
+            className="border-foreground/20 focus:ring-primary/20 w-full rounded-lg border bg-background px-4 py-3 outline-none transition-all focus:border-primary focus:ring-2 disabled:opacity-50"
             placeholder="your@email.com"
           />
         </div>
@@ -82,7 +82,7 @@ export function ContactForm({ showTitle = true }: ContactFormProps) {
             id="company"
             name="company"
             disabled={isPending}
-            className="border-foreground/20 bg-background focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-3 transition-all outline-none focus:ring-2 disabled:opacity-50"
+            className="border-foreground/20 focus:ring-primary/20 w-full rounded-lg border bg-background px-4 py-3 outline-none transition-all focus:border-primary focus:ring-2 disabled:opacity-50"
             placeholder="Your company name"
           />
         </div>
@@ -95,7 +95,7 @@ export function ContactForm({ showTitle = true }: ContactFormProps) {
             name="service"
             required
             disabled={isPending}
-            className="border-foreground/20 bg-background focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-3 transition-all outline-none focus:ring-2 disabled:opacity-50"
+            className="border-foreground/20 focus:ring-primary/20 w-full rounded-lg border bg-background px-4 py-3 outline-none transition-all focus:border-primary focus:ring-2 disabled:opacity-50"
           >
             <option value="">Select a service</option>
             <option value="web-design">Web Design & Development</option>
@@ -113,7 +113,7 @@ export function ContactForm({ showTitle = true }: ContactFormProps) {
             id="budget"
             name="budget"
             disabled={isPending}
-            className="border-foreground/20 bg-background focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-3 transition-all outline-none focus:ring-2 disabled:opacity-50"
+            className="border-foreground/20 focus:ring-primary/20 w-full rounded-lg border bg-background px-4 py-3 outline-none transition-all focus:border-primary focus:ring-2 disabled:opacity-50"
           >
             <option value="">Select budget range</option>
             <option value="5k-10k">$5,000 - $10,000</option>
@@ -132,21 +132,27 @@ export function ContactForm({ showTitle = true }: ContactFormProps) {
             required
             rows={5}
             disabled={isPending}
-            className="border-foreground/20 bg-background focus:border-primary focus:ring-primary/20 w-full resize-none rounded-lg border px-4 py-3 transition-all outline-none focus:ring-2 disabled:opacity-50"
+            className="border-foreground/20 focus:ring-primary/20 w-full resize-none rounded-lg border bg-background px-4 py-3 outline-none transition-all focus:border-primary focus:ring-2 disabled:opacity-50"
             placeholder="Tell us about your project..."
           />
         </div>
         <button
           type="submit"
           disabled={isPending}
-          className="bg-primary hover:bg-primary-dark w-full rounded-full px-8 py-4 text-lg font-semibold text-white transition-all hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
+          className="w-full rounded-full bg-primary px-8 py-4 text-lg font-semibold text-white transition-all hover:scale-[1.02] hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
         >
           {isPending ? "Sending..." : "Send Message"}
         </button>
 
         {/* Honeypot field for bot protection */}
         <div
-          style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', overflow: 'hidden' }}
+          style={{
+            position: "absolute",
+            left: "-9999px",
+            width: "1px",
+            height: "1px",
+            overflow: "hidden",
+          }}
           aria-hidden="true"
         >
           <label htmlFor="website">Leave this blank</label>

@@ -1,17 +1,20 @@
 import type { Metadata } from "next";
 import { ScrollReveal } from "../../../components/scroll-reveal";
 import { notFound } from "next/navigation";
-import { Link } from '@/i18n/navigation';
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { SanitizedContent } from "../../../components/sanitized-content";
 import { NewsletterForm } from "../../../components/newsletter-form";
 import { SocialShare } from "../../../components/social-share";
 import { createLocalBlogAdapter } from "../../../lib/content/local-blog-adapter";
-import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../../lib/schema";
+import {
+  generateBreadcrumbSchema,
+  generateSchemaJsonLd,
+} from "../../../lib/schema";
 import { absoluteUrl } from "../../../lib/site-config";
-import { setRequestLocale } from 'next-intl/server';
-import { routing } from '@/i18n/routing';
-import { hasLocale } from 'next-intl';
+import { setRequestLocale } from "next-intl/server";
+import { routing } from "@/i18n/routing";
+import { hasLocale } from "next-intl";
 
 export async function generateStaticParams() {
   const blogPort = createLocalBlogAdapter();
@@ -87,13 +90,13 @@ export default async function BlogPostPage({
         }}
       />
       {/* Article Header */}
-      <article className="px-6 pt-32 pb-20">
+      <article className="px-6 pb-20 pt-32">
         <div className="mx-auto max-w-4xl">
           <ScrollReveal>
             <div className="mb-8">
               <Link
                 href="/blog"
-                className="text-foreground/60 hover:text-foreground mb-8 inline-flex items-center gap-2 transition-colors"
+                className="text-foreground/60 mb-8 inline-flex items-center gap-2 transition-colors hover:text-foreground"
               >
                 <svg
                   className="h-4 w-4"
@@ -111,11 +114,11 @@ export default async function BlogPostPage({
                 Back to Blog
               </Link>
               <div className="mb-4 flex items-center gap-2">
-                <span className="bg-primary/10 text-primary rounded-full px-3 py-1 text-sm font-medium">
+                <span className="bg-primary/10 rounded-full px-3 py-1 text-sm font-medium text-primary">
                   {post.category}
                 </span>
               </div>
-              <h1 className="mb-6 text-4xl leading-tight font-bold tracking-tight md:text-6xl">
+              <h1 className="mb-6 text-4xl font-bold leading-tight tracking-tight md:text-6xl">
                 {post.title}
               </h1>
               <p className="text-foreground/70 mb-8 text-xl leading-relaxed">
@@ -134,7 +137,7 @@ export default async function BlogPostPage({
                       />
                     ) : (
                       <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full">
-                        <span className="text-primary font-semibold">
+                        <span className="font-semibold text-primary">
                           {post.author.name
                             .split(" ")
                             .map((n) => n[0])
@@ -144,7 +147,7 @@ export default async function BlogPostPage({
                       </div>
                     )}
                     <div>
-                      <div className="text-foreground font-semibold">
+                      <div className="font-semibold text-foreground">
                         {post.author.name}
                       </div>
                       <div className="text-sm">{post.author.role}</div>
@@ -197,7 +200,7 @@ export default async function BlogPostPage({
       <section className="bg-foreground/5 px-6 py-20">
         <div className="mx-auto max-w-4xl">
           <ScrollReveal>
-            <div className="bg-background border-foreground/10 rounded-2xl border p-8">
+            <div className="border-foreground/10 rounded-2xl border bg-background p-8">
               <div className="flex items-start gap-6">
                 {post.author.image ? (
                   <Image
@@ -209,7 +212,7 @@ export default async function BlogPostPage({
                   />
                 ) : (
                   <div className="bg-primary/10 flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full">
-                    <span className="text-primary text-2xl font-bold">
+                    <span className="text-2xl font-bold text-primary">
                       {post.author.name
                         .split(" ")
                         .map((n) => n[0])
@@ -220,7 +223,7 @@ export default async function BlogPostPage({
                 )}
                 <div>
                   <h3 className="mb-1 text-xl font-bold">{post.author.name}</h3>
-                  <p className="text-primary mb-3 font-medium">
+                  <p className="mb-3 font-medium text-primary">
                     {post.author.role}
                   </p>
                   <p className="text-foreground/70 mb-4">
@@ -260,14 +263,14 @@ export default async function BlogPostPage({
                   <Link
                     key={relatedPost.slug}
                     href={`/blog/${relatedPost.slug}`}
-                    className="bg-background border-foreground/10 hover:border-primary/50 group rounded-xl border p-6 transition-all"
+                    className="border-foreground/10 hover:border-primary/50 group rounded-xl border bg-background p-6 transition-all"
                   >
                     <div className="mb-3 flex items-center gap-2">
-                      <span className="bg-primary/10 text-primary rounded-full px-2 py-1 text-xs font-medium">
+                      <span className="bg-primary/10 rounded-full px-2 py-1 text-xs font-medium text-primary">
                         {relatedPost.category}
                       </span>
                     </div>
-                    <h3 className="group-hover:text-primary mb-2 text-lg font-bold transition-colors">
+                    <h3 className="mb-2 text-lg font-bold transition-colors group-hover:text-primary">
                       {relatedPost.title}
                     </h3>
                     <p className="text-foreground/60 text-sm">

@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
-import { Link } from '@/i18n/navigation';
+import { Link } from "@/i18n/navigation";
 import { ScrollReveal } from "../../components/scroll-reveal";
-import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
+import {
+  generateBreadcrumbSchema,
+  generateSchemaJsonLd,
+} from "../../lib/schema";
 import { generateLocaleAlternates } from "../../lib/seo-alternates";
-import { setRequestLocale } from 'next-intl/server';
-import { routing } from '@/i18n/routing';
-import { hasLocale } from 'next-intl';
+import { setRequestLocale } from "next-intl/server";
+import { routing } from "@/i18n/routing";
+import { hasLocale } from "next-intl";
 
 export async function generateMetadata({
   params,
@@ -13,7 +16,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const alternates = generateLocaleAlternates(locale, '/faq');
+  const alternates = generateLocaleAlternates(locale, "/faq");
 
   return {
     alternates,
@@ -195,11 +198,11 @@ export default async function FAQPage({
         }}
       />
       {/* Hero Section */}
-      <section className="px-6 pt-32 pb-20">
+      <section className="px-6 pb-20 pt-32">
         <div className="mx-auto max-w-7xl">
           <ScrollReveal>
             <div className="max-w-3xl">
-              <h1 className="mb-6 text-5xl leading-tight font-bold tracking-tight md:text-7xl">
+              <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight md:text-7xl">
                 Frequently Asked Questions
               </h1>
               <p className="text-foreground/70 mb-8 text-xl leading-relaxed md:text-2xl">
@@ -224,7 +227,7 @@ export default async function FAQPage({
                   {category.questions.map((faq, faqIndex) => (
                     <div
                       key={faqIndex}
-                      className="bg-background border-foreground/10 hover:border-primary/50 rounded-xl border p-6 transition-all"
+                      className="border-foreground/10 hover:border-primary/50 rounded-xl border bg-background p-6 transition-all"
                     >
                       <h3 className="mb-3 text-lg font-semibold">
                         {faq.question}
@@ -254,7 +257,7 @@ export default async function FAQPage({
             </p>
             <Link
               href="/contact"
-              className="bg-primary hover:bg-primary-dark inline-block rounded-full px-8 py-4 text-lg font-semibold text-white transition-all hover:scale-105"
+              className="inline-block rounded-full bg-primary px-8 py-4 text-lg font-semibold text-white transition-all hover:scale-105 hover:bg-primary-dark"
             >
               Contact Us
             </Link>

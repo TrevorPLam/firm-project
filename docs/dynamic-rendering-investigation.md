@@ -12,7 +12,7 @@ The root locale layout (`app/[locale]/layout.tsx`) calls `getNonce()` on line 11
 // app/lib/nonce.ts
 export async function getNonce(): Promise<string> {
   const headersList = await headers();
-  return headersList.get('x-nonce') || '';
+  return headersList.get("x-nonce") || "";
 }
 ```
 
@@ -50,11 +50,13 @@ All routes under `[locale]` are dynamic because they inherit from the root local
 ## Impact Analysis
 
 ### Performance Impact
+
 - **Static pages lose pre-rendering benefits**: Marketing pages (home, about, services, etc.) that could be statically generated are now server-rendered on every request
 - **Increased server load**: Every page visit triggers server-side rendering instead of serving cached HTML
 - **Slower TTFB**: Static pages typically have faster Time to First Byte since they're pre-generated
 
 ### Security Impact
+
 - **CSP nonce is currently non-functional**: The nonce is generated in `proxy.ts` but the early return for i18n redirects (lines 38-41) means `x-nonce` is never set on requests that reach Server Components
 - **Current CSP is Report-Only**: The CSP header is set in report-only mode, so there's no enforcement currently
 - **Nonce-based CSP is incomplete**: Even if the nonce reached components, the current implementation has wiring issues (see T015)
@@ -66,17 +68,20 @@ All routes under `[locale]` are dynamic because they inherit from the root local
 **Description:** Accept that all locale routes will be dynamic due to CSP nonce requirements. Focus on optimizing dynamic rendering performance instead of pursuing static generation.
 
 **Pros:**
+
 - Maintains current CSP nonce approach (once T015 fixes the wiring)
 - No architectural changes required
 - Consistent with modern Next.js 16 PPR (Partial Prerendering) philosophy
 - Dynamic rendering is acceptable for many marketing sites
 
 **Cons:**
+
 - Loses static generation benefits for content that doesn't change
 - Higher server load and slower TTFB for static content
 - Not ideal for SEO-focused landing pages that benefit from pre-rendering
 
 **Implementation:**
+
 - Document the decision in security.md
 - Add `export const dynamic = 'force-dynamic'` to layout for explicitness
 - Focus on caching strategies (ISR, revalidate) for content routes
@@ -86,17 +91,20 @@ All routes under `[locale]` are dynamic because they inherit from the root local
 **Description:** Remove nonce-based CSP entirely and use static rendering. Fall back to hash-based CSP or report-only monitoring without per-request nonces.
 
 **Pros:**
+
 - All marketing pages can be statically generated
 - Better performance and SEO for static content
 - Simpler architecture without nonce wiring complexity
 
 **Cons:**
+
 - Loses per-request nonce security benefits
 - Requires alternative CSP strategy (hash-based or allowlist-based)
 - May need to accept weaker CSP for inline scripts
 - Requires updating all inline script usages (JSON-LD, Analytics)
 
 **Implementation:**
+
 - Remove `getNonce()` calls from layout
 - Remove nonce from inline scripts
 - Switch to hash-based CSP or script-src allowlist
@@ -107,17 +115,20 @@ All routes under `[locale]` are dynamic because they inherit from the root local
 **Description:** Use try/catch around `headers()` to detect static generation context. Only use nonce in dynamic contexts, fall back to static-safe CSP for build-time rendering.
 
 **Pros:**
+
 - Allows static generation for pages that don't need nonce
 - Maintains nonce security for dynamic routes
 - Follows Next.js recommended pattern for conditional headers usage
 
 **Cons:**
+
 - Complex implementation with conditional logic
 - May still force dynamic rendering in some cases
 - Requires careful testing of both static and dynamic paths
 - Suspense boundaries needed for dynamic segments
 
 **Implementation:**
+
 - Wrap `getNonce()` in try/catch to handle static generation
 - Use Suspense boundaries for components that need nonce
 - Conditionally apply nonce only when available
@@ -128,17 +139,20 @@ All routes under `[locale]` are dynamic because they inherit from the root local
 **Description:** Keep layout static by removing `getNonce()` call. Move nonce-dependent scripts (Analytics, JSON-LD) to client components that receive nonce via props from a wrapper.
 
 **Pros:**
+
 - Layout remains static
 - Nonce still available for client-side scripts
 - Cleaner separation of static/dynamic concerns
 
 **Cons:**
+
 - JSON-LD needs to be client-rendered (SEO impact unclear)
 - Analytics loads later (potential tracking impact)
 - Requires significant component restructuring
 - May not fully solve CSP nonce requirements
 
 **Implementation:**
+
 - Remove `getNonce()` from layout
 - Create client wrapper components for nonce-dependent scripts
 - Pass nonce via props from middleware to client components
@@ -149,6 +163,7 @@ All routes under `[locale]` are dynamic because they inherit from the root local
 **Recommended: Option A (Accept Dynamic Rendering)**
 
 **Rationale:**
+
 1. **Next.js 16 Philosophy**: The framework is moving toward PPR where static/dynamic is per-component, not per-route. Accepting dynamic rendering aligns with this direction.
 2. **CSP Security Priority**: Content Security Policy is a critical security control. Weakening it for static generation performance is not justified.
 3. **T015 Dependency**: The nonce wiring is currently broken (T015). Fixing that first will make the nonce functional, making the security benefit real.

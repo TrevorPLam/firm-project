@@ -1,7 +1,13 @@
-import { describe, it, expect, afterEach } from 'vitest';
-import { siteUrl, siteName, defaultLocale, supportedLocales, absoluteUrl } from '@/lib/site-config';
+import { describe, it, expect, afterEach } from "vitest";
+import {
+  siteUrl,
+  siteName,
+  defaultLocale,
+  supportedLocales,
+  absoluteUrl,
+} from "@/lib/site-config";
 
-describe('site-config', () => {
+describe("site-config", () => {
   const originalEnv = process.env.NEXT_PUBLIC_SITE_URL;
 
   afterEach(() => {
@@ -9,65 +15,67 @@ describe('site-config', () => {
     process.env.NEXT_PUBLIC_SITE_URL = originalEnv;
   });
 
-  describe('siteUrl', () => {
-    it('returns environment variable when set', () => {
-      process.env.NEXT_PUBLIC_SITE_URL = 'https://example.com';
-      expect(siteUrl()).toBe('https://example.com');
+  describe("siteUrl", () => {
+    it("returns environment variable when set", () => {
+      process.env.NEXT_PUBLIC_SITE_URL = "https://example.com";
+      expect(siteUrl()).toBe("https://example.com");
     });
 
-    it('returns default when environment variable is not set', () => {
+    it("returns default when environment variable is not set", () => {
       delete process.env.NEXT_PUBLIC_SITE_URL;
-      expect(siteUrl()).toBe('https://elevatedigital.com');
+      expect(siteUrl()).toBe("https://elevatedigital.com");
     });
 
-    it('returns default when environment variable is empty string', () => {
-      process.env.NEXT_PUBLIC_SITE_URL = '';
-      expect(siteUrl()).toBe('https://elevatedigital.com');
-    });
-  });
-
-  describe('siteName', () => {
-    it('returns the site name', () => {
-      expect(siteName()).toBe('Elevate Digital');
+    it("returns default when environment variable is empty string", () => {
+      process.env.NEXT_PUBLIC_SITE_URL = "";
+      expect(siteUrl()).toBe("https://elevatedigital.com");
     });
   });
 
-  describe('defaultLocale', () => {
-    it('returns the default locale', () => {
-      expect(defaultLocale()).toBe('en');
+  describe("siteName", () => {
+    it("returns the site name", () => {
+      expect(siteName()).toBe("Elevate Digital");
     });
   });
 
-  describe('supportedLocales', () => {
-    it('returns array of supported locales', () => {
-      expect(supportedLocales()).toEqual(['en', 'es']);
+  describe("defaultLocale", () => {
+    it("returns the default locale", () => {
+      expect(defaultLocale()).toBe("en");
     });
   });
 
-  describe('absoluteUrl', () => {
-    it('constructs absolute URL with path', () => {
-      process.env.NEXT_PUBLIC_SITE_URL = 'https://example.com';
-      expect(absoluteUrl('/blog/test')).toBe('https://example.com/blog/test');
+  describe("supportedLocales", () => {
+    it("returns array of supported locales", () => {
+      expect(supportedLocales()).toEqual(["en", "es"]);
+    });
+  });
+
+  describe("absoluteUrl", () => {
+    it("constructs absolute URL with path", () => {
+      process.env.NEXT_PUBLIC_SITE_URL = "https://example.com";
+      expect(absoluteUrl("/blog/test")).toBe("https://example.com/blog/test");
     });
 
-    it('handles paths without leading slash', () => {
-      process.env.NEXT_PUBLIC_SITE_URL = 'https://example.com';
-      expect(absoluteUrl('blog/test')).toBe('https://example.com/blog/test');
+    it("handles paths without leading slash", () => {
+      process.env.NEXT_PUBLIC_SITE_URL = "https://example.com";
+      expect(absoluteUrl("blog/test")).toBe("https://example.com/blog/test");
     });
 
-    it('uses default site URL when env not set', () => {
+    it("uses default site URL when env not set", () => {
       delete process.env.NEXT_PUBLIC_SITE_URL;
-      expect(absoluteUrl('/blog/test')).toBe('https://elevatedigital.com/blog/test');
+      expect(absoluteUrl("/blog/test")).toBe(
+        "https://elevatedigital.com/blog/test",
+      );
     });
 
-    it('handles root path', () => {
-      process.env.NEXT_PUBLIC_SITE_URL = 'https://example.com';
-      expect(absoluteUrl('/')).toBe('https://example.com/');
+    it("handles root path", () => {
+      process.env.NEXT_PUBLIC_SITE_URL = "https://example.com";
+      expect(absoluteUrl("/")).toBe("https://example.com/");
     });
 
-    it('handles empty path', () => {
-      process.env.NEXT_PUBLIC_SITE_URL = 'https://example.com';
-      expect(absoluteUrl('')).toBe('https://example.com/');
+    it("handles empty path", () => {
+      process.env.NEXT_PUBLIC_SITE_URL = "https://example.com";
+      expect(absoluteUrl("")).toBe("https://example.com/");
     });
   });
 });

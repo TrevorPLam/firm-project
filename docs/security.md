@@ -65,12 +65,14 @@ The application implements the following security headers:
 The root locale layout uses `headers()` to read the CSP nonce from middleware, which forces all locale routes to render dynamically. After investigation, we chose to accept dynamic rendering rather than remove CSP nonce security.
 
 **Rationale:**
+
 - CSP security takes priority over static generation performance
 - Aligns with Next.js 16 PPR (Partial Prerendering) philosophy
 - Dynamic rendering performance is acceptable for current scale
 - Future caching strategies (ISR, revalidate) can regain static benefits
 
 **Implementation:**
+
 - Explicit `export const dynamic = 'force-dynamic'` in `app/[locale]/layout.tsx`
 - CSP nonce generated per-request in `proxy.ts` middleware
 - Nonce forwarded via `x-nonce` header to Server Components
@@ -99,12 +101,14 @@ The root locale layout uses `headers()` to read the CSP nonce from middleware, w
 The CSP allowlist includes the following third-party domains for specific functionality:
 
 #### Google Analytics
+
 - **Domains**: `www.googletagmanager.com`, `www.google-analytics.com`
 - **Directives**: `script-src`, `connect-src`, `img-src`
 - **Purpose**: Google Analytics tracking and Google Tag Manager
 - **Rationale**: Required for analytics and conversion tracking functionality
 
 #### Algolia Search
+
 - **Domains**: `*.algolia.net`, `*.algolianet.com`
 - **Directives**: `script-src`, `connect-src`
 - **Purpose**: Algolia search API and JavaScript SDK
@@ -112,6 +116,7 @@ The CSP allowlist includes the following third-party domains for specific functi
 - **Note**: Wildcard subdomains are used as Algolia uses multiple regional endpoints (e.g., `APPID.algolia.net`, `APPID.algolianet.com`)
 
 #### CSP Allowlist Policy
+
 - **Least Privilege**: Only specific domains are allowed; no blanket `*` wildcards except where required by the service (Algolia regional endpoints)
 - **Report-Only Mode**: CSP is currently in report-only mode for monitoring violations before enforcement
 - **Future Enforcement**: Once violations are resolved, CSP will be changed from report-only to enforce mode
@@ -142,6 +147,7 @@ To add a new image CDN hostname:
 5. Run typecheck and tests to ensure no regressions
 
 **Example for a new CDN:**
+
 ```typescript
 remotePatterns: [
   {
@@ -187,6 +193,7 @@ npm audit --audit-level=high
 ```
 
 This command:
+
 - Fails CI only on high or critical severity vulnerabilities
 - Treats moderate and low severity findings as informational
 - Uses the lockfile via `npm ci` for consistent dependency resolution
@@ -215,6 +222,7 @@ As of 2026-07-15, the project has 14 moderate severity vulnerabilities, all tran
 Test HSTS configuration using:
 
 1. **curl**:
+
    ```bash
    curl -I https://yourdomain.com
    ```
@@ -259,6 +267,7 @@ This vulnerability is **not exploitable** in this application for the following 
 The fix requires upgrading Next.js to a version that uses PostCSS >=8.5.10. However, this would require a major version downgrade of Next.js (from 16.2.10 to 9.3.3), which is a breaking change that would require extensive refactoring.
 
 Per npm security best practices for transitive vulnerabilities:
+
 - The vulnerable code path is not reachable in this application
 - The fix would introduce breaking changes
 - The risk is acceptably low given the usage pattern
@@ -266,6 +275,7 @@ Per npm security best practices for transitive vulnerabilities:
 #### Monitoring
 
 This vulnerability will be re-evaluated when:
+
 - Next.js releases a version that uses PostCSS >=8.5.10 without breaking changes
 - The application adds functionality that processes user-submitted CSS
 - Security audits identify this as a concern

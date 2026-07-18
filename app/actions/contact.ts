@@ -26,22 +26,30 @@ export type FormResult = {
   errors?: Record<string, string[]>;
 };
 
-export async function submitContactForm(formData: FormData): Promise<FormResult> {
+export async function submitContactForm(
+  formData: FormData,
+): Promise<FormResult> {
   return runContactFormSubmission(formData);
 }
 
 // Variant for useActionState / progressive enhancement.
 export async function submitContactFormAction(
   _prevState: FormResult | null,
-  formData: FormData
+  formData: FormData,
 ): Promise<FormResult> {
   return runContactFormSubmission(formData);
 }
 
-async function runContactFormSubmission(formData: FormData): Promise<FormResult> {
+async function runContactFormSubmission(
+  formData: FormData,
+): Promise<FormResult> {
   // Honeypot check - reject if bot filled the hidden field
   const honeypotValue = formData.get("website");
-  if (honeypotValue && typeof honeypotValue === "string" && honeypotValue.trim() !== "") {
+  if (
+    honeypotValue &&
+    typeof honeypotValue === "string" &&
+    honeypotValue.trim() !== ""
+  ) {
     console.log("[contact] Honeypot triggered - bot detected");
     // Return success to not alert the bot
     return {
@@ -53,10 +61,10 @@ async function runContactFormSubmission(formData: FormData): Promise<FormResult>
   // Rate limiting check
   const headerList = await headers();
   const identifier = getClientIdentifier(headerList);
-  
+
   const rateLimitKey = `contact:${identifier}`;
   const isAllowed = await checkRateLimit(rateLimitKey, 5, 600000); // 5 requests per 10 minutes
-  
+
   if (!isAllowed) {
     return {
       success: false,
@@ -85,13 +93,16 @@ async function runContactFormSubmission(formData: FormData): Promise<FormResult>
     };
   }
 
-  const { name, email, company, service, budget, message } = validatedFields.data;
+  const { name, email, company, service, budget, message } =
+    validatedFields.data;
 
   try {
     // Check if email service is configured
     const resendApiKey = getResendApiKey();
     if (!resendApiKey) {
-      console.warn("[contact] RESEND_API_KEY not configured, email service unavailable");
+      console.warn(
+        "[contact] RESEND_API_KEY not configured, email service unavailable",
+      );
       return {
         success: false,
         message: "Email service is not configured. Please contact us directly.",

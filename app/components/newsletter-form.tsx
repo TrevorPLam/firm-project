@@ -42,19 +42,25 @@ export function NewsletterForm() {
           placeholder="Enter your email"
           required
           disabled={isPending}
-          className="border-foreground/20 bg-background focus:border-primary focus:ring-primary/20 flex-1 rounded-lg border px-4 py-3 transition-all outline-none focus:ring-2 disabled:opacity-50"
+          className="border-foreground/20 focus:ring-primary/20 flex-1 rounded-lg border bg-background px-4 py-3 outline-none transition-all focus:border-primary focus:ring-2 disabled:opacity-50"
         />
         <button
           type="submit"
           disabled={isPending}
-          className="bg-primary hover:bg-primary-dark rounded-lg px-6 py-3 font-medium text-white transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-lg bg-primary px-6 py-3 font-medium text-white transition-colors hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isPending ? "Subscribing..." : "Subscribe"}
         </button>
 
         {/* Honeypot field for bot protection */}
         <div
-          style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', overflow: 'hidden' }}
+          style={{
+            position: "absolute",
+            left: "-9999px",
+            width: "1px",
+            height: "1px",
+            overflow: "hidden",
+          }}
           aria-hidden="true"
         >
           <label htmlFor="website">Leave this blank</label>

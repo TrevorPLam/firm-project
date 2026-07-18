@@ -2,8 +2,8 @@
 // DDD: CMS client is a bounded context; defined once in domain module
 // Deep module: exports typed functions, internal configuration is private
 
-import { createClient } from 'next-sanity';
-import type { SanityClient } from 'next-sanity';
+import { createClient } from "next-sanity";
+import type { SanityClient } from "next-sanity";
 import {
   SanityBlogPostSchema,
   SanityBlogPostSummarySchema,
@@ -11,16 +11,16 @@ import {
   SanityCaseStudySummarySchema,
   SanityPageSchema,
   SanityServiceSchema,
-} from './content-types';
+} from "./content-types";
 
 // ============================================
 // Client Configuration
 // ============================================
 
 const config = {
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '',
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
-  apiVersion: '2026-02-01' as const,
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "",
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
+  apiVersion: "2026-02-01" as const,
   useCdn: true,
 };
 
@@ -39,7 +39,7 @@ const previewConfig = process.env.SANITY_API_READ_TOKEN
       ...config,
       useCdn: false as const,
       token: process.env.SANITY_API_READ_TOKEN,
-      perspective: 'previewDrafts' as const,
+      perspective: "previewDrafts" as const,
     }
   : config;
 
@@ -77,7 +77,7 @@ export async function getAllBlogPosts(preview?: boolean) {
   try {
     return SanityBlogPostSummarySchema.array().parse(data);
   } catch (error) {
-    handleCMSError(error, 'getAllBlogPosts');
+    handleCMSError(error, "getAllBlogPosts");
   }
 }
 
@@ -106,7 +106,7 @@ export async function getBlogPostBySlug(slug: string, preview?: boolean) {
   try {
     return SanityBlogPostSchema.parse(data);
   } catch (error) {
-    handleCMSError(error, 'getBlogPostBySlug');
+    handleCMSError(error, "getBlogPostBySlug");
   }
 }
 
@@ -140,7 +140,7 @@ export async function getAllCaseStudies(preview?: boolean) {
   try {
     return SanityCaseStudySummarySchema.array().parse(data);
   } catch (error) {
-    handleCMSError(error, 'getAllCaseStudies');
+    handleCMSError(error, "getAllCaseStudies");
   }
 }
 
@@ -174,7 +174,7 @@ export async function getCaseStudyBySlug(slug: string, preview?: boolean) {
   try {
     return SanityCaseStudySchema.parse(data);
   } catch (error) {
-    handleCMSError(error, 'getCaseStudyBySlug');
+    handleCMSError(error, "getCaseStudyBySlug");
   }
 }
 
@@ -209,7 +209,7 @@ export async function getPageBySlug(slug: string, preview?: boolean) {
   try {
     return SanityPageSchema.parse(data);
   } catch (error) {
-    handleCMSError(error, 'getPageBySlug');
+    handleCMSError(error, "getPageBySlug");
   }
 }
 
@@ -232,7 +232,7 @@ export async function getAllServices(preview?: boolean) {
   try {
     return SanityServiceSchema.array().parse(data);
   } catch (error) {
-    handleCMSError(error, 'getAllServices');
+    handleCMSError(error, "getAllServices");
   }
 }
 
@@ -257,7 +257,7 @@ export async function getServiceBySlug(slug: string, preview?: boolean) {
   try {
     return SanityServiceSchema.parse(data);
   } catch (error) {
-    handleCMSError(error, 'getServiceBySlug');
+    handleCMSError(error, "getServiceBySlug");
   }
 }
 

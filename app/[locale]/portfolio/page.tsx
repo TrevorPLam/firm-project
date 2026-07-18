@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
-import { Link } from '@/i18n/navigation';
+import { Link } from "@/i18n/navigation";
 import { ScrollReveal } from "../../components/scroll-reveal";
 import { createLocalPortfolioAdapter } from "../../lib/content/local-portfolio-adapter";
-import { generateBreadcrumbSchema, generateSchemaJsonLd } from "../../lib/schema";
+import {
+  generateBreadcrumbSchema,
+  generateSchemaJsonLd,
+} from "../../lib/schema";
 import { generateLocaleAlternates } from "../../lib/seo-alternates";
-import { setRequestLocale } from 'next-intl/server';
-import { routing } from '@/i18n/routing';
-import { hasLocale } from 'next-intl';
+import { setRequestLocale } from "next-intl/server";
+import { routing } from "@/i18n/routing";
+import { hasLocale } from "next-intl";
 
 export async function generateMetadata({
   params,
@@ -14,7 +17,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const alternates = generateLocaleAlternates(locale, '/portfolio');
+  const alternates = generateLocaleAlternates(locale, "/portfolio");
 
   return {
     alternates,
@@ -67,11 +70,11 @@ export default async function PortfolioPage({
         }}
       />
       {/* Hero Section */}
-      <section className="px-6 pt-32 pb-20">
+      <section className="px-6 pb-20 pt-32">
         <div className="mx-auto max-w-7xl">
           <ScrollReveal>
             <div className="max-w-3xl">
-              <h1 className="mb-6 text-5xl leading-tight font-bold tracking-tight md:text-7xl">
+              <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight md:text-7xl">
                 Our Work
               </h1>
               <p className="text-foreground/70 mb-8 text-xl leading-relaxed md:text-2xl">
@@ -90,10 +93,10 @@ export default async function PortfolioPage({
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {caseStudies.map((study, index) => (
               <ScrollReveal key={study.id} delay={index * 100}>
-                <div className="bg-background border-foreground/10 hover:border-primary/50 overflow-hidden rounded-2xl border transition-all hover:shadow-xl">
+                <div className="border-foreground/10 hover:border-primary/50 overflow-hidden rounded-2xl border bg-background transition-all hover:shadow-xl">
                   <div className="p-8">
                     <div className="mb-4 flex items-center gap-2">
-                      <span className="bg-primary/10 text-primary rounded-full px-3 py-1 text-sm font-medium">
+                      <span className="bg-primary/10 rounded-full px-3 py-1 text-sm font-medium text-primary">
                         {study.category}
                       </span>
                     </div>
@@ -112,7 +115,7 @@ export default async function PortfolioPage({
                             key={i}
                             className="text-foreground/70 flex items-start gap-2 text-sm"
                           >
-                            <span className="bg-primary mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full"></span>
+                            <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary"></span>
                             {result}
                           </li>
                         ))}
@@ -202,7 +205,7 @@ export default async function PortfolioPage({
             </p>
             <Link
               href="/contact"
-              className="bg-primary hover:bg-primary-dark inline-block rounded-full px-8 py-4 text-lg font-semibold text-white transition-all hover:scale-105"
+              className="inline-block rounded-full bg-primary px-8 py-4 text-lg font-semibold text-white transition-all hover:scale-105 hover:bg-primary-dark"
             >
               Get in Touch
             </Link>

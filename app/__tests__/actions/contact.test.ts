@@ -17,7 +17,9 @@ vi.mock("next/cache", () => ({
   revalidatePath: vi.fn(),
 }));
 
-const mockSend = vi.fn().mockResolvedValue({ data: { id: "test-id" }, error: null });
+const mockSend = vi
+  .fn()
+  .mockResolvedValue({ data: { id: "test-id" }, error: null });
 
 vi.mock("resend", () => ({
   Resend: vi.fn().mockImplementation(() => ({
@@ -56,17 +58,23 @@ describe("submitContactFormAction", () => {
     formData.append("company", "Acme Corp");
     formData.append("service", "Web Development");
     formData.append("budget", "$5000-$10000");
-    formData.append("message", "This is a test message with sensitive information");
+    formData.append(
+      "message",
+      "This is a test message with sensitive information",
+    );
 
     await submitContactFormAction(null, formData);
 
-    const logCalls = (console.log as unknown as { mock: { calls: unknown[] } }).mock.calls;
+    const logCalls = (console.log as unknown as { mock: { calls: unknown[] } })
+      .mock.calls;
     const logOutput = JSON.stringify(logCalls);
 
     // Assert that PII fields are not present in console output
     expect(logOutput).not.toContain("John Doe");
     expect(logOutput).not.toContain("john@example.com");
-    expect(logOutput).not.toContain("This is a test message with sensitive information");
+    expect(logOutput).not.toContain(
+      "This is a test message with sensitive information",
+    );
   });
 
   it("should log structured metadata without PII values", async () => {
@@ -78,10 +86,13 @@ describe("submitContactFormAction", () => {
 
     await submitContactFormAction(null, formData);
 
-    const logCalls = (console.log as unknown as { mock: { calls: unknown[] } }).mock.calls;
-    const errorCalls = (console.error as unknown as { mock: { calls: unknown[] } }).mock.calls;
+    const logCalls = (console.log as unknown as { mock: { calls: unknown[] } })
+      .mock.calls;
+    const errorCalls = (
+      console.error as unknown as { mock: { calls: unknown[] } }
+    ).mock.calls;
     const allCalls = [...logCalls, ...errorCalls];
-    
+
     // If any logging occurred, verify it doesn't contain PII
     if (allCalls.length > 0) {
       const logOutput = JSON.stringify(allCalls);
@@ -100,7 +111,8 @@ describe("submitContactFormAction", () => {
 
     await submitContactFormAction(null, formData);
 
-    const logCalls = (console.log as unknown as { mock: { calls: unknown[] } }).mock.calls;
+    const logCalls = (console.log as unknown as { mock: { calls: unknown[] } })
+      .mock.calls;
     const logOutput = JSON.stringify(logCalls);
 
     // Even on errors, PII should not be logged
@@ -258,7 +270,10 @@ describe("submitContactFormAction", () => {
     formData.append("company", "Acme Corp");
     formData.append("service", "Web Development");
     formData.append("budget", "$5000-$10000");
-    formData.append("message", "<img src=x onerror=alert('xss')>Test message here");
+    formData.append(
+      "message",
+      "<img src=x onerror=alert('xss')>Test message here",
+    );
 
     const result = await submitContactFormAction(null, formData);
 

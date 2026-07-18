@@ -1,19 +1,19 @@
 import type { NextConfig } from "next";
-import createNextIntlPlugin from 'next-intl/plugin';
+import createNextIntlPlugin from "next-intl/plugin";
 
-const withNextIntl = createNextIntlPlugin('./app/i18n/request.ts');
+const withNextIntl = createNextIntlPlugin("./app/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   // Future monorepo: When extracting packages to packages/, may need transpilePackages
   // See docs/monorepo-alignment.md for migration plan
   images: {
-    formats: ['image/avif', 'image/webp'],
+    formats: ["image/avif", "image/webp"],
     // Only allow explicit, trusted hostnames to avoid SSRF abuse via /_next/image.
     // Sanity CDN is explicitly allowed for CMS image optimization.
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'cdn.sanity.io',
+        protocol: "https",
+        hostname: "cdn.sanity.io",
       },
     ],
     // Block optimization of local files by default; opt-in when assets are ready.
@@ -25,7 +25,7 @@ const nextConfig: NextConfig = {
   // Stable in Next.js 16; auto-memoizes components and reduces manual memo.
   // Environment-aware toggle: set ENABLE_REACT_COMPILER=true to enable.
   // Defaults to false in production until build performance is measured.
-  reactCompiler: process.env.ENABLE_REACT_COMPILER === 'true',
+  reactCompiler: process.env.ENABLE_REACT_COMPILER === "true",
   async headers() {
     return [
       {

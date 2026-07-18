@@ -20,22 +20,30 @@ export type FormResult = {
   errors?: Record<string, string[]>;
 };
 
-export async function subscribeNewsletter(formData: FormData): Promise<FormResult> {
+export async function subscribeNewsletter(
+  formData: FormData,
+): Promise<FormResult> {
   return runNewsletterSubscription(formData);
 }
 
 // Variant for useActionState / progressive enhancement.
 export async function subscribeNewsletterAction(
   _prevState: FormResult | null,
-  formData: FormData
+  formData: FormData,
 ): Promise<FormResult> {
   return runNewsletterSubscription(formData);
 }
 
-async function runNewsletterSubscription(formData: FormData): Promise<FormResult> {
+async function runNewsletterSubscription(
+  formData: FormData,
+): Promise<FormResult> {
   // Honeypot check - reject if bot filled the hidden field
   const honeypotValue = formData.get("website");
-  if (honeypotValue && typeof honeypotValue === "string" && honeypotValue.trim() !== "") {
+  if (
+    honeypotValue &&
+    typeof honeypotValue === "string" &&
+    honeypotValue.trim() !== ""
+  ) {
     console.log("[newsletter] Honeypot triggered - bot detected");
     // Return success to not alert the bot
     return {
@@ -47,10 +55,10 @@ async function runNewsletterSubscription(formData: FormData): Promise<FormResult
   // Rate limiting check
   const headerList = await headers();
   const identifier = getClientIdentifier(headerList);
-  
+
   const rateLimitKey = `newsletter:${identifier}`;
   const isAllowed = await checkRateLimit(rateLimitKey, 3, 600000); // 3 subscriptions per 10 minutes
-  
+
   if (!isAllowed) {
     return {
       success: false,
@@ -81,7 +89,9 @@ async function runNewsletterSubscription(formData: FormData): Promise<FormResult
     const audienceId = getResendAudienceId();
 
     if (!resendApiKey || !audienceId) {
-      console.warn("[newsletter] Resend API key or audience ID not configured, email service unavailable");
+      console.warn(
+        "[newsletter] Resend API key or audience ID not configured, email service unavailable",
+      );
       return {
         success: false,
         message: "Email service is not configured. Please try again later.",
