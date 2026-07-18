@@ -1,13 +1,13 @@
 "use server";
 
 import * as z from "zod";
-import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { checkRateLimit } from "@/lib/rate-limiter";
 import { getClientIdentifier } from "@/lib/ip-utils";
 import { escapeHtml } from "@/lib/escape-html";
 import { Resend } from "resend";
 import { getResendApiKey, getContactEmailTo } from "@/lib/env";
+import { revalidateLocalizedPath } from "@/lib/revalidate-localized";
 
 const contactFormSchema = z.object({
   name: z.string().trim().min(2, "Name must be at least 2 characters"),
@@ -148,7 +148,7 @@ async function runContactFormSubmission(
     });
 
     // Revalidate the contact page to show any updated UI
-    revalidatePath("/contact");
+    revalidateLocalizedPath("/contact");
 
     return {
       success: true,

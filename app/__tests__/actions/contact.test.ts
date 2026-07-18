@@ -45,6 +45,8 @@ describe("submitContactFormAction", () => {
     });
     vi.mocked(revalidatePath).mockClear();
     vi.clearAllMocks();
+    // Restore mock implementations after clearing
+    mockSend.mockResolvedValue({ data: { id: "test-id" }, error: null });
   });
 
   afterEach(() => {
@@ -297,4 +299,5 @@ describe("submitContactFormAction", () => {
     expect(result).toBeDefined();
     // The escapeHtml function is tested separately in escape-html.test.ts
   });
+
 });

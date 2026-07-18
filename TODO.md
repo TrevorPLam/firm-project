@@ -1173,7 +1173,7 @@ Agent must read `app/lib/schema.ts` and confirm that `organizationSchema` contai
 
 ## Task T015: Portfolio Client Images – Strategy and Implementation
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -1229,12 +1229,14 @@ Agent must read `app/lib/portfolio-data.ts` and list the missing `/clients/*.png
 - **Targeted file path:** `app/lib/portfolio-data.ts`, `public/`
 - **Description:** List all referenced logo paths and confirm none exist. Check whether portfolio UI uses `<Image>` and what `src` is passed. Write a brief report with the two options (placeholder SVGs/PNGs or text-only fallback).
 - **Commands:** none
+- **Status:** ✅ Complete
 
 #### T015.2 [HUMAN] Choose asset strategy
 
 - **Targeted file path:** none
 - **Description:** Reply `A` (placeholders) or `B` (omit logos). If A, the agent will generate simple placeholder PNGs or SVGs (specify preference if any). The agent will default to generating small square SVGs and updating data references to `.svg` if portfolio data currently points to `.png`, to avoid having to create binary PNGs.
 - **Commands:** none
+- **Status:** ✅ Complete (User chose Option A)
 
 #### T015.3 [AGENT] Implement chosen strategy and allowlist
 
@@ -1246,6 +1248,22 @@ Agent must read `app/lib/portfolio-data.ts` and list the missing `/clients/*.png
 - **Commands:**
   - `npm run typecheck`
   - If e2e exists: `npx playwright test app/e2e/portfolio-detail.spec.ts --project=chromium`
+- **Status:** ✅ Complete
+
+### Implementation Notes
+
+- **T015.1 Complete:** Verified 6 missing client logo paths in portfolio-data.ts (all .png), confirmed public/clients/ directory does not exist, verified next.config.ts has empty localPatterns
+- **T015.2 Complete:** Human chose Option A (placeholder SVGs) for visual polish and professional appearance
+- **T015.3 Complete:**
+  - Created 6 simple geometric SVG placeholder logos in public/clients/ (64x64px with colored backgrounds and white icons)
+  - Updated portfolio-data.ts to reference .svg files instead of .png
+  - Updated next.config.ts localPatterns to allow /clients/*.svg (least-privilege pattern)
+  - Documented decision in docs/portfolio-assets-decision.md
+- Lint passes
+- Typecheck shows pre-existing errors in T013 (revalidate.test.ts) and T017 (env.test.ts) - unrelated to this change
+- No new errors introduced by this change
+- Git commit created: feat: T015 add placeholder SVG logos for portfolio client images
+- Git push failed: no configured push destination (requires remote repository setup)
 
 ---
 

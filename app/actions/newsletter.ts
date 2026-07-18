@@ -1,12 +1,12 @@
 "use server";
 
 import * as z from "zod";
-import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { checkRateLimit } from "@/lib/rate-limiter";
 import { getClientIdentifier } from "@/lib/ip-utils";
 import { Resend } from "resend";
 import { getResendApiKey, getResendAudienceId } from "@/lib/env";
+import { revalidateLocalizedPath } from "@/lib/revalidate-localized";
 
 const newsletterSchema = z.object({
   email: z.email("Invalid email address"),
@@ -114,7 +114,7 @@ async function runNewsletterSubscription(
     });
 
     // Revalidate the blog pages to show any updated UI
-    revalidatePath("/blog");
+    revalidateLocalizedPath("/blog");
 
     return {
       success: true,

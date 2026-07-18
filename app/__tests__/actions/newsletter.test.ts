@@ -26,10 +26,12 @@ vi.mock("@/lib/rate-limiter", () => ({
 import { subscribeNewsletter } from "@/actions/newsletter";
 
 // Mock Resend
+const mockCreateContact = vi.fn().mockResolvedValue({ data: { id: "test-id" }, error: null });
+
 vi.mock("resend", () => ({
   Resend: vi.fn().mockImplementation(() => ({
     contacts: {
-      create: vi.fn(),
+      create: mockCreateContact,
     },
   })),
 }));
@@ -41,6 +43,7 @@ describe("Newsletter Action", () => {
     vi.spyOn(console, "warn");
     vi.mocked(clearRateLimits).mockResolvedValue(undefined);
     vi.mocked(checkRateLimit).mockResolvedValue(true);
+    mockCreateContact.mockResolvedValue({ data: { id: "test-id" }, error: null });
     (headers as unknown as ReturnType<typeof vi.fn>).mockResolvedValue({
       get: vi.fn((header: string) => {
         if (header === "x-forwarded-for") return "127.0.0.1";
@@ -49,6 +52,10 @@ describe("Newsletter Action", () => {
     });
     vi.mocked(revalidatePath).mockClear();
     vi.clearAllMocks();
+    // Restore mock implementations after clearing
+    vi.mocked(clearRateLimits).mockResolvedValue(undefined);
+    vi.mocked(checkRateLimit).mockResolvedValue(true);
+    mockCreateContact.mockResolvedValue({ data: { id: "test-id" }, error: null });
   });
 
   afterEach(() => {
@@ -135,4 +142,5 @@ describe("Newsletter Action", () => {
     expect(result.success).toBe(false);
     expect(result.message).toContain("Too many subscription attempts");
   });
+
 });
