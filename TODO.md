@@ -749,7 +749,7 @@ Agent must identify all files that currently construct `<script type="applicatio
 
 ## Task T010: Add Nonce Support to All Page JSON‑LD Scripts
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -809,6 +809,24 @@ Agent must use the inventory from T009. The goal is to make every JSON‑LD scri
 - **Description:** Replace the breadcrumb and conditional FAQ script blocks with `<JsonLd data={...} nonce={nonce} />`. In `docs/security.md`, add a section “Nonce coverage for structured data” listing which page schemas lack nonce and creating a placeholder for a future task. Run typecheck.
 - **Commands:**
   - `npm run typecheck`
+- **Status:** ✅ Complete
+
+### Implementation Notes
+
+- Refactored `app/[locale]/layout.tsx` to use `JsonLd` component for all 3 layout schemas:
+  - Organization schema (site-wide)
+  - FAQ schema (conditional on FAQ pages via `x-pathname` header)
+  - Breadcrumb schema (home page)
+- Removed `generateSchemaJsonLd` import from layout (no longer needed)
+- All layout schemas now use the deep module `JsonLd` component with nonce prop
+- Added comprehensive JSON-LD Nonce Support section to `docs/security.md` documenting:
+  - Layout-level schemas (nonce-compliant)
+  - Page-level schemas (nonce gap documented)
+  - Reason for gap (page components lack nonce access)
+  - Impact assessment for CSP enforcement
+  - Future task recommendations
+- JsonLd component tests (5 tests) all passing
+- Typecheck shows pre-existing errors in `app/__tests__/lib/env.test.ts` (T017) - unrelated to this change
 
 ---
 

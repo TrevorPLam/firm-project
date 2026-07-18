@@ -13,10 +13,10 @@ import { Loading } from "../components/loading";
 import { ErrorBoundary } from "../components/error-boundary";
 import { Analytics } from "../components/analytics";
 import { PageTransition } from "../components/page-transition";
+import { JsonLd } from "../components/json-ld";
 import {
   organizationSchema,
   faqSchema,
-  generateSchemaJsonLd,
   generateBreadcrumbSchema,
 } from "../lib/schema";
 import { Suspense } from "react";
@@ -125,30 +125,11 @@ export default async function LocaleLayout({ children, params }: Props) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
-        <script
-          type="application/ld+json"
+        <JsonLd data={organizationSchema} nonce={nonce} />
+        {isFaqPage && <JsonLd data={faqSchema} nonce={nonce} />}
+        <JsonLd
+          data={generateBreadcrumbSchema([{ name: "Home", url: `/${locale}` }])}
           nonce={nonce}
-          dangerouslySetInnerHTML={{
-            __html: generateSchemaJsonLd(organizationSchema),
-          }}
-        />
-        {isFaqPage && (
-          <script
-            type="application/ld+json"
-            nonce={nonce}
-            dangerouslySetInnerHTML={{
-              __html: generateSchemaJsonLd(faqSchema),
-            }}
-          />
-        )}
-        <script
-          type="application/ld+json"
-          nonce={nonce}
-          dangerouslySetInnerHTML={{
-            __html: generateSchemaJsonLd(
-              generateBreadcrumbSchema([{ name: "Home", url: `/${locale}` }]),
-            ),
-          }}
         />
       </head>
       <body className="flex min-h-full flex-col">

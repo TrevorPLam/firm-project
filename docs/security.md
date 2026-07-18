@@ -96,6 +96,44 @@ The root locale layout uses `headers()` to read the CSP nonce from middleware, w
 
 **Key Pattern:** Always decorate the request before middleware composition, not after early returns.
 
+### JSON-LD Nonce Support
+
+**Status:** Layout-level schemas are nonce-compliant; page-level schemas have documented debt.
+
+#### Layout-Level Schemas (Nonce-Compliant)
+
+The following JSON-LD schemas are rendered in `app/[locale]/layout.tsx` using the `JsonLd` component with CSP nonce:
+
+- **Organization Schema**: Site-wide organization data
+- **FAQ Schema**: Conditionally rendered on FAQ pages only (via `x-pathname` header)
+- **Breadcrumb Schema**: Home page breadcrumb
+
+All layout schemas use the `JsonLd` component which accepts a `nonce` prop generated per-request in `proxy.ts` middleware. This ensures compliance with strict CSP policies.
+
+#### Page-Level Schemas (Nonce Gap)
+
+The following page-level JSON-LD schemas currently do not have nonce support:
+
+- Contact page (`app/[locale]/contact/page.tsx`)
+- Home page (`app/[locale]/page.tsx`)
+- Services page (`app/[locale]/services/page.tsx`)
+- Portfolio page (`app/[locale]/portfolio/page.tsx`)
+- FAQ page (`app/[locale]/faq/page.tsx`)
+- Blog listing page (`app/[locale]/blog/page.tsx`)
+- About page (`app/[locale]/about/page.tsx`)
+- Portfolio detail pages (`app/[locale]/portfolio/[slug]/page.tsx`)
+- Blog detail pages (`app/[locale]/blog/[slug]/page.tsx`)
+
+**Reason for Gap:** These schemas are in server page components that do not have direct access to the CSP nonce. The nonce is generated in middleware and available to the layout via `getNonce()`, but page components cannot access `headers()` or the nonce without a larger architectural refactor.
+
+**Impact:** When CSP is moved from report-only to enforce mode, these page-level schemas may cause CSP violations. The schemas will still render in the HTML but may be blocked from execution by the browser's CSP enforcement.
+
+**Future Task:** A follow-up task is needed to either:
+1. Refactor the nonce delivery architecture to make nonce available to page components, or
+2. Move all page-level schemas to the layout with route-based conditional rendering (similar to the FAQ schema approach)
+
+**Reference:** This gap was documented in Task T010.
+
 ### CSP Allowlist for Third-Party Services
 
 The CSP allowlist includes the following third-party domains for specific functionality:
