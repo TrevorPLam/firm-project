@@ -39,5 +39,5 @@ export default async function SearchPage({
   }
   setRequestLocale(locale);
 
-  return <SearchContent />;
+  return <SearchContent locale={locale} />;
 }

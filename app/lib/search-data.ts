@@ -39,7 +39,7 @@ export interface SearchHit {
  */
 export async function getAllSearchableContent(locale: string): Promise<SearchHit[]> {
   // Validate locale against configured locales
-  if (!routing.locales.includes(locale as any)) {
+  if (!routing.locales.includes(locale as (typeof routing.locales)[number])) {
     throw new Error(`Invalid locale: ${locale}. Must be one of: ${routing.locales.join(', ')}`);
   }
   const searchHits: SearchHit[] = [];

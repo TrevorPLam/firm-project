@@ -3,10 +3,12 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
 import { Link } from '@/i18n/navigation';
+import { useLocale } from 'next-intl';
 import { SearchBar } from "./search-bar";
 import { LanguageSwitcher } from "./language-switcher";
 
 export function Navigation() {
+  const locale = useLocale();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const toggleButtonRef = useRef<HTMLButtonElement>(null);
@@ -149,7 +151,7 @@ export function Navigation() {
               Contact
             </Link>
           </motion.div>
-          <SearchBar />
+          <SearchBar locale={locale} />
           <LanguageSwitcher />
         </div>
 
@@ -249,7 +251,7 @@ export function Navigation() {
               Contact
             </Link>
             <div className="flex items-center gap-2 py-2">
-              <SearchBar onClose={() => setIsMobileMenuOpen(false)} />
+              <SearchBar locale={locale} onClose={() => setIsMobileMenuOpen(false)} />
               <LanguageSwitcher />
             </div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.2 }}>

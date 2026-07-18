@@ -17,6 +17,12 @@ vi.mock('../i18n/navigation', () => ({
   getPathname: vi.fn(() => '/'),
 }));
 
+// Mock next-intl hooks to avoid intl context requirement
+vi.mock('next-intl', () => ({
+  useLocale: vi.fn(() => 'en'),
+  useTranslations: vi.fn(() => (key: string) => key),
+}));
+
 // Mock LanguageSwitcher to avoid intl context requirement
 vi.mock('../components/language-switcher', () => ({
   LanguageSwitcher: () => React.createElement('div', null, 'Language Switcher'),
@@ -24,7 +30,7 @@ vi.mock('../components/language-switcher', () => ({
 
 // Mock SearchBar to avoid complexity in navigation tests
 vi.mock('../components/search-bar', () => ({
-  SearchBar: () => React.createElement('div', null, 'Search'),
+  SearchBar: ({ locale }: { locale?: string }) => React.createElement('div', null, `Search (${locale || 'en'})`),
 }));
 
 // Cleanup after each test

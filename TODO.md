@@ -205,7 +205,7 @@ Agent must read `app/[locale]/search/page.tsx` to confirm it is a client compone
 
 ## Task T004: Decide and Implement Search Indexing Strategy
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 Agent must read `app/lib/search-data.ts` (transforms search hits for Algolia), `app/components/search-bar.tsx`, and `app/[locale]/search/page.tsx`. Confirm that Algolia credentials are commented out, the search UI uses Algolia widgets, but no indexing pipeline exists. The task requires a HUMAN decision between: (A) switching the search page to use local search data (removing Algolia dependency for search), or (B) building an indexing script to push data to Algolia.
@@ -251,20 +251,36 @@ Agent must read `app/lib/search-data.ts` (transforms search hits for Algolia), `
 - **Targeted file path:** none (research note)
 - **Description:** Read the search page, search bar, search-data, and `.env.example`. Write a short summary showing that Algolia is enabled but no data exists, and that the local search-data module already builds a full index. Outline options A and B with pros/cons.
 - **Commands:** none
+- **Status:** ✅ Complete
 
 #### T004.2 [HUMAN] Choose search strategy
 - **Targeted file path:** none
 - **Description:** Reply with `A` (local search) or `B` (Algolia indexing script). If B, confirm you will provide the Algolia write API key.
 - **Commands:** none
+- **Status:** ✅ Complete (User chose Option A)
 
 #### T004.3 [AGENT] Implement chosen strategy
 - **Targeted file path:** `app/[locale]/search/page.tsx`, `scripts/reindex-search.ts` (if B), `.env.example`, `ENV_SETUP.md`
-- **Description:** 
+- **Description:**
   - Option A: Update search page to consume `getAllSearchableContent` locally, replacing Algolia widgets with a simple client-side filterable list. Remove unused Algolia imports from the search page.
   - Option B: Write `scripts/reindex-search.ts` that uses content ports, `transformForAlgolia`, and the Algolia client to upload data. Add required env vars to `.env.example` and document usage.
 - **Commands:**
   - `npm run typecheck`
   - If option B, verify script runs with `npx tsx scripts/reindex-search.ts` (dry‑run if no keys)
+- **Status:** ✅ Complete
+
+### Implementation Notes
+- **Option A (Local Search) Implemented:**
+  - Replaced Algolia widgets in `app/components/search-content.tsx` with local search using `getAllSearchableContent()`
+  - Added client-side filtering by type and query string
+  - Preserved UI layout (sidebar filters, search input, results display)
+  - Updated `app/components/search-bar.tsx` to use local search data instead of Algolia
+  - Added `locale` prop to both search components for locale-aware search
+  - Updated `app/components/navigation.tsx` to pass `locale` to SearchBar using `useLocale()` hook
+  - Added next-intl mocks to test setup to support `useLocale()` in tests
+  - Fixed lint error in `search-data.ts` (replaced `any` with proper type)
+  - Lint passes, navigation tests pass
+  - Search is now functional without external dependencies
 
 ---
 
@@ -961,6 +977,59 @@ Agent must read `app/actions/contact.ts` and `app/actions/newsletter.ts` and con
 - **Commands:**
   - `npm run test:run -- app/__tests__/actions/contact.test.ts`
   - `npm run test:run -- app/__tests__/actions/newsletter.test.ts`
+  - `npm run typecheck`
+
+---
+
+## Task T016: Fix site-config.test Default URL Mismatch
+
+**Status:** `[ ]` OPEN
+
+### Initial Analysis & Research
+Agent must read `app/__tests__/lib/site-config.test.ts` and `app/lib/site-config.ts` to understand why the default site URL tests are failing. The tests expect `https://elevatedigital.com` but the implementation returns `https://example.com`. This is a pre-existing issue discovered during T004 QA.
+
+### Related File Paths
+- `app/__tests__/lib/site-config.test.ts`
+- `app/lib/site-config.ts`
+
+### Definition of Done
+- Tests pass with correct default URL (`https://elevatedigital.com`)
+- Implementation matches test expectations
+- Typecheck passes
+
+### Out of Scope
+- Changing the default URL to a different value
+- Modifying other site-config functionality
+
+### Rules to Follow
+- Fix the implementation to match the test expectations, not vice versa
+- Ensure the default URL is consistent across the codebase
+
+### Advanced Coding Pattern
+- Consistent default values across configuration modules
+
+### Anti-Patterns
+- Changing tests to match broken implementation
+
+### Imports/Exports
+- No new imports/exports expected
+
+### Depends On / Blocks
+- Depends on: None.
+- Blocks: Accurate site configuration testing.
+
+### Subtasks
+
+#### T016.1 [AGENT] Investigate default URL mismatch
+- **Targeted file path:** `app/lib/site-config.ts`, `app/__tests__/lib/site-config.test.ts`
+- **Description:** Read both files to understand why the default URL differs. Check if there's a configuration issue or if the implementation needs to be updated.
+- **Commands:** none
+
+#### T016.2 [AGENT] Fix implementation to match test expectations
+- **Targeted file path:** `app/lib/site-config.ts`
+- **Description:** Update the default site URL in the implementation to return `https://elevatedigital.com` when the environment variable is not set or is empty. Run tests to verify.
+- **Commands:**
+  - `npm run test:run -- app/__tests__/lib/site-config.test.ts`
   - `npm run typecheck`
 
 ---
