@@ -10,11 +10,11 @@ function buildCspHeader(nonce: string): string {
   
   const directives = [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ''} https://www.googletagmanager.com https://www.google-analytics.com`,
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ''} https://www.googletagmanager.com https://www.google-analytics.com https://*.algolia.net https://*.algolianet.com`,
     `style-src 'self' 'nonce-${nonce}'`,
     "img-src 'self' data: blob: https://www.google-analytics.com",
     "font-src 'self'",
-    "connect-src 'self' https://www.google-analytics.com",
+    "connect-src 'self' https://www.google-analytics.com https://*.algolia.net https://*.algolianet.com",
     "frame-ancestors 'none'",
     "base-uri 'self'",
     "form-action 'self'",

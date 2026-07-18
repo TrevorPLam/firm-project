@@ -94,6 +94,28 @@ The root locale layout uses `headers()` to read the CSP nonce from middleware, w
 
 **Key Pattern:** Always decorate the request before middleware composition, not after early returns.
 
+### CSP Allowlist for Third-Party Services
+
+The CSP allowlist includes the following third-party domains for specific functionality:
+
+#### Google Analytics
+- **Domains**: `www.googletagmanager.com`, `www.google-analytics.com`
+- **Directives**: `script-src`, `connect-src`, `img-src`
+- **Purpose**: Google Analytics tracking and Google Tag Manager
+- **Rationale**: Required for analytics and conversion tracking functionality
+
+#### Algolia Search
+- **Domains**: `*.algolia.net`, `*.algolianet.com`
+- **Directives**: `script-src`, `connect-src`
+- **Purpose**: Algolia search API and JavaScript SDK
+- **Rationale**: Required for Algolia search functionality (currently using local search, but infrastructure remains for future use)
+- **Note**: Wildcard subdomains are used as Algolia uses multiple regional endpoints (e.g., `APPID.algolia.net`, `APPID.algolianet.com`)
+
+#### CSP Allowlist Policy
+- **Least Privilege**: Only specific domains are allowed; no blanket `*` wildcards except where required by the service (Algolia regional endpoints)
+- **Report-Only Mode**: CSP is currently in report-only mode for monitoring violations before enforcement
+- **Future Enforcement**: Once violations are resolved, CSP will be changed from report-only to enforce mode
+
 ### Next.js Image Remote Patterns
 
 The Next.js Image component uses `remotePatterns` in `next.config.ts` to control which external domains can be optimized through `/_next/image`. This prevents Server-Side Request Forgery (SSRF) attacks by only allowing explicit, trusted hostnames.

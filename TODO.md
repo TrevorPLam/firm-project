@@ -286,7 +286,7 @@ Agent must read `app/lib/search-data.ts` (transforms search hits for Algolia), `
 
 ## Task T005: Add Algolia Hosts to CSP Allowlist
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 Agent must read `proxy.ts`’s CSP builder and confirm that only Google domains are allowlisted. Then check `app/components/search-bar.tsx` to identify the exact Algolia hosts used (standard: `*.algolia.net`, `*.algolianet.com`). This task adds those domains to the report‑only CSP so that when search is enabled, no violations occur.
@@ -334,6 +334,14 @@ Agent must read `proxy.ts`’s CSP builder and confirm that only Google domains 
 - **Description:** Add the identified hosts to `script-src` and `connect-src`. In `docs/security.md`, document the added allowlist entries and the principle used. Run typecheck.
 - **Commands:**
   - `npm run typecheck`
+- **Status:** ✅ Complete
+
+### Implementation Notes
+- Added `https://*.algolia.net` and `https://*.algolianet.com` to both `script-src` and `connect-src` directives in `proxy.ts`
+- Documented CSP allowlist policy in `docs/security.md` with rationale for each third-party domain
+- Wildcard subdomains required for Algolia regional endpoints (e.g., APPID.algolia.net)
+- CSP remains in report-only mode as per task requirements
+- Pre-existing QA issues documented in TODO.md: T016 (site-config.test URL mismatch) and T017 (unused @ts-expect-error directives)
 
 ---
 
