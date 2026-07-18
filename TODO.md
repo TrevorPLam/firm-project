@@ -836,7 +836,7 @@ Here is the second batch of ten tasks (T011–T020), continuing the numbering fr
 
 ## Task T011: Correct public/llms.txt Paths
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -895,6 +895,15 @@ Agent must read `public/llms.txt` and confirm all links lack locale prefixes (e.
 - **Targeted file path:** `public/llms.txt`
 - **Description:** Write a new version of the file where all links follow the pattern `https://elevatedigital.com/en/...` and cover the core pages (home, services, portfolio, about, pricing, blog, contact, faq, legal/privacy, legal/terms). Remove documentation links. Add a comment explaining the file’s purpose and update policy.
 - **Commands:** none (file edit)
+- **Status:** ✅ Complete
+
+### Implementation Notes
+
+- Added header comment explaining file is manually curated and locale prefix requirement
+- Updated all 13 URLs to include `/en/` locale prefix
+- Removed 3 broken `/docs/*.md` links (seo.md, security.md, rate-limiting.md) that pointed to non-existent routes
+- All remaining URLs match valid static routes from sitemap.ts
+- File remains plain text, emoji-free as required
 
 ---
 
