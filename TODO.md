@@ -1096,7 +1096,7 @@ Agent must read `docs/cms.md` for the desired patterns, then inspect `app/lib/cm
 
 ## Task T014: Remove Placeholder Phone from Organization Schema
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -1148,6 +1148,7 @@ Agent must read `app/lib/schema.ts` and confirm that `organizationSchema` contai
 - **Targeted file path:** `app/lib/schema.ts`, `app/__tests__/lib/schema.test.ts` (if exists)
 - **Description:** Locate the `telephone` field and note its value. Check if any test files reference `"+1-234-567-890"`.
 - **Commands:** none
+- **Status:** ✅ Complete
 
 #### T014.2 [AGENT] Remove placeholder phone and update tests
 
@@ -1156,6 +1157,17 @@ Agent must read `app/lib/schema.ts` and confirm that `organizationSchema` contai
 - **Commands:**
   - `npm run test:run -- app/__tests__/lib/schema.test.ts` (if exists)
   - `npm run typecheck`
+- **Status:** ✅ Complete
+
+### Implementation Notes
+
+- Verified placeholder phone number `"+1-234-567-890"` exists in `app/lib/schema.ts` line 13
+- No test files reference the placeholder phone number (no schema.test.ts exists)
+- Removed `telephone` property from `organizationSchema.contactPoint` object
+- Kept all other contactPoint fields (contactType, email, areaServed, availableLanguage) as they appear to be real
+- Schema remains valid JSON-LD without the telephone field
+- Pre-existing typecheck errors in T013 (revalidate.test.ts) and T017 (env.test.ts) are unrelated to this change
+- No new errors introduced by this change
 
 ---
 

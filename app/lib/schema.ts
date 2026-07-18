@@ -10,7 +10,6 @@ export const organizationSchema = {
   logo: absoluteUrl("/logo.png"),
   contactPoint: {
     "@type": "ContactPoint",
-    telephone: "+1-234-567-890",
     contactType: "sales",
     email: "hello@elevatedigital.com",
     areaServed: "US",
