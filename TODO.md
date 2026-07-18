@@ -142,7 +142,7 @@ Agent must read `app/lib/search-data.ts` and `app/__tests__/lib/search-data.test
 
 ## Task T003: Add Server Shell and Metadata to Search Page
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 Agent must read `app/[locale]/search/page.tsx` to confirm it is a client component (`"use client"`) with no `generateMetadata`. The task is to split into a server wrapper that exports metadata and renders a client island, similar to the pricing page refactor (T022, already complete).
@@ -192,6 +192,14 @@ Agent must read `app/[locale]/search/page.tsx` to confirm it is a client compone
 - **Description:** Create `SearchContent` client component moving all current UI. In the page file, add `generateMetadata` with title, description, openGraph, alternates (using `generateLocaleAlternates`), and render `<SearchContent>`. Run typecheck.
 - **Commands:**
   - `npm run typecheck`
+
+### Implementation Notes
+- Created `app/components/search-content.tsx` as client component with all Algolia UI logic
+- Converted `app/[locale]/search/page.tsx` to server component with `generateMetadata`
+- Added locale-aware metadata: title, description, keywords, openGraph, and alternates
+- Used `generateLocaleAlternates` helper for canonical and language alternates
+- Followed same pattern as pricing page refactor (server shell + client island)
+- Preserved Algolia fallback message when credentials are missing
 
 ---
 
@@ -1718,6 +1726,52 @@ Agent must check if `.github/dependabot.yml` or `renovate.json` exists. The proj
 - **Targeted file path:** `.github/dependabot.yml`
 - **Description:** Create a Dependabot config for `package-ecosystem: "npm"`, directory: "/", schedule: interval: "weekly", open-pull-requests-limit: 5, labels: ["dependencies"]. Commit the file.
 - **Commands:** none
+
+---
+
+## Task T031: Fix ESLint Error in search-data.ts
+
+**Status:** `[ ]` OPEN
+
+### Initial Analysis & Research
+During T003 quality assurance, an ESLint error was discovered in `app/lib/search-data.ts` at line 42:43 - `Unexpected any. Specify a different type` (@typescript-eslint/no-explicit-any). This is unrelated to T003 changes and represents a pre-existing code quality issue that should be resolved.
+
+### Related File Paths
+- `app/lib/search-data.ts`
+
+### Definition of Done
+- The `@typescript-eslint/no-explicit-any` error at line 42:43 is resolved by replacing `any` with a proper type
+- ESLint passes without errors
+- Typecheck still passes (after T017 is resolved)
+
+### Out of Scope
+- Fixing other ESLint errors in the codebase (unless discovered during this fix)
+
+### Rules to Follow
+- Replace `any` with a specific type that accurately represents the data structure
+- If the type is truly unknown, use `unknown` instead of `any` with proper type guards
+
+### Advanced Coding Pattern
+- Type-safe data transformation with explicit interfaces
+
+### Anti-Patterns
+- Using `any` to avoid type definition work
+- Suppressing the error with eslint-disable comments
+
+### Imports/Exports
+- No new imports/exports expected
+
+### Depends On / Blocks
+- Depends on: None
+- Blocks: Clean lint status
+
+### Subtasks
+
+#### T031.1 [AGENT] Identify and fix the any type usage
+- **Targeted file path:** `app/lib/search-data.ts`
+- **Description:** Read line 42 and identify what the `any` type represents. Replace it with a proper interface or type. Run lint to verify the fix.
+- **Commands:**
+  - `npm run lint`
 
 ---
 
