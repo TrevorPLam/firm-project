@@ -22,7 +22,7 @@ Messages are organized by feature/page:
 
 ## Usage
 
-Translations are accessed via the `useTranslations` hook from next-intl in React components and server components.
+Server components access translations via `getTranslations` from `next-intl/server`. Client components access translations via the `useTranslations` hook from `next-intl`, with messages provided through `NextIntlClientProvider` in `app/[locale]/layout.tsx`.
 
 ## Adding Translations
 

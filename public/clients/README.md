@@ -18,10 +18,8 @@ Contains SVG logo files for clients featured in case studies, testimonials, and 
 ## Usage
 
 Logos are referenced in:
-- Portfolio case studies
-- Homepage testimonials
-- About page statistics
-- Marketing materials
+- Portfolio case study detail pages (`app/[locale]/portfolio/[slug]/page.tsx`)
+- Portfolio data module (`app/lib/portfolio-data.ts`) via the `clientLogo` field
 
 ## Format
 
@@ -36,7 +34,7 @@ All logos are in SVG format for:
 1. Add new SVG files to this directory
 2. Use descriptive, kebab-case filenames
 3. Ensure logos are optimized for web (remove unnecessary metadata)
-4. Update references in portfolio data and testimonials
+4. Update references in portfolio data (`app/lib/portfolio-data.ts`)
 
 ## Notes
 

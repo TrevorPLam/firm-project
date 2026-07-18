@@ -50,9 +50,9 @@ npx tsx scripts/migrate-content.ts
 
 ### verify-nonce-wiring.ts
 
-Verification script to demonstrate CSP nonce wiring issue in the internationalization middleware.
+Verification script that documents the original CSP nonce wiring issue in the internationalization middleware. The issue has since been fixed in `proxy.ts`.
 
-**Purpose**: Documents and explains a Content Security Policy (CSP) nonce propagation issue that occurs when next-intl middleware returns early responses (e.g., locale redirects).
+**Purpose**: Documents and explains a Content Security Policy (CSP) nonce propagation issue that occurred when next-intl middleware returned early responses (e.g., locale redirects). The fix has been applied — `proxy.ts` now sets `x-nonce` on request headers before calling `intlMiddleware`.
 
 **Usage**:
 ```bash
@@ -62,12 +62,12 @@ npx tsx scripts/verify-nonce-wiring.ts
 **Requirements**: None (informational script only)
 
 **What it does**:
-- Analyzes the CSP nonce wiring problem
+- Analyzes the original CSP nonce wiring problem
 - Explains affected paths (root redirects, locale redirects)
-- Documents the broken code flow in `proxy.ts`
-- Provides required fix recommendations
+- Documents the previously broken code flow in `proxy.ts`
+- Outlines the fix that has since been implemented
 
-**Output**: Console analysis of the nonce wiring issue with fix suggestions.
+**Output**: Console analysis of the original nonce wiring issue and the applied fix.
 
 **Related documentation**: See [docs/security.md](../docs/security.md) for implementation details.
 

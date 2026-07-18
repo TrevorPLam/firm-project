@@ -36,7 +36,7 @@ public/
 
 ### clients/
 
-Client logo SVGs used in the portfolio and testimonials sections:
+Client logo SVGs used in the portfolio detail pages:
 
 - `cloudsync.svg` - CloudSync client logo
 - `fitness-first.svg` - Fitness First client logo
@@ -47,12 +47,12 @@ Client logo SVGs used in the portfolio and testimonials sections:
 
 ### Root Files
 
-- `file.svg` - Generic file icon for document references
-- `globe.svg` - Globe icon for internationalization features
+- `file.svg` - Default Next.js template icon (unused)
+- `globe.svg` - Default Next.js template icon (unused)
 - `llms.txt` - AI agent navigation guide following llmstxt.org specification
-- `next.svg` - Next.js framework logo
-- `vercel.svg` - Vercel deployment platform logo
-- `window.svg` - Window icon for UI elements
+- `next.svg` - Next.js framework logo (unused, template asset)
+- `vercel.svg` - Vercel deployment platform logo (unused, template asset)
+- `window.svg` - Default Next.js template icon (unused)
 
 ## Adding New Assets
 

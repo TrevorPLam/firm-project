@@ -1,6 +1,6 @@
 # Services Page
 
-Services overview and detail page.
+Services overview page.
 
 ## Purpose
 
@@ -55,7 +55,10 @@ Comprehensive description of all services offered including web design, SEO, and
 - Internationalization support
 - SEO metadata with locale alternates
 - Service process visualizations
+- Dynamic OpenGraph image generation (`opengraph-image.tsx`)
 
 ## Notes
 
 Services content is currently hardcoded in the component. Future versions may move to CMS for easier updates and dynamic service management.
+
+The `opengraph-image.tsx` file generates a dynamic OG image (1200x630) with the Elevate Digital brand, "Our Services" title, and the three service categories.
