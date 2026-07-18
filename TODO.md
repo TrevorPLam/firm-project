@@ -1197,7 +1197,7 @@ Env vars are read ad hoc (`process.env.*`) without a boot-time schema. Highest s
 
 ## Task T025: Remove Unused isomorphic-dompurify Dependency
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -1252,12 +1252,33 @@ Confirm `isomorphic-dompurify` is in `package.json` dependencies but unused unde
   - `Select-String -Path app,scripts,docs -Pattern "dompurify|isomorphic-dompurify" -Recurse`
   - `npm uninstall isomorphic-dompurify`
 
-#### T025.2 [AGENT] Re-run sanitizer tests and note docs
+#### T025.2 [AGENT] Re-run sanitizer tests and note docs ✅
 
 - **Targeted file path:** `app/__tests__/lib/content-sanitizer.test.ts`, `docs/security.md`
 - **Description:** Ensure tests pass; document chosen sanitizer.
 - **Commands:**
   - `npm run test:run -- app/__tests__/lib/content-sanitizer.test.ts`
+
+### Implementation Notes
+
+**Changes Made:**
+1. Verified zero imports of `isomorphic-dompurify` in app/ codebase (only referenced in TODO.md and README.md)
+2. Removed `isomorphic-dompurify` from dependencies via `npm uninstall isomorphic-dompurify`
+3. Updated README.md to remove DOMPurify reference (2 occurrences changed to "sanitize-html only")
+4. Added Input Sanitization section to docs/security.md documenting sanitize-html as the chosen stack
+5. Sanitizer tests passed (7 tests in content-sanitizer.test.ts)
+6. Lint passed
+
+**Rationale:**
+- Single sanitizer stack reduces dependency surface area
+- sanitize-html is lightweight and SSR-safe (works in Node.js without jsdom)
+- isomorphic-dompurify was unused dead code
+- Aligns with security best practice: one sanitizer library, clear ownership
+
+**No Issues Discovered:**
+- All sanitizer tests passing
+- No typecheck or lint errors introduced by this change
+- Pre-existing typecheck errors in env.test.ts (unused @ts-expect-error directives) - added as separate task T039
 
 ---
 
@@ -2143,6 +2164,64 @@ Contact/newsletter actions call `revalidatePath("/contact")` and `revalidatePath
 - **Commands:**
   - `npm run test:run -- app/__tests__/actions/contact.test.ts`
   - `npm run test:run -- app/__tests__/actions/newsletter.test.ts`
+  - `npm run typecheck`
+
+---
+
+## Task T039: Fix Unused @ts-expect-error Directives in env.test.ts
+
+**Status:** `[ ]` OPEN
+
+**Priority:** P1
+
+### Initial Analysis & Research
+
+Typecheck fails with 6 errors in `app/__tests__/lib/env.test.ts` due to unused `@ts-expect-error` directives. These directives were added for test environment cleanup/mutation but TypeScript no longer expects errors at those lines, suggesting the code patterns changed or the directives are no longer needed.
+
+### Related File Paths
+
+- `app/__tests__/lib/env.test.ts`
+
+### Definition of Done
+
+- All 6 unused `@ts-expect-error` directives are either removed (if no error expected) or replaced with proper error handling
+- Typecheck passes with zero errors
+- Test behavior remains unchanged
+
+### Out of Scope
+
+- Rewriting the env module structure
+- Changing test logic beyond fixing the directives
+
+### Rules to Follow
+
+- Remove directives if TypeScript no longer expects errors
+- Keep test environment cleanup logic intact
+
+### Advanced Coding Pattern
+
+- Clean test code without suppressor directives that mask real issues
+
+### Anti-Patterns
+
+- Leaving unused suppressors that hide future type errors
+
+### Imports/Exports
+
+- None (test file only)
+
+### Depends On / Blocks
+
+- Depends on: T024 (env module exists)
+- Blocks: Clean typecheck pipeline
+
+### Subtasks
+
+#### T039.1 [AGENT] Fix unused @ts-expect-error directives
+
+- **Targeted file path:** `app/__tests__/lib/env.test.ts`
+- **Description:** Remove or replace the 6 unused @ts-expect-error directives. Run typecheck to verify.
+- **Commands:**
   - `npm run typecheck`
 
 ---

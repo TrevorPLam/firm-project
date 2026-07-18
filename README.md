@@ -22,7 +22,7 @@ A modern Next.js marketing website with internationalization, CMS integration, a
 ### Security & Performance
 - **Content Security Policy**: CSP headers with nonce-based script loading
 - **Rate Limiting**: Upstash Redis-based distributed rate limiting for serverless environments
-- **Input Sanitization**: DOMPurify and sanitize-html for XSS prevention
+- **Input Sanitization**: sanitize-html for XSS prevention
 - **Security Headers**: HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
 - **Bot Protection**: Honeypot fields and IP-based rate limiting on forms
 
@@ -387,7 +387,7 @@ Algolia integration provides:
 Comprehensive security measures:
 - **Content Security Policy**: Nonce-based CSP with strict script loading
 - **Rate Limiting**: Upstash Redis for distributed rate limiting
-- **Input Sanitization**: DOMPurify and sanitize-html for XSS prevention
+- **Input Sanitization**: sanitize-html for XSS prevention
 - **Security Headers**: HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
 - **Bot Protection**: Honeypot fields and IP-based identification
 - **CSP Violation Reporting**: Endpoint for monitoring CSP violations

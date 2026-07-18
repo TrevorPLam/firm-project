@@ -34,6 +34,19 @@ To submit the domain to the HSTS preload list:
 
 **Note**: Once a domain is on the preload list, it cannot be easily removed. Ensure HTTPS is properly configured before submission.
 
+### Input Sanitization
+
+The application uses `sanitize-html` as the single HTML sanitization library for XSS prevention. This choice provides:
+
+- **Server-Side Only**: Works in Node.js environments without requiring jsdom
+- **Lightweight**: Minimal dependency footprint compared to DOMPurify
+- **Configurable Allowlist**: Restricted to safe formatting tags (p, h2, h3, ul, li, strong, em, a, br)
+- **SSR-Safe**: Designed for server-side rendering contexts
+
+**Implementation**: The `sanitizeHtml()` function in `app/lib/content-sanitizer.ts` provides a pure server-side utility for sanitizing HTML content from CMS sources.
+
+**Note**: The previously installed `isomorphic-dompurify` dependency was removed in T025 as it was unused. The project maintains a single sanitizer stack to reduce dependency surface area.
+
 ### Security Headers Overview
 
 The application implements the following security headers:
