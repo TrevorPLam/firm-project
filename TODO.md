@@ -568,7 +568,7 @@ Agent must confirm that `app/lib/nonce-provider.tsx` exports are not imported an
 
 ## Task T008: Fix FAQ JSON-LD Placement and Nonce
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -631,6 +631,32 @@ Agent must read `app/[locale]/layout.tsx` and confirm that the FAQ schema `<scri
 - **Description:** Modify the layout so that the FAQ schema is only rendered when the pathname ends with `/faq` (handle both `/en/faq` and `/es/faq`). Keep the nonce attribute. Update `docs/seo.md`. Run typecheck.
 - **Commands:**
   - `npm run typecheck`
+- **Status:** ✅ Complete
+
+### Implementation Notes
+
+- Added `x-pathname` header injection in `proxy.ts` middleware to expose current route to server components
+- Modified `app/[locale]/layout.tsx` to:
+  - Import `headers` from `next/headers`
+  - Read pathname from `x-pathname` header
+  - Conditionally render FAQ schema only when `pathname.endsWith("/faq")`
+  - Maintained nonce attribute on FAQ schema script tag
+- Updated `docs/seo.md` with new section documenting FAQ schema conditional rendering
+- Implementation uses middleware pattern since Next.js doesn't provide built-in `getPathname()` for server components
+- Works with existing i18n middleware and handles both `/en/faq` and `/es/faq` paths
+- Lint passes
+- Typecheck shows pre-existing errors in `app/__tests__/lib/env.test.ts` (T017) - unrelated to this change
+- Tests show pre-existing failures in `app/__tests__/lib/site-config.test.ts` (T016) - unrelated to this change
+- No new test failures introduced by this change
+
+### Issues Discovered During QA
+
+The following pre-existing issues were discovered during T008 quality assurance but are already tracked as separate tasks:
+
+- **T016**: site-config.test URL mismatch - Tests expect `https://elevatedigital.com` but implementation returns `https://example.com`
+- **T017**: Unused @ts-expect-error directives in env.test.ts - 6 unused directives causing typecheck errors
+
+These issues did not affect T008 implementation and are documented as separate open tasks.
 
 ---
 

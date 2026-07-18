@@ -34,10 +34,11 @@ export function proxy(request: NextRequest) {
   // Build the CSP header with the nonce
   const cspHeader = buildCspHeader(nonce);
 
-  // Set x-nonce on request headers BEFORE calling intlMiddleware
-  // This ensures the nonce is available to Server Components even on redirect paths
+  // Set x-nonce and x-pathname on request headers BEFORE calling intlMiddleware
+  // This ensures the nonce and pathname are available to Server Components even on redirect paths
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-nonce", nonce);
+  requestHeaders.set("x-pathname", request.nextUrl.pathname);
 
   // Create a modified request with the nonce header
   const requestWithNonce = new NextRequest(request.url, {

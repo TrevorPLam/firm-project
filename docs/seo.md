@@ -547,3 +547,39 @@ AI SOV tracking should complement, not replace, traditional SEO:
 
 - P0-003: Configure AI Crawler Permissions (completed)
 - P0-004: Create llms.txt File (completed)
+
+---
+
+## FAQ Schema Conditional Rendering
+
+### Overview
+
+The FAQ JSON-LD schema is now conditionally rendered only on the FAQ page (`/faq`) to avoid SEO spam from site-wide FAQ schema on pages that don't actually contain FAQ content.
+
+### Implementation
+
+The FAQ schema is rendered conditionally in the root layout using:
+
+1. **Middleware pathname injection**: The `proxy.ts` middleware injects the current pathname into the `x-pathname` header
+2. **Server-side route detection**: The layout uses `headers()` from `next/headers` to read the pathname
+3. **Conditional rendering**: The FAQ schema script is only rendered when `pathname.endsWith("/faq")`
+
+### Rationale
+
+- **SEO best practices**: FAQ schema should only appear on pages that actually contain FAQ content
+- **Avoids penalties**: Site-wide FAQ schema on non-FAQ pages can be considered spam by search engines
+- **CSP compliance**: The conditional rendering maintains the nonce attribute for CSP compliance
+- **Locale-aware**: Works for both `/en/faq` and `/es/faq` paths
+
+### Technical Details
+
+The implementation uses the middleware pattern to expose the pathname to server components, as Next.js does not provide a built-in `getPathname()` for server components. This approach:
+
+- Works with the existing i18n middleware
+- Maintains nonce propagation
+- Supports both static and dynamic rendering
+- Handles locale prefixes correctly
+
+### Related Tasks
+
+- T008: Fix FAQ JSON-LD Placement and Nonce (completed)

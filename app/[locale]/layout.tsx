@@ -5,6 +5,7 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { hasLocale } from "next-intl";
+import { headers } from "next/headers";
 import "../globals.css";
 import { Navigation } from "../components/navigation";
 import { Footer } from "../components/footer";
@@ -113,6 +114,11 @@ export default async function LocaleLayout({ children, params }: Props) {
   // Get nonce for CSP from proxy.ts
   const nonce = await getNonce();
 
+  // Get current pathname from headers to conditionally render FAQ schema
+  const headersList = await headers();
+  const pathname = headersList.get("x-pathname") || "";
+  const isFaqPage = pathname.endsWith("/faq");
+
   return (
     <html
       lang={locale}
@@ -126,13 +132,15 @@ export default async function LocaleLayout({ children, params }: Props) {
             __html: generateSchemaJsonLd(organizationSchema),
           }}
         />
-        <script
-          type="application/ld+json"
-          nonce={nonce}
-          dangerouslySetInnerHTML={{
-            __html: generateSchemaJsonLd(faqSchema),
-          }}
-        />
+        {isFaqPage && (
+          <script
+            type="application/ld+json"
+            nonce={nonce}
+            dangerouslySetInnerHTML={{
+              __html: generateSchemaJsonLd(faqSchema),
+            }}
+          />
+        )}
         <script
           type="application/ld+json"
           nonce={nonce}
