@@ -662,7 +662,7 @@ These issues did not affect T008 implementation and are documented as separate o
 
 ## Task T009: Create Reusable JsonLd Component
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -716,6 +716,7 @@ Agent must identify all files that currently construct `<script type="applicatio
 - **Targeted file path:** Multiple pages
 - **Description:** List every file and line number where `<script type="application/ld+json"` is used. Note which ones already have a nonce prop.
 - **Commands:** none
+- **Status:** ✅ Complete
 
 #### T009.2 [AGENT] Create JsonLd component and refactor one page
 
@@ -724,6 +725,25 @@ Agent must identify all files that currently construct `<script type="applicatio
 - **Commands:**
   - `npm run typecheck`
   - `npm run test:run -- app/__tests__/components/json-ld.test.ts` (create and run)
+- **Status:** ✅ Complete
+
+### Implementation Notes
+
+- Created `app/components/json-ld.tsx` as a deep module for JSON-LD rendering
+- Component accepts `data` (required) and `nonce` (optional) props
+- Renders `<script type="application/ld+json" nonce={nonce} dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />`
+- Refactored `app/[locale]/contact/page.tsx` to use JsonLd component instead of inline script
+- Created unit test `app/__tests__/components/json-ld.test.tsx` with 5 test cases covering:
+  - Correct script type attribute
+  - Data serialization
+  - Nonce inclusion when provided
+  - No nonce when not provided
+  - Complex nested data handling
+- All 5 tests passing
+- Typecheck passes
+- Schema inventory documented:
+  - Layout schemas (3 scripts, all have nonce): organization, FAQ (conditional), breadcrumb
+  - Page schemas (9 scripts, none have nonce): contact, home, services, portfolio, faq, blog, about, portfolio/[slug], blog/[slug]
 
 ---
 

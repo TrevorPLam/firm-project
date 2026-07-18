@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { ScrollReveal } from "../../components/scroll-reveal";
 import { ContactForm } from "../../components/contact-form";
-import {
-  generateBreadcrumbSchema,
-  generateSchemaJsonLd,
-} from "../../lib/schema";
+import { JsonLd } from "../../components/json-ld";
+import { generateBreadcrumbSchema } from "../../lib/schema";
 import { generateLocaleAlternates } from "../../lib/seo-alternates";
 import { setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
@@ -58,12 +56,7 @@ export default async function ContactPage({
 
   return (
     <div className="flex flex-col">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: generateSchemaJsonLd(breadcrumbSchema),
-        }}
-      />
+      <JsonLd data={breadcrumbSchema} />
       {/* Hero Section */}
       <section className="px-6 pb-20 pt-32">
         <div className="mx-auto max-w-7xl">
