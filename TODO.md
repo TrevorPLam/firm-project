@@ -909,7 +909,7 @@ Agent must read `public/llms.txt` and confirm all links lack locale prefixes (e.
 
 ## Task T012: Remove Unused Environment Variables from .env.example
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -963,6 +963,15 @@ Agent must check `.env.example` for variables that are never read in the codebas
   - `Select-String -Path . -Pattern "NEXT_PUBLIC_HOTJAR_ID|NEXT_PUBLIC_SENTRY_DSN" -Recurse -Include *.ts,*.tsx,*.js,*.mjs,*.md,*.json` (confirm no usage)
   - Then manually edit `.env.example` to remove them.
   - Optionally run `npm run typecheck` to ensure nothing broke.
+- **Status:** ✅ Complete
+
+### Implementation Notes
+
+- Verified that `NEXT_PUBLIC_HOTJAR_ID` and `NEXT_PUBLIC_SENTRY_DSN` are unused in the codebase (no references in TypeScript/JavaScript files)
+- Removed both variables from `.env.example` (lines 37-38)
+- Removed references to both variables from `ENV_SETUP.md` (lines 97-99)
+- Env tests (39 tests) all pass
+- Pre-existing typecheck errors in `app/__tests__/lib/env.test.ts` (T017) - unrelated to this change
 
 ---
 
