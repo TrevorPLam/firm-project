@@ -242,9 +242,6 @@ const query = `
 A migration script is provided at `scripts/migrate-content.ts` to migrate existing content from TypeScript files to Sanity:
 
 ```bash
-# Install tsx for running TypeScript scripts
-pnpm add -D tsx
-
 # Run migration
 npx tsx scripts/migrate-content.ts
 ```

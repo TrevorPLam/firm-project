@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { ScrollReveal } from "../../components/scroll-reveal";
 import {
   generateBreadcrumbSchema,
+  generateFaqSchema,
   generateSchemaJsonLd,
 } from "../../lib/schema";
 import { generateLocaleAlternates } from "../../lib/seo-alternates";
@@ -189,12 +190,20 @@ export default async function FAQPage({
     { name: "FAQ", url: `/${locale}/faq` },
   ]);
 
+  const faqSchemaData = generateFaqSchema(faqCategories);
+
   return (
     <div className="flex flex-col">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: generateSchemaJsonLd(breadcrumbSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: generateSchemaJsonLd(faqSchemaData),
         }}
       />
       {/* Hero Section */}

@@ -130,6 +130,28 @@ export function generateSchemaJsonLd(schema: Record<string, unknown>) {
   return JSON.stringify(schema);
 }
 
+export function generateFaqSchema(
+  categories: Array<{
+    category: string;
+    questions: Array<{ question: string; answer: string }>;
+  }>,
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: categories.flatMap((cat) =>
+      cat.questions.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: faq.answer,
+        },
+      })),
+    ),
+  };
+}
+
 export function generateArticleSchema({
   title,
   description,
