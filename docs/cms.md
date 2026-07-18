@@ -320,15 +320,23 @@ export const { enableDraftMode } = defineEnableDraftMode({
 
 ### Preview Route
 
-Create a preview route at `app/api/draft/route.ts`:
+A draft mode enable route exists at `app/api/draft/route.ts`:
 
 ```typescript
-import { enableDraftMode } from "@/app/lib/cms-client";
+import { defineEnableDraftMode } from "next-sanity/draft-mode";
+import { client } from "@/lib/cms-client";
+import { getSanityApiReadToken } from "@/lib/env";
 
-export async function GET(request: Request) {
-  return await enableDraftMode(request);
-}
+const { GET } = defineEnableDraftMode({
+  client: client.withConfig({
+    token: getSanityApiReadToken() || "",
+  }),
+});
+
+export { GET };
 ```
+
+This route validates Studio sessions and enables Next.js Draft Mode for preview. The Studio's Presentation Tool should be configured with `previewMode.enable: '/api/draft'`.
 
 ## Caching Strategies
 
@@ -367,28 +375,41 @@ Webhooks trigger cache invalidation when content changes.
 
 ### Webhook Handler
 
-Create a route handler at `app/api/revalidate/route.ts`:
+A webhook handler exists at `app/api/revalidate/route.ts`:
 
 ```typescript
-import { parseBody } from "next-sanity";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { parseBody } from "next-sanity/webhook";
+import { getSanityRevalidateSecret } from "@/lib/env";
 
-export async function POST(request: Request) {
-  const { body, isValidSignature } = await parseBody(
-    request,
-    process.env.SANITY_WEBHOOK_SECRET,
+export async function POST(req: Request) {
+  const secret = getSanityRevalidateSecret();
+  const { isValidSignature, body } = await parseBody(
+    req,
+    secret,
+    true // Wait for Content Lake propagation
   );
 
   if (!isValidSignature) {
     return new Response("Invalid signature", { status: 401 });
   }
 
-  const slug = body.slug.current;
-  revalidatePath(`/blog/${slug}`);
+  // Revalidate based on document type and slug
+  if (body.slug?.current) {
+    revalidatePath(`/${body._type}/${body.slug.current}`, "page");
+    if (body._type === "blogPost") {
+      revalidatePath("/blog", "page");
+      revalidateTag("blog", "fetch-cache");
+    }
+  } else {
+    revalidateTag(body._type, "fetch-cache");
+  }
 
-  return new Response("Revalidated", { status: 200 });
+  return NextResponse.json({ revalidated: true });
 }
 ```
+
+The handler uses `parseBody` for signature validation (timing-safe) and supports both path-based and tag-based revalidation.
 
 ## Editor Guide
 

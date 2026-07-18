@@ -31,6 +31,7 @@ This project uses a Zod-based environment variable validation module (`app/lib/e
 - `UPSTASH_REDIS_REST_URL` - Upstash Redis URL for rate limiting (optional)
 - `UPSTASH_REDIS_REST_TOKEN` - Upstash Redis token for rate limiting (optional)
 - `SANITY_API_READ_TOKEN` - Sanity API read token for preview (optional)
+- `SANITY_REVALIDATE_SECRET` - Sanity webhook secret for cache revalidation (optional)
 - `ALLOW_INDEXING` - Search engine indexing control (enum: true/false)
 - `NODE_ENV` - Node environment (enum: development/production/test)
 - `VERCEL_ENV` - Vercel deployment environment (enum: development/preview/production)

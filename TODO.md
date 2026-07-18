@@ -72,6 +72,7 @@ Agent must read `app/components/analytics.tsx`, `app/[locale]/legal/privacy/page
 - **Targeted file path:** `app/components/analytics.tsx`, `app/[locale]/legal/privacy/page.tsx`
 - **Description:** Read both files and produce a short summary of: which scripts load, whether consent is implemented, and what the privacy policy claims about cookies. No code changes.
 - **Commands:** none (file read only)
+- **Status:** ✅ Complete
 
 #### T001.2 [HUMAN] Choose analytics posture
 
@@ -86,6 +87,12 @@ Agent must read `app/components/analytics.tsx`, `app/[locale]/legal/privacy/page
 - **Commands:**
   - `npm run typecheck`
   - `npm run test:run -- app/__tests__/components/` (targeted consent test file if added)
+
+### Implementation Notes
+
+- **T001.1 Complete:** Verified current analytics loads unconditionally with no consent check, privacy policy mentions cookies generically without describing GA or consent mechanism
+- **Task Blocked:** Pending human decision on analytics posture (Option A: no consent, Option B: consent-gated, Option C: cookieless alternative)
+- **Three options presented to human with pros/cons and compliance implications**
 
 ---
 
@@ -977,7 +984,7 @@ Agent must check `.env.example` for variables that are never read in the codebas
 
 ## Task T013: Sanity Draft Mode Enable and Signed Revalidate Route
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 
@@ -1058,6 +1065,32 @@ Agent must read `docs/cms.md` for the desired patterns, then inspect `app/lib/cm
 - **Targeted file path:** `docs/cms.md`, `.env.example`, `ENV_SETUP.md`
 - **Description:** Add `SANITY_REVALIDATE_SECRET` to `.env.example`. Update `docs/cms.md` to replace aspirational snippets with actual paths and env names. Update `ENV_SETUP.md` to explain these secrets.
 - **Commands:** none
+- **Status:** ✅ Complete
+
+### Implementation Notes
+
+- **T013.1 Complete:** Verified next-sanity 13.1.1 supports `defineEnableDraftMode` from `next-sanity/draft-mode` and `parseBody` from `next-sanity/webhook`
+- **T013.2 Complete:** Created `app/api/draft/route.ts` using `defineEnableDraftMode` with client configured with `SANITY_API_READ_TOKEN`
+- **T013.3 Complete:** Created `app/api/revalidate/route.ts` with:
+  - Signature validation using `parseBody` (timing-safe)
+  - Path-based revalidation for documents with slugs
+  - Tag-based revalidation for documents without slugs
+  - Special handling for blogPost and caseStudy types
+  - Content Lake propagation delay (3 seconds) to avoid stale data
+- **T013.3 Complete:** Created `app/__tests__/api/revalidate.test.ts` with 8 test cases covering:
+  - Secret validation (missing secret, invalid signature)
+  - Payload validation (null body, missing _type)
+  - Path-based revalidation (blogPost, caseStudy)
+  - Tag-based revalidation (documents without slugs)
+  - Error handling (parseBody errors)
+- All 8 unit tests passing
+- Added `SANITY_REVALIDATE_SECRET` to env schema in `app/lib/env.ts`
+- Added `getSanityRevalidateSecret()` getter function
+- Updated `.env.example` with `SANITY_REVALIDATE_SECRET`
+- Updated `docs/cms.md` with actual route implementations
+- Updated `ENV_SETUP.md` with `SANITY_REVALIDATE_SECRET` documentation
+- Lint passes
+- Typecheck shows pre-existing errors in `app/__tests__/lib/env.test.ts` (T017) - unrelated to this change
 
 ---
 

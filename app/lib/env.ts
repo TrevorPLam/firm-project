@@ -35,6 +35,7 @@ const serverEnvSchema = z.object({
 
   // CMS (Sanity)
   SANITY_API_READ_TOKEN: z.string().trim().optional(),
+  SANITY_REVALIDATE_SECRET: z.string().trim().optional(),
 
   // Feature flags
   ENABLE_REACT_COMPILER: z.enum(["true", "false"]).optional(),
@@ -142,6 +143,10 @@ export function getSanityDataset(): string {
 
 export function getSanityApiReadToken(): string | undefined {
   return getServerEnv().SANITY_API_READ_TOKEN;
+}
+
+export function getSanityRevalidateSecret(): string | undefined {
+  return getServerEnv().SANITY_REVALIDATE_SECRET;
 }
 
 export function getUpstashRedisRestUrl(): string | undefined {
