@@ -1498,7 +1498,7 @@ Agent must read `app/__tests__/lib/env.test.ts` and list all 16 `@ts-expect-erro
 
 ## Task T018: Scaffold Sentry Error Monitoring
 
-**Status:** `[ ]` OPEN
+**Status:** `[x]` COMPLETE
 
 ### Initial Analysis & Research
 

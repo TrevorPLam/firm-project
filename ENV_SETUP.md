@@ -22,6 +22,7 @@ This project uses a Zod-based environment variable validation module (`app/lib/e
 - `NEXT_PUBLIC_ALGOLIA_INDEX_NAME` - Algolia index name with default
 - `NEXT_PUBLIC_SANITY_PROJECT_ID` - Sanity CMS project ID (optional)
 - `NEXT_PUBLIC_SANITY_DATASET` - Sanity dataset with default
+- `NEXT_PUBLIC_SENTRY_DSN` - Sentry error monitoring DSN (optional)
 
 **Server Environment Variables** (server-side only):
 
@@ -164,3 +165,42 @@ The CI workflow runs a focused smoke test using only chromium to reduce cost and
 
 **E2E Build Process:**
 Playwright tests use the built-in webServer configuration to automatically build and start the application before running tests (`npm run build && npm start`). This ensures tests run against a production-like build rather than dev mode.
+
+## Sentry Error Monitoring
+
+This project uses Sentry for production error tracking and performance monitoring. The integration is scaffolded using the official `@sentry/nextjs` SDK.
+
+**Scaffolded Files:**
+
+- `sentry.server.config.ts` - Server-side Sentry configuration
+- `sentry.edge.config.ts` - Edge runtime Sentry configuration
+- `instrumentation.ts` - Server instrumentation hook
+- `instrumentation-client.ts` - Client-side Sentry configuration
+- `app/global-error.tsx` - Global error boundary for Sentry
+- `next.config.ts` - Updated with Sentry webpack plugin
+
+**Enabling Sentry:**
+
+1. Create a Sentry project at https://sentry.io/
+2. Add the DSN to your `.env.local`:
+
+```bash
+NEXT_PUBLIC_SENTRY_DSN=https://your-dsn@sentry.io/project-id
+```
+
+3. Restart your dev server or rebuild for production
+
+**Graceful Degradation:**
+
+Sentry is designed to work without a DSN during local development. If `NEXT_PUBLIC_SENTRY_DSN` is not set, Sentry becomes a no-op and will not affect your application. Build and dev startup work without errors.
+
+**Features Enabled:**
+
+- Error tracking and reporting
+- Performance monitoring (tracing)
+- Session replay for debugging
+- Log forwarding to Sentry
+
+**CI/CD Setup:**
+
+For source map uploading in CI, add the `SENTRY_AUTH_TOKEN` environment variable to your CI configuration. This token is provided by Sentry during the wizard setup and should be kept secret.
